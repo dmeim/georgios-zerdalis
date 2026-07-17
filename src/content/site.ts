@@ -27,6 +27,7 @@ export type EducationItem = {
 export type VenueHighlight = {
   name: string;
   place: string;
+  image: string;
 };
 
 export type FormField = {
@@ -237,10 +238,26 @@ export const contact: ContactContent = {
 
 /** Performance highlights from CV / legacy site (no emoji icons). */
 export const venues: VenueHighlight[] = [
-  { name: "Carnegie Hall", place: "New York City, USA" },
-  { name: "Konzerthaus", place: "Berlin, Germany" },
-  { name: "Concertgebouw", place: "Amsterdam, Netherlands" },
-  { name: "Odeon of Herodes Atticus", place: "Athens, Greece" },
+  {
+    name: "Carnegie Hall",
+    place: "New York City, USA",
+    image: "/images/Carnegie-Hall.jpg",
+  },
+  {
+    name: "Konzerthaus",
+    place: "Berlin, Germany",
+    image: "/images/Konzerthaus.jpg",
+  },
+  {
+    name: "Concertgebouw",
+    place: "Amsterdam, Netherlands",
+    image: "/images/Concertgebouw.jpg",
+  },
+  {
+    name: "Odeon of Herodes Atticus",
+    place: "Athens, Greece",
+    image: "/images/Odeon-of-Herodes.jpg",
+  },
 ];
 
 export const site: SiteContent = {

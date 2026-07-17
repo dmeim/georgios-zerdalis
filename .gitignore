@@ -36,5 +36,8 @@ Thumbs.db
 # Cursor
 .cursor/
 
+# Brainstorm / visual companion sessions
+.superpowers/
+
 # Internal
 prompt.md

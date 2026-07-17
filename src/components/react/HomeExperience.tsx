@@ -36,7 +36,7 @@ export type HomeExperienceProps = {
   quote: { text: string; attribution?: string };
   pedagogy: string[];
   endorsement: { label: string; url: string };
-  venues: { name: string; place: string }[];
+  venues: { name: string; place: string; image: string }[];
 };
 
 const EASE = [0.22, 1, 0.36, 1] as const;
@@ -317,6 +317,36 @@ function ChapterSection({
   );
 }
 
+function VenueCard({
+  venue,
+  ariaHidden,
+}: {
+  venue: HomeExperienceProps["venues"][number];
+  ariaHidden?: boolean;
+}) {
+  return (
+    <figure
+      className="he-venues__item"
+      aria-hidden={ariaHidden ? true : undefined}
+    >
+      <img
+        className="he-venues__photo"
+        src={venue.image}
+        alt=""
+        width={360}
+        height={220}
+        loading="lazy"
+        decoding="async"
+        draggable={false}
+      />
+      <figcaption className="he-venues__caption">
+        <span className="he-venues__name">{venue.name}</span>
+        <span className="he-venues__place">{venue.place}</span>
+      </figcaption>
+    </figure>
+  );
+}
+
 function VenuesMarquee({
   venues,
 }: {
@@ -336,13 +366,10 @@ function VenuesMarquee({
       {reduced ? (
         <div className="he-venues__static">
           {items.map((venue) => (
-            <span
+            <VenueCard
               key={`${venue.name}-${venue.place}`}
-              className="he-venues__item"
-            >
-              {venue.name}
-              <span className="he-venues__place">{venue.place}</span>
-            </span>
+              venue={venue}
+            />
           ))}
         </div>
       ) : (
@@ -350,17 +377,11 @@ function VenuesMarquee({
           <div className="he-venues__track he-venues__track--animate">
             <div className="he-venues__group">
               {loop.map((venue, i) => (
-                <span
+                <VenueCard
                   key={`${venue.name}-${i}`}
-                  className="he-venues__item"
-                  aria-hidden={i >= items.length ? true : undefined}
-                >
-                  {venue.name}
-                  <span className="he-venues__place">{venue.place}</span>
-                  <span className="he-venues__sep" aria-hidden="true">
-                    ·
-                  </span>
-                </span>
+                  venue={venue}
+                  ariaHidden={i >= items.length}
+                />
               ))}
             </div>
           </div>

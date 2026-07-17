@@ -242,6 +242,9 @@
 /* ——— Venues marquee ——— */
 
 .he-venues {
+  --he-venues-gap: clamp(1.5rem, 2.5vw, 2.5rem);
+  /* Target ~2.5 cards in view: stride = card + gap = 100vw / 2.5 */
+  --he-venues-card: calc(100vw / 2.5 - var(--he-venues-gap));
   padding-block: clamp(2.5rem, 7vh, 4.5rem);
   border-bottom: 1px solid var(--color-border);
   overflow: hidden;
@@ -289,49 +292,68 @@
 
 .he-venues__group {
   display: flex;
-  align-items: baseline;
+  align-items: flex-start;
+  gap: var(--he-venues-gap);
   flex-shrink: 0;
+  padding-inline: clamp(1rem, 2vw, 1.5rem);
 }
 
 .he-venues__item {
-  display: inline-flex;
-  align-items: baseline;
+  display: flex;
+  flex-direction: column;
   gap: 0.85rem;
-  padding-inline: 1.35rem;
-  white-space: nowrap;
+  margin: 0;
+  width: var(--he-venues-card);
+  flex-shrink: 0;
+}
+
+.he-venues__photo {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  object-fit: cover;
+  border-radius: 4px;
+  background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+}
+
+.he-venues__caption {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  min-width: 0;
+}
+
+.he-venues__name {
   font-family: var(--font-serif);
-  font-size: clamp(1.35rem, 3.2vw, 2.15rem);
+  font-size: clamp(1.45rem, 2.8vw, 2.1rem);
   font-style: italic;
   font-weight: 400;
   letter-spacing: -0.01em;
-  color: color-mix(in srgb, var(--color-ink) 55%, transparent);
-}
-
-.he-venues__sep {
-  color: var(--color-accent);
-  opacity: 0.7;
-  font-style: normal;
-  font-family: var(--font-sans);
-  font-size: 0.85em;
+  line-height: 1.2;
+  color: color-mix(in srgb, var(--color-ink) 78%, transparent);
 }
 
 .he-venues__place {
   font-family: var(--font-sans);
-  font-size: 0.55em;
+  font-size: clamp(0.7rem, 1.15vw, 0.82rem);
   font-style: normal;
   letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
-  opacity: 0.75;
+  opacity: 0.8;
+  line-height: 1.35;
 }
 
 .he-venues__static {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-sm) var(--space-lg);
+  gap: var(--space-md) var(--space-lg);
   width: min(100% - 2 * var(--he-gutter), var(--he-max));
   margin-inline: auto;
-  opacity: 0.75;
+}
+
+.he-venues__static .he-venues__item {
+  width: min(var(--he-venues-card), 100%);
 }
 
 @keyframes he-marquee {
