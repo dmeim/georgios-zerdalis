@@ -1,0 +1,620 @@
+import {
+  motion,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
+import { useRef } from "react";
+import {
+  Magnetic,
+  MotionConfigProvider,
+  Reveal,
+  TextReveal,
+} from "../motion";
+import "./HomeExperience.css";
+
+export type HomeExperienceProps = {
+  portraitSrc: string;
+  portraitWidth: number;
+  portraitHeight: number;
+  hero: {
+    name: string;
+    role: string;
+    sentence: string;
+    ctas: { label: string; href: string }[];
+  };
+  chapter: { eyebrow: string; title: string; body: string };
+  appointments: {
+    title: string;
+    organization: string;
+    location?: string;
+    dates: string;
+    bullets?: string[];
+  }[];
+  bio: string;
+  quote: { text: string; attribution?: string };
+  pedagogy: string[];
+  endorsement: { label: string; url: string };
+  venues: { name: string; place: string }[];
+};
+
+const EASE = [0.22, 1, 0.36, 1] as const;
+
+function splitBio(bio: string): string[] {
+  const trimmed = bio.trim();
+  if (!trimmed) return [];
+
+  const sentences = trimmed
+    .split(/(?<=\.)\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+
+  if (sentences.length <= 2) return [trimmed];
+
+  const mid = Math.ceil(sentences.length / 2);
+  if (sentences.length <= 4) {
+    return [
+      sentences.slice(0, mid).join(" "),
+      sentences.slice(mid).join(" "),
+    ];
+  }
+
+  const third = Math.ceil(sentences.length / 3);
+  return [
+    sentences.slice(0, third).join(" "),
+    sentences.slice(third, third * 2).join(" "),
+    sentences.slice(third * 2).join(" "),
+  ];
+}
+
+function padIndex(n: number): string {
+  return String(n).padStart(2, "0");
+}
+
+function QuoteWord({
+  word,
+  index,
+  total,
+  progress,
+}: {
+  word: string;
+  index: number;
+  total: number;
+  progress: MotionValue<number>;
+}) {
+  const start = index / total;
+  const end = Math.min(1, (index + 2.2) / total);
+  const opacity = useTransform(progress, [start, end], [0.18, 1]);
+
+  return (
+    <motion.span
+      className="he-quote__word"
+      style={{ opacity }}
+      aria-hidden="true"
+    >
+      {word}
+      {index < total - 1 ? " " : ""}
+    </motion.span>
+  );
+}
+
+function QuoteWords({
+  text,
+  progress,
+  reduced,
+}: {
+  text: string;
+  progress: MotionValue<number>;
+  reduced: boolean;
+}) {
+  const words = text.trim().split(/\s+/).filter(Boolean);
+
+  if (reduced) {
+    return <p className="he-quote__text">{text}</p>;
+  }
+
+  return (
+    <p className="he-quote__text" aria-label={text}>
+      {words.map((word, i) => (
+        <QuoteWord
+          key={`${word}-${i}`}
+          word={word}
+          index={i}
+          total={words.length}
+          progress={progress}
+        />
+      ))}
+    </p>
+  );
+}
+
+function HeroSection({
+  portraitSrc,
+  portraitWidth,
+  portraitHeight,
+  hero,
+  reduced,
+}: {
+  portraitSrc: string;
+  portraitWidth: number;
+  portraitHeight: number;
+  hero: HomeExperienceProps["hero"];
+  reduced: boolean;
+}) {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1.08, 1.18]);
+
+  return (
+    <section
+      ref={ref}
+      className="he-hero he__bleed"
+      aria-label="Introduction"
+    >
+      <div className="he-hero__media" aria-hidden="true">
+        <motion.div
+          className="he-hero__image-wrap"
+          style={
+            reduced
+              ? undefined
+              : {
+                  y: imageY,
+                  scale: imageScale,
+                }
+          }
+          initial={reduced ? false : { scale: 1.16, opacity: 0.55 }}
+          animate={reduced ? undefined : { scale: 1.08, opacity: 1 }}
+          transition={{ duration: 1.55, ease: EASE }}
+        >
+          <img
+            className="he-hero__image"
+            src={portraitSrc}
+            width={portraitWidth}
+            height={portraitHeight}
+            alt=""
+            decoding="async"
+            fetchPriority="high"
+          />
+        </motion.div>
+        <div className="he-hero__veil" />
+      </div>
+
+      <div className="he-hero__content">
+        <motion.div
+          initial={reduced ? false : "hidden"}
+          animate={reduced ? undefined : "visible"}
+          variants={{
+            hidden: {},
+            visible: {
+              transition: { staggerChildren: 0.12, delayChildren: 0.28 },
+            },
+          }}
+        >
+          <motion.div
+            variants={{
+              hidden: { opacity: 0, y: 28 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.85, ease: EASE },
+              },
+            }}
+          >
+            <TextReveal
+              text={hero.name}
+              as="h1"
+              className="he-hero__name"
+              delay={0.05}
+            />
+          </motion.div>
+
+          <motion.p
+            className="he-hero__role"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.75, ease: EASE },
+              },
+            }}
+          >
+            {hero.role}
+          </motion.p>
+
+          <motion.p
+            className="he-hero__sentence"
+            variants={{
+              hidden: { opacity: 0, y: 20 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.75, ease: EASE },
+              },
+            }}
+          >
+            {hero.sentence}
+          </motion.p>
+
+          <motion.div
+            className="he-hero__ctas"
+            variants={{
+              hidden: { opacity: 0, y: 16 },
+              visible: {
+                opacity: 1,
+                y: 0,
+                transition: { duration: 0.7, ease: EASE },
+              },
+            }}
+          >
+            {hero.ctas.map((cta, i) => (
+              <Magnetic key={cta.href} strength={0.22}>
+                <a
+                  href={cta.href}
+                  className={
+                    i === 0 ? "btn btn--primary" : "btn btn--ghost"
+                  }
+                >
+                  {cta.label}
+                </a>
+              </Magnetic>
+            ))}
+          </motion.div>
+        </motion.div>
+      </div>
+
+      {!reduced && (
+        <div className="he-hero__scroll" aria-hidden="true">
+          <span className="he-hero__scroll-label">Scroll</span>
+          <span className="he-hero__scroll-line" />
+        </div>
+      )}
+    </section>
+  );
+}
+
+function ChapterSection({
+  chapter,
+}: {
+  chapter: HomeExperienceProps["chapter"];
+}) {
+  const reduced = useReducedMotion();
+
+  return (
+    <section className="he-chapter he__section" aria-label={chapter.title}>
+      <div className="he__inner">
+        <Reveal>
+          <p className="he__eyebrow">{chapter.eyebrow}</p>
+        </Reveal>
+
+        <motion.span
+          className="he-chapter__rule"
+          aria-hidden="true"
+          initial={reduced ? false : { scaleX: 0 }}
+          whileInView={reduced ? undefined : { scaleX: 1 }}
+          viewport={{ once: true, margin: "-10%" }}
+          transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+        />
+
+        <TextReveal
+          text={chapter.title}
+          as="h2"
+          className="he-chapter__title he__serif-title"
+          delay={0.08}
+        />
+
+        <Reveal delay={0.12} y={24}>
+          <p className="he-chapter__body">{chapter.body}</p>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+function VenuesMarquee({
+  venues,
+}: {
+  venues: HomeExperienceProps["venues"];
+}) {
+  const reduced = useReducedMotion();
+  const items = venues.length ? venues : [];
+
+  if (!items.length) return null;
+
+  const loop = [...items, ...items];
+
+  return (
+    <section className="he-venues he__bleed" aria-label="Stages">
+      <p className="he-venues__label">Stages</p>
+
+      {reduced ? (
+        <div className="he-venues__static">
+          {items.map((venue) => (
+            <span
+              key={`${venue.name}-${venue.place}`}
+              className="he-venues__item"
+            >
+              {venue.name}
+              <span className="he-venues__place">{venue.place}</span>
+            </span>
+          ))}
+        </div>
+      ) : (
+        <div className="he-venues__track-wrap">
+          <div className="he-venues__track he-venues__track--animate">
+            <div className="he-venues__group">
+              {loop.map((venue, i) => (
+                <span
+                  key={`${venue.name}-${i}`}
+                  className="he-venues__item"
+                  aria-hidden={i >= items.length ? true : undefined}
+                >
+                  {venue.name}
+                  <span className="he-venues__place">{venue.place}</span>
+                  <span className="he-venues__sep" aria-hidden="true">
+                    ·
+                  </span>
+                </span>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+    </section>
+  );
+}
+
+function AppointmentsSection({
+  appointments,
+}: {
+  appointments: HomeExperienceProps["appointments"];
+}) {
+  return (
+    <section
+      className="he-appointments he__section"
+      aria-label="Where the work lives"
+    >
+      <div className="he__inner">
+        <header className="he-appointments__header">
+          <Reveal>
+            <p className="he__eyebrow">Selected appointments</p>
+          </Reveal>
+          <TextReveal
+            text="Where the work lives"
+            as="h2"
+            className="he-appointments__title he__serif-title"
+            delay={0.06}
+          />
+        </header>
+
+        <ol className="he-appointments__list">
+          {appointments.map((item, i) => (
+            <li
+              key={`${item.title}-${item.dates}`}
+              className="he-appointments__item"
+            >
+              <Reveal delay={i * 0.08} y={32} className="he-appointments__grid">
+                <div className="he-appointments__meta">
+                  <span className="he-appointments__dates">{item.dates}</span>
+                  {item.location ? (
+                    <span className="he-appointments__place">
+                      {item.location}
+                    </span>
+                  ) : null}
+                </div>
+                <div>
+                  <h3 className="he-appointments__role">{item.title}</h3>
+                  <p className="he-appointments__org">{item.organization}</p>
+                  {item.bullets && item.bullets.length > 0 ? (
+                    <ul className="he-appointments__bullets">
+                      {item.bullets.map((bullet) => (
+                        <li key={bullet}>{bullet}</li>
+                      ))}
+                    </ul>
+                  ) : null}
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function BioSection({ bio }: { bio: string }) {
+  const paragraphs = splitBio(bio);
+
+  return (
+    <section className="he-bio he__section" aria-label="About">
+      <div className="he__inner he-bio__grid">
+        <div className="he-bio__sticky">
+          <Reveal>
+            <p className="he__eyebrow">Biography</p>
+          </Reveal>
+          <TextReveal
+            text="About"
+            as="h2"
+            className="he-bio__title he__serif-title"
+            delay={0.05}
+          />
+        </div>
+
+        <div className="he-bio__body">
+          {paragraphs.map((paragraph, i) => (
+            <Reveal key={i} delay={0.08 + i * 0.1} y={22}>
+              <p>{paragraph}</p>
+            </Reveal>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function QuoteSection({
+  quote,
+}: {
+  quote: HomeExperienceProps["quote"];
+}) {
+  const reduced = useReducedMotion();
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start 0.85", "end 0.45"],
+  });
+
+  return (
+    <section
+      ref={ref}
+      className="he-quote he__section"
+      aria-label="Mentor reflection"
+    >
+      <div className="he__inner">
+        <blockquote className="he-quote__block">
+          <QuoteWords
+            text={quote.text}
+            progress={scrollYProgress}
+            reduced={Boolean(reduced)}
+          />
+          {quote.attribution ? (
+            <Reveal delay={0.15}>
+              <footer className="he-quote__footer">
+                <cite className="he-quote__cite">{quote.attribution}</cite>
+              </footer>
+            </Reveal>
+          ) : null}
+        </blockquote>
+      </div>
+    </section>
+  );
+}
+
+function PedagogySection({
+  pedagogy,
+}: {
+  pedagogy: HomeExperienceProps["pedagogy"];
+}) {
+  return (
+    <section
+      className="he-pedagogy he__section"
+      aria-label="How Georgios teaches"
+    >
+      <div className="he__inner">
+        <header className="he-pedagogy__header">
+          <Reveal>
+            <p className="he__eyebrow">How Georgios teaches</p>
+          </Reveal>
+        </header>
+
+        <ol className="he-pedagogy__list">
+          {pedagogy.map((line, i) => (
+            <li key={line} className="he-pedagogy__item">
+              <Reveal delay={i * 0.07} y={26} className="he-pedagogy__reveal">
+                <span className="he-pedagogy__num" aria-hidden="true">
+                  {padIndex(i + 1)}
+                </span>
+                <p className="he-pedagogy__line">{line}</p>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function CloseSection({
+  endorsement,
+}: {
+  endorsement: HomeExperienceProps["endorsement"];
+}) {
+  return (
+    <section
+      className="he-close he__section"
+      aria-label="Begin a conversation"
+    >
+      <div className="he__inner">
+        <Reveal>
+          <p className="he-close__endorse">
+            <Magnetic strength={0.18}>
+              <a
+                className="he-close__endorse-link"
+                href={endorsement.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {endorsement.label}
+              </a>
+            </Magnetic>
+          </p>
+        </Reveal>
+
+        <TextReveal
+          text="Begin a conversation"
+          as="h2"
+          className="he-close__title he__serif-title"
+          delay={0.08}
+        />
+
+        <Reveal delay={0.12}>
+          <p className="he-close__body">
+            For collaborations, lessons, or inquiries — Georgios welcomes your
+            message.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.18}>
+          <Magnetic strength={0.25}>
+            <a className="btn btn--primary he-close__cta" href="/contact">
+              Get in Touch
+            </a>
+          </Magnetic>
+        </Reveal>
+      </div>
+    </section>
+  );
+}
+
+export default function HomeExperience({
+  portraitSrc,
+  portraitWidth,
+  portraitHeight,
+  hero,
+  chapter,
+  appointments,
+  bio,
+  quote,
+  pedagogy,
+  endorsement,
+  venues,
+}: HomeExperienceProps) {
+  const reduced = useReducedMotion();
+
+  return (
+    <MotionConfigProvider>
+      <div className="he">
+        <HeroSection
+          portraitSrc={portraitSrc}
+          portraitWidth={portraitWidth}
+          portraitHeight={portraitHeight}
+          hero={hero}
+          reduced={Boolean(reduced)}
+        />
+        <ChapterSection chapter={chapter} />
+        <VenuesMarquee venues={venues} />
+        <AppointmentsSection appointments={appointments} />
+        <BioSection bio={bio} />
+        <QuoteSection quote={quote} />
+        <PedagogySection pedagogy={pedagogy} />
+        <CloseSection endorsement={endorsement} />
+      </div>
+    </MotionConfigProvider>
+  );
+}

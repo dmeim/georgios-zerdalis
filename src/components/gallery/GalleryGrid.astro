@@ -141,32 +141,57 @@ function resolvePoster(item: GalleryItem): string | undefined {
     cursor: zoom-in;
     overflow: hidden;
     text-align: left;
+    -webkit-tap-highlight-color: transparent;
     transition:
       border-color var(--duration) var(--ease-out),
+      box-shadow var(--duration) var(--ease-out),
       transform var(--duration) var(--ease-out);
   }
 
-  .gallery-grid__trigger:hover,
+  .gallery-grid__trigger:hover {
+    border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+  }
+
   .gallery-grid__trigger:focus-visible {
-    border-color: var(--color-accent-soft);
-    transform: translateY(-2px);
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-accent) 35%, transparent);
+    outline: none;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .gallery-grid__trigger:hover {
+      transform: translateY(-2px);
+    }
+
+    .gallery-grid__trigger:hover .gallery-grid__img {
+      transform: scale(1.04);
+    }
+
+    .gallery-grid__trigger:hover .gallery-grid__caption--overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .gallery-grid__trigger:active {
+    border-color: var(--color-accent);
   }
 
   .gallery-grid__img {
     width: 100%;
     aspect-ratio: 1;
     object-fit: cover;
-    transition: transform 400ms var(--ease-out);
+    transition: transform 480ms var(--ease-out);
   }
 
-  .gallery-grid__trigger:hover .gallery-grid__img,
   .gallery-grid__trigger:focus-visible .gallery-grid__img {
     transform: scale(1.03);
   }
 
   @media (prefers-reduced-motion: reduce) {
     .gallery-grid__trigger,
-    .gallery-grid__img {
+    .gallery-grid__img,
+    .gallery-grid__caption--overlay {
       transition: none;
     }
 
@@ -196,12 +221,29 @@ function resolvePoster(item: GalleryItem): string | undefined {
     padding: var(--space-lg) var(--space-sm) var(--space-sm);
     background: linear-gradient(
       to top,
-      color-mix(in srgb, var(--color-ground) 88%, transparent),
+      color-mix(in srgb, var(--color-ground) 92%, transparent),
       transparent
     );
     color: var(--color-ink);
     font-size: 0.8125rem;
     line-height: 1.35;
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity var(--duration) var(--ease-out),
+      transform var(--duration) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .gallery-grid__caption--overlay {
+      opacity: 0;
+      transform: translateY(0.35rem);
+    }
+
+    .gallery-grid__trigger:focus-visible .gallery-grid__caption--overlay {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .gallery-grid__missing {

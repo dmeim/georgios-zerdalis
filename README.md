@@ -7,8 +7,9 @@ Portfolio site for [Georgios Zerdalis](https://github.com/dmeim/georgios-zerdali
 ## Stack
 
 - [Astro 7](https://astro.build) with `output: 'static'` and TypeScript
+- React islands + [Framer Motion](https://www.framer.com/motion/) for scroll/entrance choreography
 - Cloudflare Workers Static Assets (Wrangler) — **not** Cloudflare Pages, **not** `@astrojs/cloudflare`
-- Plain CSS with CSS variables and dark/light theme (`data-theme`) — no Tailwind
+- Design system: “Midnight Concert Hall” (Syne / Instrument Serif / Manrope, champagne + steel accents)
 - Icons via [`@lucide/astro`](https://lucide.dev)
 - Node.js ≥ 22
 - Contact form scaffolds to `PUBLIC_N8N_WEBHOOK_URL` (n8n webhook; optional until connected)
@@ -77,6 +78,17 @@ npm install
 npm run build
 npx wrangler deploy --name georgios-zerdalis-exp-<label>
 ```
+
+### Option C — temporary preview (no Cloudflare login)
+
+If Wrangler is not authenticated:
+
+```bash
+npm run build
+npx wrangler deploy --temporary --name georgios-zerdalis-exp-<label>
+```
+
+You get a live `*.workers.dev` URL plus a claim link (valid ~60 minutes). Production is never touched.
 
 ### Wrangler environments
 

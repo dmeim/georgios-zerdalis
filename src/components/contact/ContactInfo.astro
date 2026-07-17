@@ -1,15 +1,13 @@
 ---
 /**
- * Contact details above the form — sourced from `src/content/site.ts`.
+ * Contact details — sourced from `src/content/site.ts`.
+ * Page heading lives in contact.astro via PageIntro.
  */
 import { Mail, MapPin, AtSign } from '@lucide/astro';
 import { contact } from '../../content/site';
 ---
 
 <div class="contact-info">
-  <h1 id="contact-heading">Let's <span class="text-accent">Connect</span></h1>
-  <p class="contact-info__intro">{contact.intro}</p>
-
   <ul class="contact-details" role="list">
     <li class="contact-item">
       <span class="contact-item__icon" aria-hidden="true">
@@ -49,26 +47,13 @@ import { contact } from '../../content/site';
 </div>
 
 <style>
-  .contact-info h1 {
-    margin-bottom: var(--space-md);
-  }
-
-  .text-accent {
-    color: var(--color-accent);
-  }
-
-  .contact-info__intro {
-    color: var(--color-ink-muted);
-    margin-bottom: var(--space-xl);
-  }
-
   .contact-details {
     list-style: none;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
-    gap: var(--space-lg);
+    gap: var(--space-xl);
   }
 
   .contact-item {
@@ -82,25 +67,27 @@ import { contact } from '../../content/site';
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
     border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-ground-elevated) 80%, transparent);
     color: var(--color-accent);
   }
 
   .contact-item__content {
     display: flex;
     flex-direction: column;
-    gap: var(--space-xs);
+    gap: var(--space-2xs);
     min-width: 0;
+    padding-top: 0.2rem;
   }
 
   .contact-item__label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.08em;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
-    color: var(--color-ink-muted);
+    color: var(--color-accent);
   }
 
   .contact-item__content a,
@@ -109,6 +96,12 @@ import { contact } from '../../content/site';
     color: var(--color-ink);
     text-decoration: none;
     word-break: break-word;
+    font-size: 1.0625rem;
+    line-height: 1.45;
+  }
+
+  .contact-item__content a {
+    transition: color var(--duration) var(--ease-out);
   }
 
   .contact-item__content a:hover {
@@ -116,7 +109,7 @@ import { contact } from '../../content/site';
   }
 
   .contact-item__detail {
-    font-size: 0.9375rem;
-    color: var(--color-ink-muted);
+    font-size: 0.9375rem !important;
+    color: var(--color-ink-muted) !important;
   }
 </style>

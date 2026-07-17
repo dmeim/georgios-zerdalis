@@ -3,6 +3,7 @@ import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import GalleryGrid from '../components/gallery/GalleryGrid.astro';
 import GalleryLightbox from '../components/gallery/GalleryLightbox.astro';
+import PageIntro from '../components/react/PageIntro';
 import type { GalleryManifest } from '../components/gallery/types';
 import { contact } from '../content/site';
 
@@ -50,16 +51,18 @@ const showMediaNote = isEmpty || isPartial;
   description="Performance and studio images of Georgios Zerdalis — timpanist and educator."
 >
   <section class="gallery-page">
-    <header class="gallery-page__header">
-      <h1>Gallery</h1>
-      <p class="gallery-page__lede">
-        Selected moments from the stage and studio.
-      </p>
-    </header>
+    <PageIntro
+      client:visible
+      title="Gallery"
+      lede="Selected moments from the stage and studio."
+    />
 
     {
       showMediaNote && (
         <aside class="gallery-page__note" aria-live="polite">
+          <p class="gallery-page__note-label">
+            {isEmpty ? 'In preparation' : 'Working archive'}
+          </p>
           {isEmpty ? (
             <p>
               The gallery is being prepared. High-quality images and video will
@@ -89,7 +92,10 @@ const showMediaNote = isEmpty || isPartial;
       isEmpty ? (
         <div class="gallery-page__empty">
           <div class="gallery-page__empty-frame" aria-hidden="true" />
-          <p>No images yet — check back shortly, or visit the Instagram profile above.</p>
+          <p>
+            No images yet — check back shortly, or visit the Instagram profile
+            above.
+          </p>
         </div>
       ) : (
         <GalleryGrid items={items} imageMap={imageMap} videoMap={videoMap} />
@@ -106,34 +112,50 @@ const showMediaNote = isEmpty || isPartial;
     gap: var(--space-xl);
   }
 
-  .gallery-page__header h1 {
-    margin-bottom: var(--space-sm);
-  }
-
-  .gallery-page__lede {
-    margin: 0;
-    color: var(--color-ink-muted);
-    font-size: 1.0625rem;
+  .gallery-page :global(.page-intro) {
+    margin-bottom: 0;
   }
 
   .gallery-page__note {
-    padding: var(--space-lg);
-    border-left: 2px solid var(--color-accent);
-    background: color-mix(in srgb, var(--color-ground-elevated) 70%, transparent);
+    display: grid;
+    gap: var(--space-sm);
+    padding: var(--space-lg) 0;
+    border-block: 1px solid var(--color-border);
+    max-width: 40rem;
+  }
+
+  .gallery-page__note-label {
+    margin: 0;
+    font-family: var(--font-sans);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--color-accent);
   }
 
   .gallery-page__note p {
-    margin: 0 0 var(--space-sm);
+    margin: 0;
     max-width: var(--measure);
     color: var(--color-ink-muted);
-  }
-
-  .gallery-page__note p:last-child {
-    margin-bottom: 0;
+    font-size: 0.9875rem;
+    line-height: 1.6;
   }
 
   .gallery-page__note-link {
     font-size: 0.9375rem;
+  }
+
+  .gallery-page__note-link a {
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+    transition:
+      color var(--duration) var(--ease-out),
+      border-color var(--duration) var(--ease-out);
+  }
+
+  .gallery-page__note-link a:hover {
+    border-color: var(--color-accent);
   }
 
   .gallery-page__empty {
@@ -146,20 +168,28 @@ const showMediaNote = isEmpty || isPartial;
 
   .gallery-page__empty p {
     margin: 0;
+    max-width: 32ch;
+    font-size: 0.9875rem;
+    line-height: 1.6;
   }
 
   .gallery-page__empty-frame {
-    width: min(100%, 18rem);
+    width: min(100%, 16rem);
     aspect-ratio: 4 / 3;
-    border: 1px dashed var(--color-border);
+    border: 1px solid var(--color-border);
     background:
       linear-gradient(
         135deg,
-        transparent 48%,
-        var(--color-border) 49%,
-        var(--color-border) 51%,
-        transparent 52%
+        transparent 47.5%,
+        color-mix(in srgb, var(--color-accent) 28%, transparent) 49%,
+        color-mix(in srgb, var(--color-accent) 28%, transparent) 51%,
+        transparent 52.5%
       ),
-      color-mix(in srgb, var(--color-ground-elevated) 80%, transparent);
+      radial-gradient(
+        ellipse at 30% 20%,
+        var(--color-spot),
+        transparent 55%
+      ),
+      var(--color-ground-elevated);
   }
 </style>

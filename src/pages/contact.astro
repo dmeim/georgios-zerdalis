@@ -2,11 +2,20 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import ContactInfo from '../components/contact/ContactInfo.astro';
 import ContactForm from '../components/contact/ContactForm.astro';
-import { meta } from '../content/site';
+import PageIntro from '../components/react/PageIntro';
+import { contact, meta } from '../content/site';
 ---
 
 <BaseLayout title="Contact" description={meta.description}>
   <section class="contact-page" aria-labelledby="contact-heading">
+    <PageIntro
+      client:visible
+      title="Let's Connect"
+      lede={contact.intro}
+      titleId="contact-heading"
+      className="contact-page__intro"
+    />
+
     <div class="contact-grid">
       <ContactInfo />
       <ContactForm />
@@ -15,17 +24,31 @@ import { meta } from '../content/site';
 </BaseLayout>
 
 <style>
+  .contact-page {
+    display: grid;
+    gap: var(--space-2xl);
+  }
+
+  .contact-page :global(.page-intro) {
+    margin-bottom: 0;
+    max-width: 28rem;
+  }
+
   .contact-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: var(--space-2xl);
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: var(--space-3xl);
     align-items: start;
   }
 
   @media (max-width: 800px) {
+    .contact-page {
+      gap: var(--space-xl);
+    }
+
     .contact-grid {
       grid-template-columns: 1fr;
-      gap: var(--space-xl);
+      gap: var(--space-2xl);
     }
   }
 </style>

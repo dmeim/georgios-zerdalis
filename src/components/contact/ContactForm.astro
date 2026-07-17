@@ -187,12 +187,21 @@ const { fields, submitLabel } = contact.form;
 <style>
   .contact-form-wrapper {
     width: 100%;
+    padding: var(--space-xl);
+    border: 1px solid var(--color-border);
+    background:
+      radial-gradient(
+        ellipse 80% 60% at 0% 0%,
+        var(--color-spot),
+        transparent 55%
+      ),
+      color-mix(in srgb, var(--color-ground-elevated) 88%, transparent);
   }
 
   .contact-form {
     display: flex;
     flex-direction: column;
-    gap: var(--space-md);
+    gap: var(--space-lg);
   }
 
   .form-group {
@@ -202,37 +211,47 @@ const { fields, submitLabel } = contact.form;
   }
 
   .form-group label {
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.06em;
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-ink-muted);
+    color: var(--color-accent);
   }
 
   .form-group input,
   .form-group textarea {
     width: 100%;
-    padding: 0.75rem 0.875rem;
-    border: 1px solid var(--color-border);
+    padding: 0.85rem 0;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
     border-radius: 0;
-    background: var(--color-ground-elevated);
+    background: transparent;
     color: var(--color-ink);
     font-family: var(--font-sans);
     font-size: 1rem;
     line-height: 1.5;
-    transition: border-color var(--duration) var(--ease-out);
+    transition:
+      border-color var(--duration) var(--ease-out),
+      background-color var(--duration) var(--ease-out);
   }
 
   .form-group input::placeholder,
   .form-group textarea::placeholder {
     color: var(--color-ink-muted);
-    opacity: 0.7;
+    opacity: 0.65;
+  }
+
+  .form-group input:hover,
+  .form-group textarea:hover {
+    border-bottom-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
   }
 
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;
-    border-color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-spot) 35%, transparent);
+    padding-inline: 0.5rem;
   }
 
   .form-group textarea {
@@ -243,19 +262,20 @@ const { fields, submitLabel } = contact.form;
   .btn-primary {
     align-self: flex-start;
     margin-top: var(--space-sm);
-    padding: 0.85rem 1.75rem;
+    padding: 0.9rem 1.85rem;
     border: 1px solid var(--color-accent);
     background: var(--color-accent);
     color: var(--color-ground);
     font-family: var(--font-sans);
-    font-size: 0.9375rem;
+    font-size: 0.8125rem;
     font-weight: 600;
-    letter-spacing: 0.04em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     cursor: pointer;
     transition:
       background var(--duration) var(--ease-out),
       color var(--duration) var(--ease-out),
+      border-color var(--duration) var(--ease-out),
       opacity var(--duration) var(--ease-out);
   }
 
@@ -271,10 +291,11 @@ const { fields, submitLabel } = contact.form;
 
   .form-status {
     margin: 0;
-    padding: 0.75rem 0.875rem;
-    border: 1px solid var(--color-border);
+    padding: 0.85rem 0;
+    border: none;
+    border-top: 1px solid var(--color-border);
     font-size: 0.9375rem;
-    line-height: 1.45;
+    line-height: 1.5;
     max-width: none;
   }
 
@@ -283,13 +304,19 @@ const { fields, submitLabel } = contact.form;
   }
 
   .form-status--success {
-    border-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+    border-top-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
     color: var(--color-ink);
   }
 
   .form-status--error,
   .form-status--disconnected {
-    border-color: color-mix(in srgb, #c45c4a 45%, var(--color-border));
+    border-top-color: color-mix(in srgb, #c45c4a 45%, var(--color-border));
     color: var(--color-ink);
+  }
+
+  @media (max-width: 800px) {
+    .contact-form-wrapper {
+      padding: var(--space-lg);
+    }
   }
 </style>
