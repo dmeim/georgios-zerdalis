@@ -63,6 +63,11 @@ export type MentorQuote = {
   attribution?: string;
 };
 
+export type PedagogyItem = {
+  title: string;
+  body: string;
+};
+
 export type Endorsement = {
   label: string;
   url: string;
@@ -89,7 +94,7 @@ export type SiteContent = {
   education: EducationItem[];
   shortBio: string;
   mentorQuote: MentorQuote;
-  pedagogy: string[];
+  pedagogy: PedagogyItem[];
   endorsement: Endorsement;
   contact: ContactContent;
   venues: VenueHighlight[];
@@ -188,12 +193,30 @@ export const mentorQuote: MentorQuote = {
   attribution: "Georgios Zerdalis",
 };
 
-export const pedagogy: string[] = [
-  "Artistic leadership and ensemble direction",
-  "Emphasis on sound production through posture and awareness",
-  "Promotion of independence, mindfulness, and responsibility",
-  "Commitment to instrument care and organized workspaces",
-  "Cross-cultural communication and inclusive collaboration",
+const pedagogyPlaceholder =
+  "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.";
+
+export const pedagogy: PedagogyItem[] = [
+  {
+    title: "Artistic leadership and ensemble direction",
+    body: pedagogyPlaceholder,
+  },
+  {
+    title: "Emphasis on sound production through posture and awareness",
+    body: pedagogyPlaceholder,
+  },
+  {
+    title: "Promotion of independence, mindfulness, and responsibility",
+    body: pedagogyPlaceholder,
+  },
+  {
+    title: "Commitment to instrument care and organized workspaces",
+    body: pedagogyPlaceholder,
+  },
+  {
+    title: "Cross-cultural communication and inclusive collaboration",
+    body: pedagogyPlaceholder,
+  },
 ];
 
 export const endorsement: Endorsement = {
