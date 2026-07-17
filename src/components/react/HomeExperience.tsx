@@ -31,6 +31,8 @@ export type HomeExperienceProps = {
     location?: string;
     dates: string;
     bullets?: string[];
+    image: string;
+    url: string;
   }[];
   bio: string;
   quote: { text: string; attribution?: string };
@@ -429,9 +431,16 @@ function AppointmentsSection({
                     </span>
                   ) : null}
                 </div>
-                <div>
+                <div className="he-appointments__body">
                   <h3 className="he-appointments__role">{item.title}</h3>
-                  <p className="he-appointments__org">{item.organization}</p>
+                  <a
+                    className="he-appointments__org"
+                    href={item.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    {item.organization}
+                  </a>
                   {item.bullets && item.bullets.length > 0 ? (
                     <ul className="he-appointments__bullets">
                       {item.bullets.map((bullet) => (
@@ -440,6 +449,17 @@ function AppointmentsSection({
                     </ul>
                   ) : null}
                 </div>
+                <figure className="he-appointments__media">
+                  <img
+                    className="he-appointments__photo"
+                    src={item.image}
+                    alt=""
+                    width={480}
+                    height={300}
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </figure>
               </Reveal>
             </li>
           ))}

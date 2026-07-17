@@ -15,6 +15,8 @@ export type Appointment = {
   location?: string;
   dates: string;
   bullets?: string[];
+  image: string;
+  url: string;
 };
 
 export type EducationItem = {
@@ -122,6 +124,8 @@ export const appointments: Appointment[] = [
     organization: "Hochschule für Musik Detmold",
     location: "Germany",
     dates: "2023–Present",
+    image: "/images/Hochschule-für-Musik-Detmold.jpg",
+    url: "https://www.hfm-detmold.de/",
     bullets: [
       "Private lessons, group studio classes, and ensemble coaching",
       "Lead the HfM Percussion Ensemble",
@@ -133,6 +137,8 @@ export const appointments: Appointment[] = [
     organization: "Detmold Chamber Orchestra (DKO)",
     location: "Germany",
     dates: "2023–Present",
+    image: "/images/Detmold-Chamber-Orchestra-(DKO).jpg",
+    url: "https://www.detmolder-kammerorchester.de/",
     bullets: [
       "Featured soloist and principal timpanist on national tours",
       "Collaborate with conductors and composers on new works and recordings",
@@ -143,6 +149,8 @@ export const appointments: Appointment[] = [
     organization: "Athens Philharmonia Orchestra",
     location: "Greece",
     dates: "2022–2023",
+    image: "/images/Athens-Philharmonia-Orchestra.jpg",
+    url: "https://www.apho.gr/home/en",
     bullets: [
       "Won national audition to serve as principal timpanist",
       "Performed in major Greek venues and on international tours",

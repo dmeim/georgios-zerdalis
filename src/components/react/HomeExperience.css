@@ -402,7 +402,8 @@
 .he-appointments__grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: var(--space-sm);
+  gap: var(--space-md);
+  align-items: start;
 }
 
 .he-appointments__meta {
@@ -424,6 +425,10 @@
   color: var(--color-ink-muted);
 }
 
+.he-appointments__body {
+  min-width: 0;
+}
+
 .he-appointments__role {
   margin: 0 0 var(--space-2xs);
   font-family: var(--font-display);
@@ -434,9 +439,21 @@
 }
 
 .he-appointments__org {
+  display: inline-block;
   margin: 0 0 var(--space-md);
   max-width: none;
   color: var(--color-ink-muted);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition:
+    color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.he-appointments__org:hover,
+.he-appointments__org:focus-visible {
+  color: var(--color-ink);
+  border-bottom-color: var(--color-accent);
 }
 
 .he-appointments__bullets {
@@ -467,9 +484,24 @@
   background: var(--color-accent);
 }
 
+.he-appointments__media {
+  margin: 0;
+  width: 100%;
+  overflow: hidden;
+  background: var(--color-surface, #ece8e1);
+}
+
+.he-appointments__photo {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 8 / 5;
+  object-fit: cover;
+}
+
 @media (min-width: 900px) {
   .he-appointments__grid {
-    grid-template-columns: minmax(8rem, 12rem) 1fr;
+    grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr) minmax(14rem, 22rem);
     gap: var(--space-lg) var(--space-2xl);
   }
 
@@ -478,6 +510,10 @@
     align-items: flex-start;
     gap: var(--space-xs);
     padding-top: 0.25rem;
+  }
+
+  .he-appointments__media {
+    justify-self: end;
   }
 }
 
