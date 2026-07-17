@@ -1,0 +1,145 @@
+---
+import { appointments } from '../../content/site';
+---
+
+<section class="appointments reveal" aria-labelledby="appointments-title">
+  <header class="appointments__header">
+    <p class="appointments__eyebrow">Selected appointments</p>
+    <h2 id="appointments-title" class="appointments__title">Where the work lives</h2>
+  </header>
+
+  <ol class="appointments__list">
+    {
+      appointments.map((item) => (
+        <li class="appointments__item">
+          <div class="appointments__meta">
+            <span class="appointments__dates">{item.dates}</span>
+            {item.location && <span class="appointments__place">{item.location}</span>}
+          </div>
+          <div class="appointments__body">
+            <h3 class="appointments__role">{item.title}</h3>
+            <p class="appointments__org">{item.organization}</p>
+            {item.bullets && item.bullets.length > 0 && (
+              <ul class="appointments__bullets">
+                {item.bullets.map((bullet) => (
+                  <li>{bullet}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</section>
+
+<style>
+  .appointments {
+    padding-block: var(--space-3xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .appointments__header {
+    margin-bottom: var(--space-2xl);
+  }
+
+  .appointments__eyebrow {
+    margin: 0 0 var(--space-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .appointments__title {
+    margin: 0;
+    max-width: 16ch;
+  }
+
+  .appointments__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .appointments__item {
+    display: grid;
+    grid-template-columns: minmax(7rem, 11rem) 1fr;
+    gap: var(--space-lg) var(--space-xl);
+    padding-block: var(--space-xl);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .appointments__item:last-child {
+    padding-bottom: 0;
+  }
+
+  .appointments__meta {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    padding-top: 0.2rem;
+  }
+
+  .appointments__dates {
+    font-size: 0.875rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    color: var(--color-ink);
+  }
+
+  .appointments__place {
+    font-size: 0.875rem;
+    color: var(--color-ink-muted);
+  }
+
+  .appointments__role {
+    margin: 0 0 var(--space-xs);
+    font-size: clamp(1.25rem, 2.2vw, 1.5rem);
+  }
+
+  .appointments__org {
+    margin: 0 0 var(--space-md);
+    max-width: none;
+    color: var(--color-ink-muted);
+  }
+
+  .appointments__bullets {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+    max-width: 52ch;
+  }
+
+  .appointments__bullets li {
+    position: relative;
+    padding-left: 1rem;
+    color: var(--color-ink-muted);
+    font-size: 0.9875rem;
+    line-height: 1.55;
+  }
+
+  .appointments__bullets li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.65em;
+    width: 0.35rem;
+    height: 1px;
+    background: var(--color-accent);
+  }
+
+  @media (max-width: 720px) {
+    .appointments__item {
+      grid-template-columns: 1fr;
+      gap: var(--space-sm);
+    }
+  }
+</style>

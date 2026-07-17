@@ -1,0 +1,122 @@
+---
+/**
+ * Contact details above the form — sourced from `src/content/site.ts`.
+ */
+import { Mail, MapPin, AtSign } from '@lucide/astro';
+import { contact } from '../../content/site';
+---
+
+<div class="contact-info">
+  <h1 id="contact-heading">Let's <span class="text-accent">Connect</span></h1>
+  <p class="contact-info__intro">{contact.intro}</p>
+
+  <ul class="contact-details" role="list">
+    <li class="contact-item">
+      <span class="contact-item__icon" aria-hidden="true">
+        <Mail size={20} stroke-width={1.75} />
+      </span>
+      <div class="contact-item__content">
+        <span class="contact-item__label">Email</span>
+        <a href={`mailto:${contact.email}`}>{contact.email}</a>
+      </div>
+    </li>
+    <li class="contact-item">
+      <span class="contact-item__icon" aria-hidden="true">
+        <MapPin size={20} stroke-width={1.75} />
+      </span>
+      <div class="contact-item__content">
+        <span class="contact-item__label">Location</span>
+        <p>{contact.location}</p>
+        <p class="contact-item__detail">{contact.locationDetail}</p>
+      </div>
+    </li>
+    <li class="contact-item">
+      <span class="contact-item__icon" aria-hidden="true">
+        <AtSign size={20} stroke-width={1.75} />
+      </span>
+      <div class="contact-item__content">
+        <span class="contact-item__label">Instagram</span>
+        <a
+          href={contact.instagramUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {contact.instagramHandle}
+        </a>
+      </div>
+    </li>
+  </ul>
+</div>
+
+<style>
+  .contact-info h1 {
+    margin-bottom: var(--space-md);
+  }
+
+  .text-accent {
+    color: var(--color-accent);
+  }
+
+  .contact-info__intro {
+    color: var(--color-ink-muted);
+    margin-bottom: var(--space-xl);
+  }
+
+  .contact-details {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+  }
+
+  .contact-item {
+    display: flex;
+    gap: var(--space-md);
+    align-items: flex-start;
+  }
+
+  .contact-item__icon {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    border: 1px solid var(--color-border);
+    color: var(--color-accent);
+  }
+
+  .contact-item__content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xs);
+    min-width: 0;
+  }
+
+  .contact-item__label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+  }
+
+  .contact-item__content a,
+  .contact-item__content p {
+    margin: 0;
+    color: var(--color-ink);
+    text-decoration: none;
+    word-break: break-word;
+  }
+
+  .contact-item__content a:hover {
+    color: var(--color-accent);
+  }
+
+  .contact-item__detail {
+    font-size: 0.9375rem;
+    color: var(--color-ink-muted);
+  }
+</style>

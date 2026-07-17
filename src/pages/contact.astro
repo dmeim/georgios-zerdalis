@@ -1,0 +1,31 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ContactInfo from '../components/contact/ContactInfo.astro';
+import ContactForm from '../components/contact/ContactForm.astro';
+import { meta } from '../content/site';
+---
+
+<BaseLayout title="Contact" description={meta.description}>
+  <section class="contact-page" aria-labelledby="contact-heading">
+    <div class="contact-grid">
+      <ContactInfo />
+      <ContactForm />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-2xl);
+    align-items: start;
+  }
+
+  @media (max-width: 800px) {
+    .contact-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+    }
+  }
+</style>

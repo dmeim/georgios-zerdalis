@@ -1,0 +1,37 @@
+---
+import { shortBio } from '../../content/site';
+---
+
+<section class="bio reveal" aria-labelledby="bio-title">
+  <p class="bio__eyebrow">About</p>
+  <h2 id="bio-title" class="bio__title">A short biography</h2>
+  <p class="bio__text">{shortBio}</p>
+</section>
+
+<style>
+  .bio {
+    padding-block: var(--space-3xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .bio__eyebrow {
+    margin: 0 0 var(--space-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .bio__title {
+    margin: 0 0 var(--space-xl);
+  }
+
+  .bio__text {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--color-ink-muted);
+    font-size: 1.0625rem;
+    line-height: 1.75;
+  }
+</style>

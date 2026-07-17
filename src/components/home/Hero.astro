@@ -1,0 +1,203 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../../assets/portrait.jpeg';
+import { hero } from '../../content/site';
+---
+
+<section class="hero" aria-label="Introduction">
+  <div class="hero__media" aria-hidden="true">
+    <Image
+      src={portrait}
+      alt=""
+      class="hero__image"
+      widths={[720, 1080, 1440, 1920]}
+      sizes="100vw"
+      quality={82}
+      loading="eager"
+      fetchpriority="high"
+    />
+    <div class="hero__veil"></div>
+  </div>
+
+  <div class="hero__content">
+    <h1 class="hero__name">{hero.name}</h1>
+    <p class="hero__role">{hero.role}</p>
+    <p class="hero__sentence">{hero.sentence}</p>
+    <div class="hero__ctas">
+      {
+        hero.ctas.map((cta, i) => (
+          <a
+            href={cta.href}
+            class:list={['hero__cta', i === 0 ? 'hero__cta--primary' : 'hero__cta--ghost']}
+          >
+            {cta.label}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    isolation: isolate;
+    display: grid;
+    align-items: end;
+    min-height: calc(100dvh - var(--header-height));
+    min-height: calc(100svh - var(--header-height));
+    color: #f3eee6;
+  }
+
+  .hero__media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    overflow: hidden;
+  }
+
+  .hero__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 18%;
+    transform: scale(1.02);
+    animation: hero-settle 1.6s var(--ease-out) both;
+  }
+
+  .hero__veil {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        180deg,
+        rgba(12, 11, 10, 0.35) 0%,
+        rgba(12, 11, 10, 0.2) 35%,
+        rgba(12, 11, 10, 0.78) 72%,
+        rgba(12, 11, 10, 0.94) 100%
+      ),
+      linear-gradient(
+        90deg,
+        rgba(12, 11, 10, 0.55) 0%,
+        rgba(12, 11, 10, 0.15) 55%,
+        rgba(12, 11, 10, 0.35) 100%
+      );
+  }
+
+  .hero__content {
+    position: relative;
+    z-index: 1;
+    width: min(100% - 2rem, var(--site-max));
+    margin-inline: auto;
+    padding-block: clamp(3rem, 10vh, 5.5rem) clamp(2.5rem, 8vh, 4.5rem);
+    animation: hero-rise 1s var(--ease-out) 0.15s both;
+  }
+
+  .hero__name {
+    margin: 0 0 var(--space-md);
+    max-width: 14ch;
+    font-family: var(--font-display);
+    font-size: clamp(3rem, 9vw, 5.75rem);
+    font-weight: 500;
+    line-height: 0.95;
+    letter-spacing: 0.01em;
+    color: #f3eee6;
+  }
+
+  .hero__role {
+    margin: 0 0 var(--space-lg);
+    max-width: 42ch;
+    font-size: clamp(1.05rem, 2vw, 1.25rem);
+    font-weight: 400;
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    color: rgba(243, 238, 230, 0.82);
+  }
+
+  .hero__sentence {
+    margin: 0 0 var(--space-xl);
+    max-width: 36ch;
+    font-size: 1.05rem;
+    line-height: 1.55;
+    color: rgba(243, 238, 230, 0.72);
+  }
+
+  .hero__ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-md);
+  }
+
+  .hero__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.7rem 1.35rem;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background-color var(--duration) var(--ease-out),
+      color var(--duration) var(--ease-out),
+      border-color var(--duration) var(--ease-out);
+  }
+
+  .hero__cta--primary {
+    background: var(--color-accent);
+    color: #0c0b0a;
+    border: 1px solid var(--color-accent);
+  }
+
+  .hero__cta--primary:hover {
+    background: #c4a06a;
+    border-color: #c4a06a;
+    color: #0c0b0a;
+  }
+
+  .hero__cta--ghost {
+    background: transparent;
+    color: #f3eee6;
+    border: 1px solid rgba(243, 238, 230, 0.45);
+  }
+
+  .hero__cta--ghost:hover {
+    border-color: #f3eee6;
+    color: #f3eee6;
+    background: rgba(243, 238, 230, 0.08);
+  }
+
+  @keyframes hero-settle {
+    from {
+      transform: scale(1.06);
+      opacity: 0.7;
+    }
+    to {
+      transform: scale(1.02);
+      opacity: 1;
+    }
+  }
+
+  @keyframes hero-rise {
+    from {
+      opacity: 0;
+      transform: translateY(1.25rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero__name {
+      max-width: none;
+    }
+
+    .hero__sentence {
+      max-width: 42ch;
+    }
+  }
+</style>

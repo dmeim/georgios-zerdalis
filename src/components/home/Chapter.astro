@@ -1,0 +1,38 @@
+---
+import { currentChapter } from '../../content/site';
+---
+
+<section class="chapter reveal" aria-labelledby="chapter-title">
+  <p class="chapter__eyebrow">{currentChapter.eyebrow}</p>
+  <h2 id="chapter-title" class="chapter__title">{currentChapter.title}</h2>
+  <p class="chapter__body">{currentChapter.body}</p>
+</section>
+
+<style>
+  .chapter {
+    padding-block: var(--space-3xl);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .chapter__eyebrow {
+    margin: 0 0 var(--space-md);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+  }
+
+  .chapter__title {
+    margin: 0 0 var(--space-lg);
+    max-width: 22ch;
+  }
+
+  .chapter__body {
+    margin: 0;
+    max-width: 58ch;
+    color: var(--color-ink-muted);
+    font-size: 1.0625rem;
+    line-height: 1.7;
+  }
+</style>

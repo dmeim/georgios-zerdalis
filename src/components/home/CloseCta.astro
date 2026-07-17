@@ -1,0 +1,61 @@
+---
+---
+
+<section class="close-cta reveal" aria-labelledby="close-cta-title">
+  <h2 id="close-cta-title" class="close-cta__title">Begin a conversation</h2>
+  <p class="close-cta__body">
+    For collaborations, lessons, or inquiries — Georgios welcomes your message.
+  </p>
+  <a class="close-cta__button" href="/contact">Get in Touch</a>
+</section>
+
+<style>
+  .close-cta {
+    padding-block: var(--space-3xl);
+    text-align: center;
+  }
+
+  .close-cta__title {
+    margin: 0 0 var(--space-md);
+  }
+
+  .close-cta__body {
+    margin: 0 auto var(--space-xl);
+    max-width: 36ch;
+    color: var(--color-ink-muted);
+  }
+
+  .close-cta__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.75rem;
+    padding: 0.7rem 1.5rem;
+    background: var(--color-accent);
+    border: 1px solid var(--color-accent);
+    color: var(--color-ground);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition:
+      background-color var(--duration) var(--ease-out),
+      border-color var(--duration) var(--ease-out),
+      color var(--duration) var(--ease-out);
+  }
+
+  .close-cta__button:hover {
+    background: var(--color-accent-soft);
+    border-color: var(--color-accent-soft);
+    color: var(--color-ground);
+  }
+
+  [data-theme='light'] .close-cta__button {
+    color: #f3eee6;
+  }
+
+  [data-theme='light'] .close-cta__button:hover {
+    color: #f3eee6;
+  }
+</style>

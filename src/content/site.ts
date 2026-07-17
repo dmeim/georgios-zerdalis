@@ -1,0 +1,260 @@
+/**
+ * Site content for Georgios Zerdalis.
+ * Primary source: https://groverpro.com/artist/georgios-zerdalis
+ * Secondary: local CV PDF + legacy src/main.js (email, venues, form labels).
+ */
+
+export type Cta = {
+  label: string;
+  href: string;
+};
+
+export type Appointment = {
+  title: string;
+  organization: string;
+  location?: string;
+  dates: string;
+  bullets?: string[];
+};
+
+export type EducationItem = {
+  degree: string;
+  institution: string;
+  location?: string;
+  year: string;
+};
+
+export type VenueHighlight = {
+  name: string;
+  place: string;
+};
+
+export type FormField = {
+  name: "name" | "email" | "subject" | "message";
+  label: string;
+  type: "text" | "email" | "textarea";
+  placeholder: string;
+  required: boolean;
+};
+
+export type SiteMeta = {
+  title: string;
+  description: string;
+};
+
+export type HeroContent = {
+  name: string;
+  role: string;
+  sentence: string;
+  ctas: Cta[];
+};
+
+export type CurrentChapter = {
+  eyebrow: string;
+  title: string;
+  body: string;
+};
+
+export type MentorQuote = {
+  text: string;
+  attribution?: string;
+};
+
+export type Endorsement = {
+  label: string;
+  url: string;
+};
+
+export type ContactContent = {
+  email: string;
+  location: string;
+  locationDetail: string;
+  instagramUrl: string;
+  instagramHandle: string;
+  intro: string;
+  form: {
+    submitLabel: string;
+    fields: FormField[];
+  };
+};
+
+export type SiteContent = {
+  meta: SiteMeta;
+  hero: HeroContent;
+  currentChapter: CurrentChapter;
+  appointments: Appointment[];
+  education: EducationItem[];
+  shortBio: string;
+  mentorQuote: MentorQuote;
+  pedagogy: string[];
+  endorsement: Endorsement;
+  contact: ContactContent;
+  venues: VenueHighlight[];
+};
+
+export const meta: SiteMeta = {
+  title: "Georgios Zerdalis | Timpanist & Educator",
+  description:
+    "Georgios Zerdalis — timpanist, percussionist, and educator. Doctoral Candidate (DMA) at the University of Miami Frost School of Music; formerly timpani lecturer at Hochschule für Musik Detmold and solo guest timpanist of the Detmold Chamber Orchestra.",
+};
+
+export const hero: HeroContent = {
+  name: "Georgios Zerdalis",
+  role: "Timpanist & Educator · Doctoral Candidate, Frost School of Music",
+  sentence:
+    "Based in the United States, Georgios combines technical excellence with a mindful, student-centered approach as a performer and educator.",
+  ctas: [
+    { label: "Get in Touch", href: "/contact" },
+    { label: "View Gallery", href: "/gallery" },
+  ],
+};
+
+export const currentChapter: CurrentChapter = {
+  eyebrow: "Current chapter",
+  title: "Doctor of Musical Arts — Frost School of Music",
+  body: "Based in the United States, Georgios Zerdalis is pursuing his Doctor of Musical Arts (DMA) at the University of Miami’s Frost School of Music (expected 2029). Prior to Miami, he served as timpani and percussion lecturer at the Hochschule für Musik Detmold and as solo guest timpanist and percussionist of the Detmold Chamber Orchestra (DKO).",
+};
+
+export const appointments: Appointment[] = [
+  {
+    title: "Lecturer of Timpani & Percussion",
+    organization: "Hochschule für Musik Detmold",
+    location: "Germany",
+    dates: "2023–Present",
+    bullets: [
+      "Private lessons, group studio classes, and ensemble coaching",
+      "Lead the HfM Percussion Ensemble",
+      "Integrate mindfulness and posture-based awareness into percussion teaching",
+    ],
+  },
+  {
+    title: "Solo Guest Performer",
+    organization: "Detmold Chamber Orchestra (DKO)",
+    location: "Germany",
+    dates: "2023–Present",
+    bullets: [
+      "Featured soloist and principal timpanist on national tours",
+      "Collaborate with conductors and composers on new works and recordings",
+    ],
+  },
+  {
+    title: "Principal Timpanist",
+    organization: "Athens Philharmonia Orchestra",
+    location: "Greece",
+    dates: "2022–2023",
+    bullets: [
+      "Won national audition to serve as principal timpanist",
+      "Performed in major Greek venues and on international tours",
+    ],
+  },
+];
+
+export const education: EducationItem[] = [
+  {
+    degree: "Doctor of Musical Arts (DMA)",
+    institution: "University of Miami, Frost School of Music",
+    location: "USA",
+    year: "2029",
+  },
+  {
+    degree: "Master Degree",
+    institution: "Hochschule für Musik Detmold, OrchesterZentrum | NRW",
+    location: "Germany",
+    year: "2026",
+  },
+  {
+    degree: "Bachelor & Master Degree",
+    institution: "Ionian University, Department of Music, Corfu",
+    location: "Greece",
+    year: "2020",
+  },
+];
+
+/** ~175 words — adapted from Grover Pro + CV; always Georgios on-site. */
+export const shortBio = `Based in the United States, timpanist and percussionist Georgios Zerdalis is pursuing his Doctor of Musical Arts (DMA) at the University of Miami’s Frost School of Music, with an expected completion in 2029. Prior to his move to Miami, Georgios served as the timpani and percussion lecturer at the Hochschule für Musik Detmold and as the solo guest timpanist and percussionist of the Detmold Chamber Orchestra. An internationally active performer and educator who has presented masterclasses across Europe and the U.S., including at SUNY Fredonia, he combines technical excellence with a mindful, student-centered approach in all his artistic endeavors. Known for precision, musical depth, and leadership in ensemble work, Georgios brings a distinctive blend of artistry and pedagogy that fosters growth both on and off the stage. His path also includes principal timpani with the Athens Philharmonia Orchestra and formative study with mentors such as Professor Peter Prommel and Marinos Tranoudakis, Principal Timpanist of the Greek National Opera.`;
+
+/** Full quote from Grover Pro artist page (mentor / pedagogy statement). */
+export const mentorQuote: MentorQuote = {
+  text: "My commitment to the fine details of craftsmanship and sound is something I owe directly to my mentors. My standards of discipline and vital orchestral knowledge were shaped by my lifelong mentor, Professor Peter Prommel, at the Hochschule für Musik Detmold completely transformed my worldview—teaching me to stay endlessly curious, continuously evolve, and integrate a heavy focus on psychology and mindfulness into my own pedagogy. And of course, my teacher Mr. Marinos Tranoudakis (Principal Timpanist of the Greek National Opera), who continues to serve as a steady, guiding hand whenever I need it.",
+  attribution: "Georgios Zerdalis",
+};
+
+export const pedagogy: string[] = [
+  "Artistic leadership and ensemble direction",
+  "Emphasis on sound production through posture and awareness",
+  "Promotion of independence, mindfulness, and responsibility",
+  "Commitment to instrument care and organized workspaces",
+  "Cross-cultural communication and inclusive collaboration",
+];
+
+export const endorsement: Endorsement = {
+  label: "Grover Pro Percussion® Artist",
+  url: "https://groverpro.com/artist/georgios-zerdalis",
+};
+
+export const contact: ContactContent = {
+  email: "georgios.zerdalis@hotmail.com",
+  location: "Miami, Florida, USA",
+  locationDetail: "Based in the United States · Frost School of Music",
+  instagramUrl: "https://www.instagram.com/georgezerdalis/",
+  instagramHandle: "@georgezerdalis",
+  intro:
+    "Whether you're interested in collaboration, lessons, or just want to say hello — I'd love to hear from you.",
+  form: {
+    submitLabel: "Send Message",
+    fields: [
+      {
+        name: "name",
+        label: "Name",
+        type: "text",
+        placeholder: "Your name",
+        required: true,
+      },
+      {
+        name: "email",
+        label: "Email",
+        type: "email",
+        placeholder: "your@email.com",
+        required: true,
+      },
+      {
+        name: "subject",
+        label: "Subject",
+        type: "text",
+        placeholder: "What's this about?",
+        required: true,
+      },
+      {
+        name: "message",
+        label: "Message",
+        type: "textarea",
+        placeholder: "Your message...",
+        required: true,
+      },
+    ],
+  },
+};
+
+/** Performance highlights from CV / legacy site (no emoji icons). */
+export const venues: VenueHighlight[] = [
+  { name: "Carnegie Hall", place: "New York City, USA" },
+  { name: "Konzerthaus", place: "Berlin, Germany" },
+  { name: "Concertgebouw", place: "Amsterdam, Netherlands" },
+  { name: "Odeon of Herodes Atticus", place: "Athens, Greece" },
+];
+
+export const site: SiteContent = {
+  meta,
+  hero,
+  currentChapter,
+  appointments,
+  education,
+  shortBio,
+  mentorQuote,
+  pedagogy,
+  endorsement,
+  contact,
+  venues,
+};
+
+export default site;

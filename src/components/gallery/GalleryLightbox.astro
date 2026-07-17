@@ -1,0 +1,202 @@
+---
+/**
+ * Image lightbox (native <dialog>). Paired with GalleryGrid buttons
+ * that set data-gallery-src / data-gallery-alt / data-gallery-caption.
+ */
+---
+
+<dialog class="gallery-lightbox" id="gallery-lightbox" aria-label="Image preview">
+  <div class="gallery-lightbox__inner">
+    <button
+      type="button"
+      class="gallery-lightbox__close"
+      data-gallery-close
+      aria-label="Close preview"
+    >
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <figure class="gallery-lightbox__figure">
+      <img
+        class="gallery-lightbox__img"
+        data-gallery-img
+        alt=""
+        width="1600"
+        height="1200"
+      />
+      <figcaption class="gallery-lightbox__caption" data-gallery-caption hidden
+      ></figcaption>
+    </figure>
+  </div>
+</dialog>
+
+<script>
+  declare global {
+    interface Window {
+      __geozerdGalleryLightbox?: boolean;
+    }
+  }
+
+  function getDialog(): HTMLDialogElement | null {
+    const el = document.getElementById('gallery-lightbox');
+    return el instanceof HTMLDialogElement ? el : null;
+  }
+
+  function openFromTrigger(trigger: HTMLElement) {
+    const dialog = getDialog();
+    if (!dialog) return;
+
+    const img = dialog.querySelector('[data-gallery-img]');
+    const captionEl = dialog.querySelector('[data-gallery-caption]');
+    if (!(img instanceof HTMLImageElement)) return;
+
+    const src = trigger.getAttribute('data-gallery-src');
+    if (!src) return;
+
+    const alt = trigger.getAttribute('data-gallery-alt') || '';
+    const caption = trigger.getAttribute('data-gallery-caption') || '';
+
+    img.src = src;
+    img.alt = alt;
+
+    if (captionEl instanceof HTMLElement) {
+      if (caption) {
+        captionEl.textContent = caption;
+        captionEl.hidden = false;
+      } else {
+        captionEl.textContent = '';
+        captionEl.hidden = true;
+      }
+    }
+
+    if (!dialog.open) dialog.showModal();
+  }
+
+  function closeLightbox() {
+    const dialog = getDialog();
+    if (!dialog?.open) return;
+    dialog.close();
+  }
+
+  function resetLightbox() {
+    const dialog = getDialog();
+    if (!dialog) return;
+    const img = dialog.querySelector('[data-gallery-img]');
+    const captionEl = dialog.querySelector('[data-gallery-caption]');
+    if (img instanceof HTMLImageElement) {
+      img.removeAttribute('src');
+      img.alt = '';
+    }
+    if (captionEl instanceof HTMLElement) {
+      captionEl.textContent = '';
+      captionEl.hidden = true;
+    }
+  }
+
+  function bindDialogClose() {
+    const dialog = getDialog();
+    if (!dialog || dialog.dataset.closeBound === '1') return;
+    dialog.dataset.closeBound = '1';
+    dialog.addEventListener('click', (event) => {
+      if (event.target === dialog) closeLightbox();
+    });
+    dialog.addEventListener('close', resetLightbox);
+  }
+
+  function initGalleryLightbox() {
+    bindDialogClose();
+
+    if (window.__geozerdGalleryLightbox) return;
+    window.__geozerdGalleryLightbox = true;
+
+    document.addEventListener('click', (event) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const trigger = target.closest('[data-gallery-open]');
+      if (trigger instanceof HTMLElement) {
+        event.preventDefault();
+        openFromTrigger(trigger);
+        return;
+      }
+
+      if (target.closest('[data-gallery-close]')) {
+        closeLightbox();
+      }
+    });
+  }
+
+  initGalleryLightbox();
+  document.addEventListener('astro:page-load', initGalleryLightbox);
+</script>
+
+<style>
+  .gallery-lightbox {
+    padding: 0;
+    border: 0;
+    max-width: min(96vw, 72rem);
+    max-height: 92dvh;
+    width: auto;
+    background: transparent;
+    color: var(--color-ink);
+  }
+
+  .gallery-lightbox::backdrop {
+    background: var(--color-overlay);
+    backdrop-filter: blur(6px);
+  }
+
+  .gallery-lightbox__inner {
+    position: relative;
+    display: grid;
+    gap: var(--space-md);
+  }
+
+  .gallery-lightbox__close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 2;
+    width: 2.75rem;
+    height: 2.75rem;
+    display: grid;
+    place-items: center;
+    border: 1px solid var(--color-border);
+    background: color-mix(in srgb, var(--color-ground) 85%, transparent);
+    color: var(--color-ink);
+    font-size: 1.75rem;
+    line-height: 1;
+    cursor: pointer;
+    transition:
+      color var(--duration) var(--ease-out),
+      border-color var(--duration) var(--ease-out);
+  }
+
+  .gallery-lightbox__close:hover {
+    color: var(--color-accent);
+    border-color: var(--color-accent-soft);
+  }
+
+  .gallery-lightbox__figure {
+    margin: 0;
+    display: grid;
+    gap: var(--space-sm);
+    justify-items: center;
+  }
+
+  .gallery-lightbox__img {
+    max-width: min(96vw, 72rem);
+    max-height: 80dvh;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+  }
+
+  .gallery-lightbox__caption {
+    margin: 0;
+    padding-inline: 2.75rem;
+    text-align: center;
+    font-size: 0.9375rem;
+    color: var(--color-ink-muted);
+    max-width: 50ch;
+  }
+</style>

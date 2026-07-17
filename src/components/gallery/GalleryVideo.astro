@@ -1,0 +1,89 @@
+---
+import type { GalleryItem } from './types';
+
+interface Props {
+  item: GalleryItem;
+  /** Resolved local asset URL when available */
+  src?: string;
+  poster?: string;
+  class?: string;
+}
+
+const { item, src, poster, class: className } = Astro.props;
+
+const embedUrl = item.embedUrl?.trim() || undefined;
+const videoSrc = src || item.src?.trim() || undefined;
+const label = item.caption || item.alt || 'Video';
+---
+
+{
+  embedUrl ? (
+    <div class:list={['gallery-video', 'gallery-video--embed', className]}>
+      <iframe
+        class="gallery-video__frame"
+        src={embedUrl}
+        title={label}
+        loading="lazy"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+        referrerpolicy="strict-origin-when-cross-origin"
+      />
+    </div>
+  ) : videoSrc ? (
+    <div class:list={['gallery-video', className]}>
+      <video
+        class="gallery-video__el"
+        controls
+        playsinline
+        preload="metadata"
+        poster={poster}
+        aria-label={label}
+      >
+        <source src={videoSrc} />
+        Your browser does not support embedded video.
+      </video>
+    </div>
+  ) : (
+    <div class:list={['gallery-video', 'gallery-video--missing', className]} role="status">
+      <p>Video unavailable</p>
+    </div>
+  )
+}
+
+<style>
+  .gallery-video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    background: var(--color-ground-elevated);
+    overflow: hidden;
+  }
+
+  .gallery-video--embed {
+    aspect-ratio: 16 / 9;
+  }
+
+  .gallery-video__frame {
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
+
+  .gallery-video__el {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+  }
+
+  .gallery-video--missing {
+    display: grid;
+    place-items: center;
+    color: var(--color-ink-muted);
+    font-size: 0.9375rem;
+  }
+
+  .gallery-video--missing p {
+    margin: 0;
+  }
+</style>

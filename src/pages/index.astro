@@ -1,0 +1,70 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/home/Hero.astro';
+import Chapter from '../components/home/Chapter.astro';
+import Appointments from '../components/home/Appointments.astro';
+import Bio from '../components/home/Bio.astro';
+import Quote from '../components/home/Quote.astro';
+import Pedagogy from '../components/home/Pedagogy.astro';
+import Endorsement from '../components/home/Endorsement.astro';
+import CloseCta from '../components/home/CloseCta.astro';
+import { meta } from '../content/site';
+---
+
+<BaseLayout title="Georgios Zerdalis" description={meta.description}>
+  <div class="home">
+    <Hero />
+    <div class="home__flow">
+      <Chapter />
+      <Appointments />
+      <Bio />
+      <Quote />
+      <Pedagogy />
+      <Endorsement />
+      <CloseCta />
+    </div>
+  </div>
+</BaseLayout>
+
+<style is:global>
+  /* Full-bleed home composition inside constrained .site-main */
+  .site-main:has(> .home) {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-block: 0;
+  }
+
+  .home__flow {
+    width: min(100% - 2rem, var(--site-max));
+    margin-inline: auto;
+    padding-bottom: var(--space-2xl);
+  }
+
+  .reveal {
+    opacity: 0;
+    transform: translateY(1.1rem);
+    animation: home-reveal 0.85s var(--ease-out) both;
+    animation-timeline: view();
+    animation-range: entry 0% cover 28%;
+  }
+
+  @supports not (animation-timeline: view()) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      animation: home-reveal 0.8s var(--ease-out) both;
+    }
+  }
+
+  @keyframes home-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(1.1rem);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+</style>
