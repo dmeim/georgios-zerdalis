@@ -1,6 +1,5 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { Sun, Moon } from '@lucide/astro';
 import { contact } from '../content/site';
 import SiteEffects from '../components/react/SiteEffects';
 import '../styles/global.css';
@@ -54,17 +53,23 @@ const year = new Date().getFullYear();
       (function () {
         try {
           var stored = localStorage.getItem('theme');
+          var pref =
+            stored === 'light' || stored === 'system' || stored === 'dark'
+              ? stored
+              : 'system';
           var prefersDark = window.matchMedia(
             '(prefers-color-scheme: dark)',
           ).matches;
           var theme =
-            stored === 'light' || stored === 'dark'
-              ? stored
+            pref === 'light' || pref === 'dark'
+              ? pref
               : prefersDark
                 ? 'dark'
                 : 'light';
+          document.documentElement.setAttribute('data-theme-pref', pref);
           document.documentElement.setAttribute('data-theme', theme);
         } catch (_) {
+          document.documentElement.setAttribute('data-theme-pref', 'system');
           document.documentElement.setAttribute('data-theme', 'dark');
         }
       })();
@@ -90,15 +95,7 @@ const year = new Date().getFullYear();
         </nav>
 
         <div class="site-header__actions">
-          <button
-            type="button"
-            class="theme-toggle"
-            id="theme-toggle"
-            aria-label="Toggle color theme"
-          >
-            <Sun class="icon-sun" aria-hidden="true" />
-            <Moon class="icon-moon" aria-hidden="true" />
-          </button>
+          <div id="theme-toggle-host" class="theme-toggle-host"></div>
 
           <button
             type="button"
@@ -158,32 +155,12 @@ const year = new Date().getFullYear();
 
     <SiteEffects client:load />
 
+    <script>
+      import '../scripts/theme-toggle';
+    </script>
+
     <script is:inline>
       (function () {
-        function currentTheme() {
-          return (
-            document.documentElement.getAttribute('data-theme') || 'dark'
-          );
-        }
-
-        function setTheme(theme) {
-          document.documentElement.setAttribute('data-theme', theme);
-          try {
-            localStorage.setItem('theme', theme);
-          } catch (_) {}
-        }
-
-        function onToggle() {
-          setTheme(currentTheme() === 'dark' ? 'light' : 'dark');
-        }
-
-        function bindTheme() {
-          var btn = document.getElementById('theme-toggle');
-          if (!btn || btn.dataset.bound === '1') return;
-          btn.dataset.bound = '1';
-          btn.addEventListener('click', onToggle);
-        }
-
         function bindMobileNav() {
           var toggle = document.getElementById('nav-toggle');
           var drawer = document.getElementById('mobile-nav');
@@ -297,13 +274,8 @@ const year = new Date().getFullYear();
           }
         }
 
-        function bind() {
-          bindTheme();
-          bindMobileNav();
-        }
-
-        bind();
-        document.addEventListener('astro:page-load', bind);
+        bindMobileNav();
+        document.addEventListener('astro:page-load', bindMobileNav);
       })();
     </script>
   </body>
