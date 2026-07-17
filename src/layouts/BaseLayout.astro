@@ -1,6 +1,7 @@
 ---
 import { ClientRouter } from 'astro:transitions';
 import { Sun, Moon } from '@lucide/astro';
+import { contact } from '../content/site';
 import '../styles/global.css';
 
 interface Props {
@@ -17,8 +18,6 @@ const pageTitle =
   title === 'Georgios Zerdalis' ? title : `${title} · Georgios Zerdalis`;
 
 const pathname = Astro.url.pathname;
-const contactEmail =
-  import.meta.env.PUBLIC_CONTACT_EMAIL ?? 'hello@example.com';
 
 const nav = [
   { href: '/', label: 'Home' },
@@ -105,9 +104,9 @@ function isCurrent(href: string): boolean {
       <div class="site-footer__inner">
         <p>&copy; {new Date().getFullYear()} Georgios Zerdalis</p>
         <div class="site-footer__links">
-          <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+          <a href={`mailto:${contact.email}`}>{contact.email}</a>
           <a
-            href="https://www.instagram.com/georgezerdalis/"
+            href={contact.instagramUrl}
             target="_blank"
             rel="noopener noreferrer"
           >

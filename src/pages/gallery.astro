@@ -4,8 +4,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import GalleryGrid from '../components/gallery/GalleryGrid.astro';
 import GalleryLightbox from '../components/gallery/GalleryLightbox.astro';
 import type { GalleryManifest } from '../components/gallery/types';
-
-const INSTAGRAM_URL = 'https://www.instagram.com/georgezerdalis/';
+import { contact } from '../content/site';
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/gallery/**/*.{jpeg,jpg,png,webp,avif,gif}',
@@ -74,8 +73,12 @@ const showMediaNote = isEmpty || isPartial;
           )}
           <p class="gallery-page__note-link">
             Follow on{' '}
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer">
-              Instagram @georgezerdalis
+            <a
+              href={contact.instagramUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram {contact.instagramHandle}
             </a>
           </p>
         </aside>
