@@ -1,8 +1,10 @@
 import {
   AnimatePresence,
   motion,
+  useMotionValue,
   useReducedMotion,
   useScroll,
+  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -12,6 +14,7 @@ import {
   useState,
   useRef,
   type FocusEvent,
+  type PointerEvent as ReactPointerEvent,
 } from "react";
 import {
   Magnetic,
@@ -166,13 +169,36 @@ function HeroSection({
   reduced: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
+  const canHover = useCanHover();
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "14%"]);
-  const imageScale = useTransform(scrollYProgress, [0, 1], [1.08, 1.18]);
+  /* y drifts down; scale grows from top (CSS transform-origin) so the frame top stays pinned */
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
+  const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
+
+  const tiltX = useMotionValue(0);
+  const tiltY = useMotionValue(0);
+  const springTiltX = useSpring(tiltX, { stiffness: 160, damping: 22, mass: 0.4 });
+  const springTiltY = useSpring(tiltY, { stiffness: 160, damping: 22, mass: 0.4 });
+
+  function onFramePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
+    if (reduced || !canHover || !frameRef.current) return;
+    const rect = frameRef.current.getBoundingClientRect();
+    const px = (event.clientX - rect.left) / rect.width - 0.5;
+    const py = (event.clientY - rect.top) / rect.height - 0.5;
+    tiltY.set(px * 6);
+    tiltX.set(py * -5);
+  }
+
+  function onFramePointerLeave() {
+    tiltX.set(0);
+    tiltY.set(0);
+  }
 
   return (
     <section
@@ -180,123 +206,165 @@ function HeroSection({
       className="he-hero he__bleed"
       aria-label="Introduction"
     >
-      <div className="he-hero__media" aria-hidden="true">
-        <motion.div
-          className="he-hero__image-wrap"
-          style={
-            reduced
-              ? undefined
-              : {
-                  y: imageY,
-                  scale: imageScale,
-                }
-          }
-          initial={reduced ? false : { scale: 1.16, opacity: 0.55 }}
-          animate={reduced ? undefined : { scale: 1.08, opacity: 1 }}
-          transition={{ duration: 1.55, ease: EASE }}
-        >
-          <img
-            className="he-hero__image"
-            src={portraitSrc}
-            width={portraitWidth}
-            height={portraitHeight}
-            alt=""
-            decoding="async"
-            fetchPriority="high"
-          />
-        </motion.div>
-        <div className="he-hero__veil" />
-      </div>
-
-      <div className="he-hero__content">
-        <motion.div
-          initial={reduced ? false : "hidden"}
-          animate={reduced ? undefined : "visible"}
-          variants={{
-            hidden: {},
-            visible: {
-              transition: { staggerChildren: 0.12, delayChildren: 0.28 },
-            },
-          }}
-        >
+      <div className="he-hero__layout">
+        <div className="he-hero__content">
           <motion.div
+            initial={reduced ? false : "hidden"}
+            animate={reduced ? undefined : "visible"}
             variants={{
-              hidden: { opacity: 0, y: 28 },
+              hidden: {},
               visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.85, ease: EASE },
+                transition: { staggerChildren: 0.11, delayChildren: 0.18 },
               },
             }}
           >
-            <TextReveal
-              text={hero.name}
-              as="h1"
-              className="he-hero__name"
-              delay={0.05}
-            />
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 32 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.9, ease: EASE },
+                },
+              }}
+            >
+              <TextReveal
+                text={hero.name}
+                as="h1"
+                className="he-hero__name"
+                delay={0.02}
+              />
+            </motion.div>
+
+            <motion.p
+              className="he-hero__role"
+              variants={{
+                hidden: { opacity: 0, y: 22 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: EASE },
+                },
+              }}
+            >
+              {hero.role}
+            </motion.p>
+
+            <motion.p
+              className="he-hero__sentence"
+              variants={{
+                hidden: { opacity: 0, y: 22 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.8, ease: EASE },
+                },
+              }}
+            >
+              {hero.sentence}
+            </motion.p>
+
+            <motion.div
+              className="he-hero__ctas"
+              variants={{
+                hidden: { opacity: 0, y: 18 },
+                visible: {
+                  opacity: 1,
+                  y: 0,
+                  transition: { duration: 0.75, ease: EASE },
+                },
+              }}
+            >
+              {hero.ctas.map((cta, i) => (
+                <Magnetic key={cta.href} strength={0.22}>
+                  <a
+                    href={cta.href}
+                    className={
+                      i === 0 ? "btn btn--primary" : "btn btn--ghost"
+                    }
+                  >
+                    {cta.label}
+                  </a>
+                </Magnetic>
+              ))}
+            </motion.div>
           </motion.div>
+        </div>
 
-          <motion.p
-            className="he-hero__role"
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.75, ease: EASE },
-              },
-            }}
-          >
-            {hero.role}
-          </motion.p>
-
-          <motion.p
-            className="he-hero__sentence"
-            variants={{
-              hidden: { opacity: 0, y: 20 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.75, ease: EASE },
-              },
-            }}
-          >
-            {hero.sentence}
-          </motion.p>
-
+        <div className="he-hero__media" aria-hidden="true">
           <motion.div
-            className="he-hero__ctas"
-            variants={{
-              hidden: { opacity: 0, y: 16 },
-              visible: {
-                opacity: 1,
-                y: 0,
-                transition: { duration: 0.7, ease: EASE },
-              },
-            }}
-          >
-            {hero.ctas.map((cta, i) => (
-              <Magnetic key={cta.href} strength={0.22}>
-                <a
-                  href={cta.href}
-                  className={
-                    i === 0 ? "btn btn--primary" : "btn btn--ghost"
+            ref={frameRef}
+            className="he-hero__frame"
+            style={
+              reduced || !canHover
+                ? undefined
+                : {
+                    rotateX: springTiltX,
+                    rotateY: springTiltY,
+                    transformPerspective: 1200,
                   }
-                >
-                  {cta.label}
-                </a>
-              </Magnetic>
-            ))}
+            }
+            initial={
+              reduced
+                ? false
+                : {
+                    opacity: 0,
+                    y: 48,
+                    scale: 0.94,
+                    filter: "blur(8px)",
+                  }
+            }
+            animate={
+              reduced
+                ? undefined
+                : {
+                    opacity: 1,
+                    y: 0,
+                    scale: 1,
+                    filter: "blur(0px)",
+                  }
+            }
+            transition={{ duration: 1.25, ease: EASE, delay: 0.22 }}
+            onPointerMove={onFramePointerMove}
+            onPointerLeave={onFramePointerLeave}
+          >
+            <motion.div
+              className="he-hero__image-wrap"
+              style={
+                reduced
+                  ? undefined
+                  : {
+                      y: imageY,
+                      scale: imageScale,
+                    }
+              }
+            >
+              <img
+                className="he-hero__image"
+                src={portraitSrc}
+                width={portraitWidth}
+                height={portraitHeight}
+                alt=""
+                decoding="async"
+                fetchPriority="high"
+              />
+            </motion.div>
           </motion.div>
-        </motion.div>
+          <div className="he-hero__veil" />
+        </div>
       </div>
 
       {!reduced && (
-        <div className="he-hero__scroll" aria-hidden="true">
+        <motion.div
+          className="he-hero__scroll"
+          aria-hidden="true"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1.35, duration: 0.7, ease: EASE }}
+        >
           <span className="he-hero__scroll-label">Scroll</span>
           <span className="he-hero__scroll-line" />
-        </div>
+        </motion.div>
       )}
     </section>
   );

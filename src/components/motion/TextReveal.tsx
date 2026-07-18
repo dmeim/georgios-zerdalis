@@ -1,4 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
+import "./TextReveal.css";
 
 type TextRevealTag = "h1" | "h2" | "h3" | "p" | "span";
 
@@ -54,19 +55,15 @@ export function TextReveal({
       {words.map((word, i) => (
         <span
           key={`${word}-${i}`}
-          style={{
-            display: "inline-block",
-            overflow: "hidden",
-            verticalAlign: "top",
-            marginRight: "0.28em",
-          }}
+          className="text-reveal__clip"
           aria-hidden="true"
         >
           <motion.span
+            className="text-reveal__word"
             variants={{
-              hidden: { y: "110%" },
+              hidden: { y: "115%" },
               visible: {
-                y: 0,
+                y: "0%",
                 transition: {
                   duration: 0.7,
                   ease: EASE,
@@ -74,7 +71,6 @@ export function TextReveal({
                 },
               },
             }}
-            style={{ display: "inline-block" }}
           >
             {word}
           </motion.span>
