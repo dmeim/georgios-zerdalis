@@ -7,6 +7,12 @@
   --he-hero-ink: #f3eee6;
   --he-hero-muted: rgba(243, 238, 230, 0.78);
   --he-hero-soft: rgba(243, 238, 230, 0.68);
+  --he-frame-radius: 1.15rem;
+  --he-frame-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-ink) 8%, transparent),
+    0 4px 12px color-mix(in srgb, #000 10%, transparent),
+    0 22px 48px color-mix(in srgb, #000 22%, transparent),
+    0 48px 96px color-mix(in srgb, #000 18%, transparent);
 
   color: var(--color-ink);
   font-family: var(--font-sans);
@@ -289,13 +295,9 @@
     inset: auto;
     width: 100%;
     height: 100%;
-    border-radius: 1.15rem;
+    border-radius: var(--he-frame-radius);
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px color-mix(in srgb, var(--color-ink) 8%, transparent),
-      0 4px 12px color-mix(in srgb, #000 10%, transparent),
-      0 22px 48px color-mix(in srgb, #000 22%, transparent),
-      0 48px 96px color-mix(in srgb, #000 18%, transparent);
+    box-shadow: var(--he-frame-shadow);
   }
 
   .he-hero__image-wrap {
@@ -336,8 +338,23 @@
 
 /* ——— Chapter ——— */
 
+/* ——— Chapter ———
+   Mobile: text, then framed landscape photo.
+   Desktop (≥900px): About pairing mirrored — text left, photo right. */
+
 .he-chapter {
   border-bottom: 1px solid var(--color-border);
+}
+
+.he-chapter__layout {
+  display: grid;
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.he-chapter__content {
+  display: flex;
+  flex-direction: column;
 }
 
 .he-chapter__rule {
@@ -361,6 +378,56 @@
   color: var(--color-ink-muted);
   font-size: 1.0625rem;
   line-height: 1.7;
+}
+
+.he-chapter__media {
+  width: 100%;
+  max-width: 40rem;
+  margin-inline: auto;
+  aspect-ratio: 16 / 9;
+  max-height: min(52vh, 26rem);
+}
+
+.he-chapter__media > * {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.he-chapter__frame {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--he-frame-radius);
+  overflow: hidden;
+  box-shadow: var(--he-frame-shadow);
+}
+
+.he-chapter__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  max-width: none;
+  display: block;
+}
+
+@media (min-width: 900px) {
+  .he-chapter__layout {
+    grid-template-columns: minmax(0, 36rem) minmax(0, 40rem);
+    justify-content: center;
+    align-items: center;
+    gap: clamp(3.5rem, 7vw, 7rem);
+  }
+
+  .he-chapter__media {
+    margin-inline: 0;
+    justify-self: stretch;
+    max-height: min(56vh, 28rem);
+  }
+
+  .he-chapter__body {
+    max-width: none;
+  }
 }
 
 /* ——— Venues marquee ——— */
@@ -387,6 +454,9 @@
 
 .he-venues__track-wrap {
   position: relative;
+  /* Vertical room so frame shadows aren’t clipped by overflow */
+  padding-block: 1.75rem;
+  margin-block: -0.5rem;
   overflow: hidden;
   mask-image: linear-gradient(
     90deg,
@@ -436,7 +506,8 @@
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: 4px;
+  border-radius: var(--he-frame-radius);
+  box-shadow: var(--he-frame-shadow);
   background: color-mix(in srgb, var(--color-ink) 8%, transparent);
 }
 
@@ -474,6 +545,7 @@
   gap: var(--space-md) var(--space-lg);
   width: min(100% - 2 * var(--he-gutter), var(--he-max));
   margin-inline: auto;
+  padding-block: 0.75rem;
 }
 
 .he-venues__static .he-venues__item {
@@ -611,7 +683,9 @@
 .he-appointments__media {
   margin: 0;
   width: 100%;
+  border-radius: var(--he-frame-radius);
   overflow: hidden;
+  box-shadow: var(--he-frame-shadow);
   background: var(--color-surface, #ece8e1);
 }
 
@@ -641,18 +715,58 @@
   }
 }
 
-/* ——— Bio ——— */
+/* ——— Bio ———
+   Mobile: framed portrait, then text.
+   Desktop (≥900px): hero mirror — portrait left, text right. */
 
 .he-bio {
   border-bottom: 1px solid var(--color-border);
 }
 
-.he-bio__grid {
+.he-bio__layout {
   display: grid;
   gap: var(--space-xl);
+  align-items: start;
 }
 
-.he-bio__sticky {
+.he-bio__media {
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+  aspect-ratio: 4 / 5;
+  max-height: min(68vh, 34rem);
+}
+
+.he-bio__media > * {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.he-bio__frame {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--he-frame-radius);
+  overflow: hidden;
+  box-shadow: var(--he-frame-shadow);
+}
+
+.he-bio__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  max-width: none;
+  display: block;
+}
+
+.he-bio__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+}
+
+.he-bio__heading {
   display: flex;
   flex-direction: column;
   gap: var(--space-xs);
@@ -667,7 +781,7 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-md);
-  max-width: 62ch;
+  max-width: 42ch;
 }
 
 .he-bio__body p {
@@ -679,15 +793,29 @@
 }
 
 @media (min-width: 900px) {
-  .he-bio__grid {
-    grid-template-columns: minmax(12rem, 0.38fr) 1fr;
-    gap: var(--space-3xl);
-    align-items: start;
+  .he-bio__layout {
+    /* Shrink-wrap columns and center the pair so outer margins match
+       (mirrors hero rhythm with columns swapped). */
+    grid-template-columns: minmax(0, 28rem) minmax(0, 36rem);
+    justify-content: center;
+    align-items: center;
+    gap: clamp(3.5rem, 7vw, 7rem);
   }
 
-  .he-bio__sticky {
-    position: sticky;
-    top: calc(var(--header-height) + 1.5rem);
+  .he-bio__media {
+    margin-inline: 0;
+    justify-self: stretch;
+    width: 100%;
+    max-height: min(72vh, 38rem);
+  }
+
+  .he-bio__content {
+    max-width: none;
+    justify-self: stretch;
+  }
+
+  .he-bio__body {
+    max-width: none;
   }
 }
 

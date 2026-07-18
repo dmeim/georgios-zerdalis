@@ -1,20 +1,18 @@
 ---
-import { Image } from 'astro:assets';
-import portrait from '../../assets/portrait.jpeg';
 import { hero } from '../../content/site';
 ---
 
 <section class="hero" aria-label="Introduction">
   <div class="hero__media" aria-hidden="true">
-    <Image
-      src={portrait}
+    <img
+      src="/images/Georgios%20Zerdalis.jpeg"
+      width="853"
+      height="1280"
       alt=""
       class="hero__image"
-      widths={[720, 1080, 1440, 1920]}
-      sizes="100vw"
-      quality={82}
       loading="eager"
       fetchpriority="high"
+      decoding="async"
     />
     <div class="hero__veil"></div>
   </div>

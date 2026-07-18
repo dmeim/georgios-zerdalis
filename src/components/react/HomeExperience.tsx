@@ -28,6 +28,9 @@ export type HomeExperienceProps = {
   portraitSrc: string;
   portraitWidth: number;
   portraitHeight: number;
+  aboutPortraitSrc: string;
+  aboutPortraitWidth: number;
+  aboutPortraitHeight: number;
   hero: {
     name: string;
     role: string;
@@ -35,6 +38,9 @@ export type HomeExperienceProps = {
     ctas: { label: string; href: string }[];
   };
   chapter: { eyebrow: string; title: string; body: string };
+  chapterImageSrc: string;
+  chapterImageWidth: number;
+  chapterImageHeight: number;
   appointments: {
     title: string;
     organization: string;
@@ -372,37 +378,61 @@ function HeroSection({
 
 function ChapterSection({
   chapter,
+  chapterImageSrc,
+  chapterImageWidth,
+  chapterImageHeight,
 }: {
   chapter: HomeExperienceProps["chapter"];
+  chapterImageSrc: string;
+  chapterImageWidth: number;
+  chapterImageHeight: number;
 }) {
   const reduced = useReducedMotion();
 
   return (
     <section className="he-chapter he__section" aria-label={chapter.title}>
-      <div className="he__inner">
-        <Reveal>
-          <p className="he__eyebrow">{chapter.eyebrow}</p>
-        </Reveal>
+      <div className="he__inner he-chapter__layout">
+        <div className="he-chapter__content">
+          <Reveal>
+            <p className="he__eyebrow">{chapter.eyebrow}</p>
+          </Reveal>
 
-        <motion.span
-          className="he-chapter__rule"
-          aria-hidden="true"
-          initial={reduced ? false : { scaleX: 0 }}
-          whileInView={reduced ? undefined : { scaleX: 1 }}
-          viewport={{ once: true, margin: "-10%" }}
-          transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-        />
+          <motion.span
+            className="he-chapter__rule"
+            aria-hidden="true"
+            initial={reduced ? false : { scaleX: 0 }}
+            whileInView={reduced ? undefined : { scaleX: 1 }}
+            viewport={{ once: true, margin: "-10%" }}
+            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
+          />
 
-        <TextReveal
-          text={chapter.title}
-          as="h2"
-          className="he-chapter__title he__serif-title"
-          delay={0.08}
-        />
+          <TextReveal
+            text={chapter.title}
+            as="h2"
+            className="he-chapter__title he__serif-title"
+            delay={0.08}
+          />
 
-        <Reveal delay={0.12} y={24}>
-          <p className="he-chapter__body">{chapter.body}</p>
-        </Reveal>
+          <Reveal delay={0.12} y={24}>
+            <p className="he-chapter__body">{chapter.body}</p>
+          </Reveal>
+        </div>
+
+        <div className="he-chapter__media">
+          <Reveal y={28} delay={0.1}>
+            <div className="he-chapter__frame">
+              <img
+                className="he-chapter__image"
+                src={chapterImageSrc}
+                width={chapterImageWidth}
+                height={chapterImageHeight}
+                alt="Frost School of Music at twilight"
+                decoding="async"
+                loading="lazy"
+              />
+            </div>
+          </Reveal>
+        </div>
       </div>
     </section>
   );
@@ -558,30 +588,58 @@ function AppointmentsSection({
   );
 }
 
-function BioSection({ bio }: { bio: string }) {
+function BioSection({
+  bio,
+  aboutPortraitSrc,
+  aboutPortraitWidth,
+  aboutPortraitHeight,
+}: {
+  bio: string;
+  aboutPortraitSrc: string;
+  aboutPortraitWidth: number;
+  aboutPortraitHeight: number;
+}) {
   const paragraphs = splitBio(bio);
 
   return (
     <section className="he-bio he__section" aria-label="About">
-      <div className="he__inner he-bio__grid">
-        <div className="he-bio__sticky">
-          <Reveal>
-            <p className="he__eyebrow">Biography</p>
+      <div className="he__inner he-bio__layout">
+        <div className="he-bio__media">
+          <Reveal y={28}>
+            <div className="he-bio__frame">
+              <img
+                className="he-bio__image"
+                src={aboutPortraitSrc}
+                width={aboutPortraitWidth}
+                height={aboutPortraitHeight}
+                alt="Georgios Zerdalis with snare drum"
+                decoding="async"
+                loading="lazy"
+              />
+            </div>
           </Reveal>
-          <TextReveal
-            text="About"
-            as="h2"
-            className="he-bio__title he__serif-title"
-            delay={0.05}
-          />
         </div>
 
-        <div className="he-bio__body">
-          {paragraphs.map((paragraph, i) => (
-            <Reveal key={i} delay={0.08 + i * 0.1} y={22}>
-              <p>{paragraph}</p>
+        <div className="he-bio__content">
+          <div className="he-bio__heading">
+            <Reveal>
+              <p className="he__eyebrow">Biography</p>
             </Reveal>
-          ))}
+            <TextReveal
+              text="About"
+              as="h2"
+              className="he-bio__title he__serif-title"
+              delay={0.05}
+            />
+          </div>
+
+          <div className="he-bio__body">
+            {paragraphs.map((paragraph, i) => (
+              <Reveal key={i} delay={0.08 + i * 0.1} y={22}>
+                <p>{paragraph}</p>
+              </Reveal>
+            ))}
+          </div>
         </div>
       </div>
     </section>
@@ -811,8 +869,14 @@ export default function HomeExperience({
   portraitSrc,
   portraitWidth,
   portraitHeight,
+  aboutPortraitSrc,
+  aboutPortraitWidth,
+  aboutPortraitHeight,
   hero,
   chapter,
+  chapterImageSrc,
+  chapterImageWidth,
+  chapterImageHeight,
   appointments,
   bio,
   quote,
@@ -832,10 +896,20 @@ export default function HomeExperience({
           hero={hero}
           reduced={Boolean(reduced)}
         />
-        <ChapterSection chapter={chapter} />
+        <ChapterSection
+          chapter={chapter}
+          chapterImageSrc={chapterImageSrc}
+          chapterImageWidth={chapterImageWidth}
+          chapterImageHeight={chapterImageHeight}
+        />
         <VenuesMarquee venues={venues} />
         <AppointmentsSection appointments={appointments} />
-        <BioSection bio={bio} />
+        <BioSection
+          bio={bio}
+          aboutPortraitSrc={aboutPortraitSrc}
+          aboutPortraitWidth={aboutPortraitWidth}
+          aboutPortraitHeight={aboutPortraitHeight}
+        />
         <QuoteSection quote={quote} />
         <PedagogySection pedagogy={pedagogy} />
         <CloseSection endorsement={endorsement} />

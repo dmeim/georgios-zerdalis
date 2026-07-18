@@ -1,8 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import HomeExperience from '../components/react/HomeExperience';
-import { getImage } from 'astro:assets';
-import portrait from '../assets/portrait.jpeg';
 import {
   meta,
   hero,
@@ -15,22 +13,40 @@ import {
   venues,
 } from '../content/site';
 
-const optimized = await getImage({
-  src: portrait,
-  width: 1920,
-  format: 'webp',
-  quality: 82,
-});
+/** Served from public/images/ */
+const heroPortrait = {
+  src: '/images/Georgios%20Zerdalis.jpeg',
+  width: 853,
+  height: 1280,
+};
+
+const aboutPortrait = {
+  src: '/images/Georgios-Zerdalis-2.jpg',
+  width: 1440,
+  height: 1920,
+};
+
+const chapterImage = {
+  src: '/images/Frost-School-Of-Music.jpg',
+  width: 1200,
+  height: 630,
+};
 ---
 
 <BaseLayout title="Georgios Zerdalis" description={meta.description}>
   <HomeExperience
     client:load
-    portraitSrc={optimized.src}
-    portraitWidth={optimized.attributes.width}
-    portraitHeight={optimized.attributes.height}
+    portraitSrc={heroPortrait.src}
+    portraitWidth={heroPortrait.width}
+    portraitHeight={heroPortrait.height}
+    aboutPortraitSrc={aboutPortrait.src}
+    aboutPortraitWidth={aboutPortrait.width}
+    aboutPortraitHeight={aboutPortrait.height}
     hero={hero}
     chapter={currentChapter}
+    chapterImageSrc={chapterImage.src}
+    chapterImageWidth={chapterImage.width}
+    chapterImageHeight={chapterImage.height}
     appointments={appointments}
     bio={shortBio}
     quote={mentorQuote}

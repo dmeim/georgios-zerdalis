@@ -3,9 +3,9 @@
   "status": "partial",
   "notes": "Instagram feed scrape blocked (401/403). Only low-res public profile pic obtained via instaloader. Studio hero portrait included as primary gallery placeholder. Additional HQ images/videos pending delivery from Georgios. No videos available.",
   "portrait": {
-    "path": "src/assets/portrait.jpeg",
-    "filename": "portrait.jpeg",
-    "source": "repo root Georgios Zerdalis.jpeg (original retained)"
+    "path": "public/images/Georgios Zerdalis.jpeg",
+    "filename": "Georgios Zerdalis.jpeg",
+    "source": "public/images/Georgios Zerdalis.jpeg"
   },
   "items": [
     {
