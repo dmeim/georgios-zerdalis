@@ -73,7 +73,7 @@ export type Endorsement = {
   url: string;
 };
 
-export type ContactContent = {
+export type ConnectContent = {
   email: string;
   location: string;
   locationDetail: string;
@@ -96,7 +96,7 @@ export type SiteContent = {
   mentorQuote: MentorQuote;
   pedagogy: PedagogyItem[];
   endorsement: Endorsement;
-  contact: ContactContent;
+  connect: ConnectContent;
   venues: VenueHighlight[];
 };
 
@@ -112,7 +112,7 @@ export const hero: HeroContent = {
   sentence:
     "Based in the United States, Georgios combines technical excellence with a mindful, student-centered approach as a performer and educator.",
   ctas: [
-    { label: "Get in Touch", href: "/contact" },
+    { label: "Get in Touch", href: "/connect" },
     { label: "View Gallery", href: "/gallery" },
   ],
 };
@@ -224,7 +224,7 @@ export const endorsement: Endorsement = {
   url: "https://groverpro.com/artist/georgios-zerdalis",
 };
 
-export const contact: ContactContent = {
+export const connect: ConnectContent = {
   email: "georgios.zerdalis@hotmail.com",
   location: "Miami, Florida, USA",
   locationDetail: "Based in the United States · Frost School of Music",
@@ -301,7 +301,7 @@ export const site: SiteContent = {
   mentorQuote,
   pedagogy,
   endorsement,
-  contact,
+  connect,
   venues,
 };
 

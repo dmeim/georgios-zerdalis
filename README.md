@@ -12,7 +12,7 @@ Portfolio site for [Georgios Zerdalis](https://github.com/dmeim/georgios-zerdali
 - Design system: “Midnight Concert Hall” (Syne / Instrument Serif / Manrope, champagne + steel accents)
 - Icons via [`@lucide/astro`](https://lucide.dev)
 - Node.js ≥ 22
-- Contact form scaffolds to `PUBLIC_N8N_WEBHOOK_URL` (n8n webhook; optional until connected)
+- Connect form scaffolds to `PUBLIC_N8N_WEBHOOK_URL` (n8n webhook; optional until connected)
 
 Worker name in `wrangler.jsonc`: `georgios-zerdalis` (serves `./dist`, `not_found_handling: "404-page"`).
 
@@ -22,7 +22,7 @@ Worker name in `wrangler.jsonc`: `georgios-zerdalis` (serves `./dist`, `not_foun
 | --- | --- |
 | `/` | One-scroll home |
 | `/gallery` | Media gallery |
-| `/contact` | Contact info + form |
+| `/connect` | Connect info + form |
 
 ## Content
 
@@ -111,6 +111,6 @@ Copy `.env.example` as needed for local/public env:
 | Variable | Purpose |
 | --- | --- |
 | `PUBLIC_SITE_URL` | Optional absolute site URL (links / SEO) |
-| `PUBLIC_N8N_WEBHOOK_URL` | Contact form POST target (`name`, `email`, `subject`, `message`). If unset, the form validates but shows “not connected yet”. |
+| `PUBLIC_N8N_WEBHOOK_URL` | Connect form POST target (`name`, `email`, `subject`, `message`). If unset, the form validates but shows “not connected yet”. |
 
-Contact email, Instagram, and other site content live in `src/content/site.ts`, not in env.
+Connect email, Instagram, and other site content live in `src/content/site.ts`, not in env.

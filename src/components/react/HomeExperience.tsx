@@ -797,7 +797,7 @@ function CloseSection({
 
         <Reveal delay={0.18}>
           <Magnetic strength={0.25}>
-            <a className="btn btn--primary he-close__cta" href="/contact">
+            <a className="btn btn--primary he-close__cta" href="/connect">
               Get in Touch
             </a>
           </Magnetic>

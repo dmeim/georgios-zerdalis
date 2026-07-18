@@ -1,6 +1,6 @@
 ---
 /**
- * Contact form — fields from `src/content/site.ts`.
+ * Connect form — fields from `src/content/site.ts`.
  *
  * n8n webhook scaffold:
  * Set `PUBLIC_N8N_WEBHOOK_URL` in `.env` (see `.env.example`) to the n8n
@@ -10,16 +10,16 @@
  * “form not connected yet” message (no fake success).
  * Turnstile / Workers email / live n8n wiring are intentionally out of scope.
  */
-import { contact } from '../../content/site';
+import { connect } from '../../content/site';
 
 const webhookUrl = import.meta.env.PUBLIC_N8N_WEBHOOK_URL?.trim() ?? '';
-const { fields, submitLabel } = contact.form;
+const { fields, submitLabel } = connect.form;
 ---
 
-<div class="contact-form-wrapper">
+<div class="connect-form-wrapper">
   <form
-    class="contact-form"
-    id="contact-form"
+    class="connect-form"
+    id="connect-form"
     novalidate
     data-webhook-url={webhookUrl}
   >
@@ -57,26 +57,26 @@ const { fields, submitLabel } = contact.form;
 
     <p
       class="form-status"
-      id="contact-form-status"
+      id="connect-form-status"
       role="status"
       aria-live="polite"
       hidden
     ></p>
 
-    <button type="submit" class="btn-primary" id="contact-form-submit">
+    <button type="submit" class="btn-primary" id="connect-form-submit">
       {submitLabel}
     </button>
   </form>
 </div>
 
 <script>
-  function initContactForm() {
-    const form = document.getElementById('contact-form');
+  function initConnectForm() {
+    const form = document.getElementById('connect-form');
     if (!(form instanceof HTMLFormElement) || form.dataset.bound === '1') return;
     form.dataset.bound = '1';
 
-    const statusEl = document.getElementById('contact-form-status');
-    const submitBtn = document.getElementById('contact-form-submit');
+    const statusEl = document.getElementById('connect-form-status');
+    const submitBtn = document.getElementById('connect-form-submit');
     if (!(statusEl instanceof HTMLElement) || !(submitBtn instanceof HTMLButtonElement)) {
       return;
     }
@@ -180,12 +180,12 @@ const { fields, submitLabel } = contact.form;
     });
   }
 
-  initContactForm();
-  document.addEventListener('astro:page-load', initContactForm);
+  initConnectForm();
+  document.addEventListener('astro:page-load', initConnectForm);
 </script>
 
 <style>
-  .contact-form-wrapper {
+  .connect-form-wrapper {
     width: 100%;
     padding: var(--space-xl);
     border: 1px solid var(--color-border);
@@ -198,7 +198,7 @@ const { fields, submitLabel } = contact.form;
       color-mix(in srgb, var(--color-ground-elevated) 88%, transparent);
   }
 
-  .contact-form {
+  .connect-form {
     display: flex;
     flex-direction: column;
     gap: var(--space-lg);
@@ -315,7 +315,7 @@ const { fields, submitLabel } = contact.form;
   }
 
   @media (max-width: 800px) {
-    .contact-form-wrapper {
+    .connect-form-wrapper {
       padding: var(--space-lg);
     }
   }

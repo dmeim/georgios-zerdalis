@@ -5,7 +5,7 @@ import GalleryGrid from '../components/gallery/GalleryGrid.astro';
 import GalleryLightbox from '../components/gallery/GalleryLightbox.astro';
 import PageIntro from '../components/react/PageIntro';
 import type { GalleryManifest } from '../components/gallery/types';
-import { contact } from '../content/site';
+import { connect } from '../content/site';
 
 const imageModules = import.meta.glob<{ default: ImageMetadata }>(
   '../assets/gallery/**/*.{jpeg,jpg,png,webp,avif,gif}',
@@ -77,11 +77,11 @@ const showMediaNote = isEmpty || isPartial;
           <p class="gallery-page__note-link">
             Follow on{' '}
             <a
-              href={contact.instagramUrl}
+              href={connect.instagramUrl}
               target="_blank"
               rel="noopener noreferrer"
             >
-              Instagram {contact.instagramHandle}
+              Instagram {connect.instagramHandle}
             </a>
           </p>
         </aside>

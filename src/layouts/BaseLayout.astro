@@ -1,6 +1,5 @@
 ---
 import { ClientRouter } from 'astro:transitions';
-import { contact } from '../content/site';
 import SiteEffects from '../components/react/SiteEffects';
 import '../styles/global.css';
 
@@ -22,7 +21,7 @@ const pathname = Astro.url.pathname;
 const nav = [
   { href: '/', label: 'Home' },
   { href: '/gallery', label: 'Gallery' },
-  { href: '/contact', label: 'Contact' },
+  { href: '/connect', label: 'Connect' },
 ] as const;
 
 function isCurrent(href: string): boolean {
@@ -135,22 +134,9 @@ const year = new Date().getFullYear();
     </main>
 
     <footer class="site-footer">
-      <div class="site-footer__inner">
-        <div>
-          <p>&copy; {year} Georgios Zerdalis</p>
-          <p class="site-footer__tagline">Timpanist &amp; Educator</p>
-        </div>
-        <div class="site-footer__links">
-          <a href={`mailto:${contact.email}`}>{contact.email}</a>
-          <a
-            href={contact.instagramUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Instagram
-          </a>
-        </div>
-      </div>
+      <p class="site-footer__line">
+        &copy; {year} Georgios Zerdalis - Timpanist &amp; Educator
+      </p>
     </footer>
 
     <SiteEffects client:load />
