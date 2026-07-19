@@ -1,11 +1,13 @@
 import { MotionConfigProvider } from "../motion";
 import GlyphField from "./GlyphField";
+import { PhotoLightbox } from "./PhotoLightbox";
 
-/** Root motion config island — grain lives in global CSS (`body::before`). */
+/** Root motion + site-wide photo lightbox island. */
 export default function SiteEffects() {
   return (
     <MotionConfigProvider>
       <GlyphField />
+      <PhotoLightbox />
     </MotionConfigProvider>
   );
 }

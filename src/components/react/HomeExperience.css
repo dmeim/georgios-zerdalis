@@ -1,5 +1,38 @@
 /* HomeExperience — full-bleed island composition */
 
+/* Shared clickable photo frame trigger (opens PhotoLightbox) */
+.he-photo-trigger {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  margin: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+  cursor: zoom-in;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.he-photo-trigger--fill {
+  height: 100%;
+}
+
+.he-photo-trigger:focus-visible {
+  outline: none;
+}
+
+.he-photo-trigger:focus-visible .he-hero__frame,
+.he-photo-trigger:focus-visible .he-chapter__frame,
+.he-photo-trigger:focus-visible .he-venues__frame,
+.he-photo-trigger:focus-visible .he-appointments__media,
+.he-photo-trigger:focus-visible .he-bio__frame {
+  box-shadow:
+    var(--he-frame-shadow),
+    0 0 0 2px color-mix(in srgb, var(--color-accent) 45%, transparent);
+}
+
 .he {
   --he-pad: clamp(4rem, 12vh, 8rem);
   --he-gutter: 1rem;
@@ -7,12 +40,6 @@
   --he-hero-ink: #f3eee6;
   --he-hero-muted: rgba(243, 238, 230, 0.78);
   --he-hero-soft: rgba(243, 238, 230, 0.68);
-  --he-frame-radius: 1.15rem;
-  --he-frame-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-ink) 6%, transparent),
-    0 4px 12px color-mix(in srgb, var(--color-ink) 6%, transparent),
-    0 18px 40px color-mix(in srgb, var(--color-ink) 12%, transparent),
-    0 36px 72px color-mix(in srgb, var(--color-ink) 8%, transparent);
 
   color: var(--color-ink);
   font-family: var(--font-sans);
@@ -80,7 +107,7 @@
   inset: 0;
   z-index: 0;
   overflow: hidden;
-  pointer-events: none;
+  pointer-events: auto;
 }
 
 .he-hero__frame {

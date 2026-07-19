@@ -1,8 +1,7 @@
 ---
 import type { ImageMetadata } from 'astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import GalleryGrid from '../components/gallery/GalleryGrid.astro';
-import GalleryLightbox from '../components/gallery/GalleryLightbox.astro';
+import GalleryMasonry from '../components/react/GalleryMasonry';
 import PageIntro from '../components/react/PageIntro';
 import type { GalleryManifest } from '../components/gallery/types';
 import { connect } from '../content/site';
@@ -12,21 +11,10 @@ const imageModules = import.meta.glob<{ default: ImageMetadata }>(
   { eager: true },
 );
 
-const videoModules = import.meta.glob<string>(
-  '../assets/gallery/**/*.{mp4,webm,ogg,mov}',
-  { eager: true, query: '?url', import: 'default' },
-);
-
 const imageMap: Record<string, ImageMetadata> = {};
 for (const [path, mod] of Object.entries(imageModules)) {
   const filename = path.split('/').pop();
   if (filename) imageMap[filename] = mod.default;
-}
-
-const videoMap: Record<string, string> = {};
-for (const [path, url] of Object.entries(videoModules)) {
-  const filename = path.split('/').pop();
-  if (filename) videoMap[filename] = url;
 }
 
 let manifest: GalleryManifest | null = null;
@@ -38,8 +26,23 @@ try {
 }
 
 const items = manifest?.items ?? [];
+const photos = items.flatMap((item) => {
+  if (item.type !== 'image' || !item.filename) return [];
+  const meta = imageMap[item.filename];
+  if (!meta) return [];
+  return [
+    {
+      src: meta.src,
+      width: meta.width,
+      height: meta.height,
+      alt: item.alt?.trim() || item.caption?.trim() || 'Gallery photo',
+      caption: item.caption?.trim() || undefined,
+    },
+  ];
+});
+
 const status = manifest?.status ?? (items.length === 0 ? 'empty' : 'ready');
-const isEmpty = items.length === 0;
+const isEmpty = photos.length === 0;
 const isPartial =
   status === 'partial' ||
   Boolean(manifest?.source?.toLowerCase().includes('temporary'));
@@ -98,12 +101,10 @@ const showMediaNote = isEmpty || isPartial;
           </p>
         </div>
       ) : (
-        <GalleryGrid items={items} imageMap={imageMap} videoMap={videoMap} />
+        <GalleryMasonry client:load photos={photos} />
       )
     }
   </section>
-
-  <GalleryLightbox />
 </BaseLayout>
 
 <style>

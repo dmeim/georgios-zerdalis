@@ -39,6 +39,13 @@
   --duration: 280ms;
   --duration-slow: 560ms;
 
+  --he-frame-radius: 1.15rem;
+  --he-frame-shadow:
+    0 0 0 1px color-mix(in srgb, var(--color-ink) 6%, transparent),
+    0 4px 12px color-mix(in srgb, var(--color-ink) 6%, transparent),
+    0 18px 40px color-mix(in srgb, var(--color-ink) 12%, transparent),
+    0 36px 72px color-mix(in srgb, var(--color-ink) 8%, transparent);
+
   color-scheme: dark;
 }
 

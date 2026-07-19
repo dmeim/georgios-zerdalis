@@ -20,6 +20,7 @@ import {
   Reveal,
   TextReveal,
 } from "../motion";
+import { openPhoto } from "./PhotoLightbox";
 import "./HomeExperience.css";
 
 export type HomeExperienceProps = {
@@ -274,54 +275,66 @@ function HeroSection({
           </motion.div>
         </div>
 
-        <div className="he-hero__media" aria-hidden="true">
-          <PhotoTilt
-            className="he-hero__frame"
-            intensity="main"
-            initial={
-              reduced
-                ? false
-                : {
-                    opacity: 0,
-                    y: 48,
-                    scale: 0.94,
-                    filter: "blur(8px)",
-                  }
+        <div className="he-hero__media">
+          <button
+            type="button"
+            className="he-photo-trigger he-photo-trigger--fill"
+            aria-label="View portrait of Georgios Zerdalis"
+            onClick={() =>
+              openPhoto({
+                src: portraitSrc,
+                alt: "Georgios Zerdalis",
+              })
             }
-            animate={
-              reduced
-                ? undefined
-                : {
-                    opacity: 1,
-                    y: 0,
-                    scale: 1,
-                    filter: "blur(0px)",
-                  }
-            }
-            transition={{ duration: 1.25, ease: EASE, delay: 0.22 }}
           >
-            <motion.div
-              className="he-hero__image-wrap"
-              style={
+            <PhotoTilt
+              className="he-hero__frame"
+              intensity="main"
+              initial={
+                reduced
+                  ? false
+                  : {
+                      opacity: 0,
+                      y: 48,
+                      scale: 0.94,
+                      filter: "blur(8px)",
+                    }
+              }
+              animate={
                 reduced
                   ? undefined
                   : {
-                      y: imageY,
-                      scale: imageScale,
+                      opacity: 1,
+                      y: 0,
+                      scale: 1,
+                      filter: "blur(0px)",
                     }
               }
+              transition={{ duration: 1.25, ease: EASE, delay: 0.22 }}
             >
-              <img
-                className="he-hero__image"
-                src={portraitSrc}
-                width={portraitWidth}
-                height={portraitHeight}
-                alt=""
-                decoding="async"
-                fetchPriority="high"
-              />
-            </motion.div>
-          </PhotoTilt>
+              <motion.div
+                className="he-hero__image-wrap"
+                style={
+                  reduced
+                    ? undefined
+                    : {
+                        y: imageY,
+                        scale: imageScale,
+                      }
+                }
+              >
+                <img
+                  className="he-hero__image"
+                  src={portraitSrc}
+                  width={portraitWidth}
+                  height={portraitHeight}
+                  alt=""
+                  decoding="async"
+                  fetchPriority="high"
+                />
+              </motion.div>
+            </PhotoTilt>
+          </button>
           <div className="he-hero__veil" />
         </div>
       </div>
@@ -386,17 +399,29 @@ function ChapterSection({
 
         <div className="he-chapter__media">
           <Reveal y={28} delay={0.1}>
-            <PhotoTilt className="he-chapter__frame">
-              <img
-                className="he-chapter__image"
-                src={chapterImageSrc}
-                width={chapterImageWidth}
-                height={chapterImageHeight}
-                alt="Frost School of Music at twilight"
-                decoding="async"
-                loading="lazy"
-              />
-            </PhotoTilt>
+            <button
+              type="button"
+              className="he-photo-trigger he-photo-trigger--fill"
+              aria-label="View Frost School of Music at twilight"
+              onClick={() =>
+                openPhoto({
+                  src: chapterImageSrc,
+                  alt: "Frost School of Music at twilight",
+                })
+              }
+            >
+              <PhotoTilt className="he-chapter__frame">
+                <img
+                  className="he-chapter__image"
+                  src={chapterImageSrc}
+                  width={chapterImageWidth}
+                  height={chapterImageHeight}
+                  alt=""
+                  decoding="async"
+                  loading="lazy"
+                />
+              </PhotoTilt>
+            </button>
           </Reveal>
         </div>
       </div>
@@ -416,18 +441,31 @@ function VenueCard({
       className="he-venues__item"
       aria-hidden={ariaHidden ? true : undefined}
     >
-      <PhotoTilt className="he-venues__frame">
-        <img
-          className="he-venues__photo"
-          src={venue.image}
-          alt=""
-          width={360}
-          height={220}
-          loading="lazy"
-          decoding="async"
-          draggable={false}
-        />
-      </PhotoTilt>
+      <button
+        type="button"
+        className="he-photo-trigger"
+        aria-label={`View ${venue.name}, ${venue.place}`}
+        tabIndex={ariaHidden ? -1 : undefined}
+        onClick={() =>
+          openPhoto({
+            src: venue.image,
+            alt: `${venue.name}, ${venue.place}`,
+          })
+        }
+      >
+        <PhotoTilt className="he-venues__frame">
+          <img
+            className="he-venues__photo"
+            src={venue.image}
+            alt=""
+            width={360}
+            height={220}
+            loading="lazy"
+            decoding="async"
+            draggable={false}
+          />
+        </PhotoTilt>
+      </button>
       <figcaption className="he-venues__caption">
         <span className="he-venues__name">{venue.name}</span>
         <span className="he-venues__place">{venue.place}</span>
@@ -536,17 +574,29 @@ function AppointmentsSection({
                     </ul>
                   ) : null}
                 </div>
-                <PhotoTilt className="he-appointments__media">
-                  <img
-                    className="he-appointments__photo"
-                    src={item.image}
-                    alt=""
-                    width={480}
-                    height={300}
-                    loading="lazy"
-                    decoding="async"
-                  />
-                </PhotoTilt>
+                <button
+                  type="button"
+                  className="he-photo-trigger"
+                  aria-label={`View photo for ${item.title}`}
+                  onClick={() =>
+                    openPhoto({
+                      src: item.image,
+                      alt: `${item.title} at ${item.organization}`,
+                    })
+                  }
+                >
+                  <PhotoTilt className="he-appointments__media">
+                    <img
+                      className="he-appointments__photo"
+                      src={item.image}
+                      alt=""
+                      width={480}
+                      height={300}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </PhotoTilt>
+                </button>
               </Reveal>
             </li>
           ))}
@@ -574,17 +624,29 @@ function BioSection({
       <div className="he__inner he-bio__layout">
         <div className="he-bio__media">
           <Reveal y={28}>
-            <PhotoTilt className="he-bio__frame">
-              <img
-                className="he-bio__image"
-                src={aboutPortraitSrc}
-                width={aboutPortraitWidth}
-                height={aboutPortraitHeight}
-                alt="Georgios Zerdalis with snare drum"
-                decoding="async"
-                loading="lazy"
-              />
-            </PhotoTilt>
+            <button
+              type="button"
+              className="he-photo-trigger he-photo-trigger--fill"
+              aria-label="View Georgios Zerdalis with snare drum"
+              onClick={() =>
+                openPhoto({
+                  src: aboutPortraitSrc,
+                  alt: "Georgios Zerdalis with snare drum",
+                })
+              }
+            >
+              <PhotoTilt className="he-bio__frame">
+                <img
+                  className="he-bio__image"
+                  src={aboutPortraitSrc}
+                  width={aboutPortraitWidth}
+                  height={aboutPortraitHeight}
+                  alt=""
+                  decoding="async"
+                  loading="lazy"
+                />
+              </PhotoTilt>
+            </button>
           </Reveal>
         </div>
 
