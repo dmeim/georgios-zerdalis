@@ -14,9 +14,11 @@
   Zen/Firefox often won't paint backdrop-filter over page content.
   Blur the page itself while open — matches the iOS frosted look everywhere.
   No scale — scaling the page fought the shared-element morph.
+
+  Blur fade is off (instant). To restore: transition: filter 0.45s var(--ease-out);
 */
 body > :not(.photo-lightbox) {
-  transition: filter 0.45s var(--ease-out);
+  transition: none;
 }
 
 html.photo-lightbox-open body > :not(.photo-lightbox) {

@@ -29,6 +29,9 @@ const EASE = [0.22, 1, 0.36, 1] as const;
 const SWIPE_THRESHOLD = 56;
 const FLIP_DURATION = 0.48;
 
+/** Set true to re-enable pick-up / put-down FLIP morph. */
+const ENABLE_OPEN_CLOSE_ANIMATION = false;
+
 type FlipPose = {
   x: number;
   y: number;
@@ -61,7 +64,10 @@ function readOrigin(layoutId: string, fallback: PhotoOriginRect | null) {
 
 export default function PhotoLightbox() {
   const state = usePhotoLightboxState();
-  const reduced = useReducedMotion();
+  const prefersReducedMotion = useReducedMotion();
+  /** Skip pick-up / put-down FLIP + open/close fades. Flip code stays below. */
+  const skipOpenCloseAnim =
+    Boolean(prefersReducedMotion) || !ENABLE_OPEN_CLOSE_ANIMATION;
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
@@ -100,7 +106,7 @@ export default function PhotoLightbox() {
       return;
     }
 
-    setTiltReady(false);
+    setTiltReady(skipOpenCloseAnim); // skip FLIP → ready immediately
     setClosing(false);
 
     const previousOverflow = document.body.style.overflow;
@@ -112,11 +118,11 @@ export default function PhotoLightbox() {
       document.documentElement.classList.remove("photo-lightbox-open");
       document.body.style.overflow = previousOverflow;
     };
-  }, [state.open, reduced, x, y, scaleX, scaleY]);
+  }, [state.open, skipOpenCloseAnim, x, y, scaleX, scaleY]);
 
   // Pick-up: measure resting layout, snap to origin FLIP, animate to identity.
   useLayoutEffect(() => {
-    if (!state.open || closing || reduced || didOpenFlip.current) return;
+    if (!state.open || closing || skipOpenCloseAnim || didOpenFlip.current) return;
 
     const frame = frameRef.current;
     const origin = state.origin;
@@ -163,7 +169,7 @@ export default function PhotoLightbox() {
       setFlipping(false);
       setTiltReady(true);
     });
-  }, [state.open, state.origin, state.src, closing, reduced, x, y, scaleX, scaleY]);
+  }, [state.open, state.origin, state.src, closing, skipOpenCloseAnim, x, y, scaleX, scaleY]);
 
   useEffect(() => {
     if (!state.open) return;
@@ -194,7 +200,7 @@ export default function PhotoLightbox() {
     setClosing(true);
     setFlipping(true);
 
-    if (reduced || !frameRef.current) {
+    if (skipOpenCloseAnim || !frameRef.current) {
       setClosing(false);
       closePhoto();
       return;
@@ -279,20 +285,23 @@ export default function PhotoLightbox() {
             className="photo-lightbox__backdrop"
             aria-label="Close photo"
             onClick={beginClose}
-            initial={reduced ? false : { opacity: 0 }}
+            initial={skipOpenCloseAnim ? false : { opacity: 0 }}
             animate={{ opacity: closing ? 0 : 1 }}
-            exit={reduced ? undefined : { opacity: 0 }}
-            transition={{ duration: reduced ? 0.01 : FLIP_DURATION, ease: EASE }}
+            exit={skipOpenCloseAnim ? undefined : { opacity: 0 }}
+            transition={{
+              duration: skipOpenCloseAnim ? 0.01 : FLIP_DURATION,
+              ease: EASE,
+            }}
           />
 
           <div className="photo-lightbox__chrome">
             <motion.div
               className="photo-lightbox__chrome-inner"
-              initial={reduced ? false : { opacity: 0 }}
-              animate={{ opacity: closing || reduced ? 0 : 1 }}
-              exit={reduced ? undefined : { opacity: 0 }}
+              initial={skipOpenCloseAnim ? false : { opacity: 0 }}
+              animate={{ opacity: closing ? 0 : 1 }}
+              exit={skipOpenCloseAnim ? undefined : { opacity: 0 }}
               transition={{
-                duration: reduced ? 0.01 : FLIP_DURATION,
+                duration: skipOpenCloseAnim ? 0.01 : FLIP_DURATION,
                 ease: EASE,
               }}
             >
@@ -348,7 +357,7 @@ export default function PhotoLightbox() {
                 <PhotoTilt
                   className="photo-lightbox__tilt"
                   intensity="main"
-                  enabled={tiltReady && !reduced && !closing && !flipping}
+                  enabled={tiltReady && !prefersReducedMotion && !closing && !flipping}
                 >
                   <div className="photo-lightbox__clip">
                     <AnimatePresence mode="wait" initial={false}>
@@ -362,10 +371,10 @@ export default function PhotoLightbox() {
                         initial={false}
                         animate={{ opacity: 1 }}
                         exit={
-                          reduced ? undefined : { opacity: 0 }
+                          skipOpenCloseAnim ? undefined : { opacity: 0 }
                         }
                         transition={{
-                          duration: reduced ? 0.01 : 0.28,
+                          duration: skipOpenCloseAnim ? 0.01 : 0.28,
                           ease: EASE,
                         }}
                       />
@@ -378,13 +387,13 @@ export default function PhotoLightbox() {
                   <motion.p
                     key={state.caption + state.src}
                     className="photo-lightbox__caption"
-                    initial={reduced ? false : { opacity: 0, y: 6 }}
+                    initial={skipOpenCloseAnim ? false : { opacity: 0, y: 6 }}
                     animate={{
                       opacity: tiltReady && !closing ? 1 : 0,
                     }}
-                    exit={reduced ? undefined : { opacity: 0 }}
+                    exit={skipOpenCloseAnim ? undefined : { opacity: 0 }}
                     transition={{
-                      duration: reduced ? 0.01 : 0.28,
+                      duration: skipOpenCloseAnim ? 0.01 : 0.28,
                       ease: EASE,
                     }}
                   >
