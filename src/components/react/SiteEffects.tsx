@@ -1,13 +1,11 @@
 import { MotionConfigProvider } from "../motion";
 import GlyphField from "./GlyphField";
-import { PhotoLightbox } from "./PhotoLightbox";
 
-/** Root motion + site-wide photo lightbox island. */
+/** Root motion config + ambient glyph field (lightbox lives with page islands). */
 export default function SiteEffects() {
   return (
     <MotionConfigProvider>
       <GlyphField />
-      <PhotoLightbox />
     </MotionConfigProvider>
   );
 }

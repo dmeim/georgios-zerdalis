@@ -1,5 +1,6 @@
 import {
   AnimatePresence,
+  LayoutGroup,
   motion,
   useReducedMotion,
   useScroll,
@@ -20,7 +21,12 @@ import {
   Reveal,
   TextReveal,
 } from "../motion";
-import { openPhoto } from "./PhotoLightbox";
+import {
+  openPhotoFromEvent,
+  photoLayoutId,
+  PhotoLightbox,
+  SharedPhotoShell,
+} from "./PhotoLightbox";
 import "./HomeExperience.css";
 
 export type HomeExperienceProps = {
@@ -280,60 +286,64 @@ function HeroSection({
             type="button"
             className="he-photo-trigger he-photo-trigger--fill"
             aria-label="View portrait of Georgios Zerdalis"
-            onClick={() =>
-              openPhoto({
+            onClick={(event) => {
+              const layoutId = photoLayoutId(portraitSrc, "hero");
+              openPhotoFromEvent(event, {
                 src: portraitSrc,
                 alt: "Georgios Zerdalis",
-              })
-            }
+                layoutId,
+              });
+            }}
           >
-            <PhotoTilt
-              className="he-hero__frame"
-              intensity="main"
-              initial={
-                reduced
-                  ? false
-                  : {
-                      opacity: 0,
-                      y: 48,
-                      scale: 0.94,
-                      filter: "blur(8px)",
-                    }
-              }
-              animate={
-                reduced
-                  ? undefined
-                  : {
-                      opacity: 1,
-                      y: 0,
-                      scale: 1,
-                      filter: "blur(0px)",
-                    }
-              }
-              transition={{ duration: 1.25, ease: EASE, delay: 0.22 }}
-            >
-              <motion.div
-                className="he-hero__image-wrap"
-                style={
+            <SharedPhotoShell layoutId={photoLayoutId(portraitSrc, "hero")}>
+              <PhotoTilt
+                className="he-hero__frame"
+                intensity="main"
+                initial={
+                  reduced
+                    ? false
+                    : {
+                        opacity: 0,
+                        y: 48,
+                        scale: 0.94,
+                        filter: "blur(8px)",
+                      }
+                }
+                animate={
                   reduced
                     ? undefined
                     : {
-                        y: imageY,
-                        scale: imageScale,
+                        opacity: 1,
+                        y: 0,
+                        scale: 1,
+                        filter: "blur(0px)",
                       }
                 }
+                transition={{ duration: 1.25, ease: EASE, delay: 0.22 }}
               >
-                <img
-                  className="he-hero__image"
-                  src={portraitSrc}
-                  width={portraitWidth}
-                  height={portraitHeight}
-                  alt=""
-                  decoding="async"
-                  fetchPriority="high"
-                />
-              </motion.div>
-            </PhotoTilt>
+                <motion.div
+                  className="he-hero__image-wrap"
+                  style={
+                    reduced
+                      ? undefined
+                      : {
+                          y: imageY,
+                          scale: imageScale,
+                        }
+                  }
+                >
+                  <img
+                    className="he-hero__image"
+                    src={portraitSrc}
+                    width={portraitWidth}
+                    height={portraitHeight}
+                    alt=""
+                    decoding="async"
+                    fetchPriority="high"
+                  />
+                </motion.div>
+              </PhotoTilt>
+            </SharedPhotoShell>
           </button>
           <div className="he-hero__veil" />
         </div>
@@ -403,24 +413,30 @@ function ChapterSection({
               type="button"
               className="he-photo-trigger he-photo-trigger--fill"
               aria-label="View Frost School of Music at twilight"
-              onClick={() =>
-                openPhoto({
+              onClick={(event) => {
+                const layoutId = photoLayoutId(chapterImageSrc, "chapter");
+                openPhotoFromEvent(event, {
                   src: chapterImageSrc,
                   alt: "Frost School of Music at twilight",
-                })
-              }
+                  layoutId,
+                });
+              }}
             >
-              <PhotoTilt className="he-chapter__frame">
-                <img
-                  className="he-chapter__image"
-                  src={chapterImageSrc}
-                  width={chapterImageWidth}
-                  height={chapterImageHeight}
-                  alt=""
-                  decoding="async"
-                  loading="lazy"
-                />
-              </PhotoTilt>
+              <SharedPhotoShell
+                layoutId={photoLayoutId(chapterImageSrc, "chapter")}
+              >
+                <PhotoTilt className="he-chapter__frame">
+                  <img
+                    className="he-chapter__image"
+                    src={chapterImageSrc}
+                    width={chapterImageWidth}
+                    height={chapterImageHeight}
+                    alt=""
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </PhotoTilt>
+              </SharedPhotoShell>
             </button>
           </Reveal>
         </div>
@@ -431,9 +447,11 @@ function ChapterSection({
 
 function VenueCard({
   venue,
+  layoutId,
   ariaHidden,
 }: {
   venue: HomeExperienceProps["venues"][number];
+  layoutId: string;
   ariaHidden?: boolean;
 }) {
   return (
@@ -446,25 +464,28 @@ function VenueCard({
         className="he-photo-trigger"
         aria-label={`View ${venue.name}, ${venue.place}`}
         tabIndex={ariaHidden ? -1 : undefined}
-        onClick={() =>
-          openPhoto({
+        onClick={(event) =>
+          openPhotoFromEvent(event, {
             src: venue.image,
             alt: `${venue.name}, ${venue.place}`,
+            layoutId,
           })
         }
       >
-        <PhotoTilt className="he-venues__frame">
-          <img
-            className="he-venues__photo"
-            src={venue.image}
-            alt=""
-            width={360}
-            height={220}
-            loading="lazy"
-            decoding="async"
-            draggable={false}
-          />
-        </PhotoTilt>
+        <SharedPhotoShell layoutId={layoutId}>
+          <PhotoTilt className="he-venues__frame">
+            <img
+              className="he-venues__photo"
+              src={venue.image}
+              alt=""
+              width={360}
+              height={220}
+              loading="lazy"
+              decoding="async"
+              draggable={false}
+            />
+          </PhotoTilt>
+        </SharedPhotoShell>
       </button>
       <figcaption className="he-venues__caption">
         <span className="he-venues__name">{venue.name}</span>
@@ -492,10 +513,11 @@ function VenuesMarquee({
 
       {reduced ? (
         <div className="he-venues__static">
-          {items.map((venue) => (
+          {items.map((venue, i) => (
             <VenueCard
               key={`${venue.name}-${venue.place}`}
               venue={venue}
+              layoutId={photoLayoutId(venue.image, `venue-${i}`)}
             />
           ))}
         </div>
@@ -507,6 +529,7 @@ function VenuesMarquee({
                 <VenueCard
                   key={`${venue.name}-${i}`}
                   venue={venue}
+                  layoutId={photoLayoutId(venue.image, `venue-${i}`)}
                   ariaHidden={i >= items.length}
                 />
               ))}
@@ -578,24 +601,36 @@ function AppointmentsSection({
                   type="button"
                   className="he-photo-trigger"
                   aria-label={`View photo for ${item.title}`}
-                  onClick={() =>
-                    openPhoto({
+                  onClick={(event) => {
+                    const layoutId = photoLayoutId(
+                      item.image,
+                      `appointment-${item.title}`,
+                    );
+                    openPhotoFromEvent(event, {
                       src: item.image,
                       alt: `${item.title} at ${item.organization}`,
-                    })
-                  }
+                      layoutId,
+                    });
+                  }}
                 >
-                  <PhotoTilt className="he-appointments__media">
-                    <img
-                      className="he-appointments__photo"
-                      src={item.image}
-                      alt=""
-                      width={480}
-                      height={300}
-                      loading="lazy"
-                      decoding="async"
-                    />
-                  </PhotoTilt>
+                  <SharedPhotoShell
+                    layoutId={photoLayoutId(
+                      item.image,
+                      `appointment-${item.title}`,
+                    )}
+                  >
+                    <PhotoTilt className="he-appointments__media">
+                      <img
+                        className="he-appointments__photo"
+                        src={item.image}
+                        alt=""
+                        width={480}
+                        height={300}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </PhotoTilt>
+                  </SharedPhotoShell>
                 </button>
               </Reveal>
             </li>
@@ -628,24 +663,30 @@ function BioSection({
               type="button"
               className="he-photo-trigger he-photo-trigger--fill"
               aria-label="View Georgios Zerdalis with snare drum"
-              onClick={() =>
-                openPhoto({
+              onClick={(event) => {
+                const layoutId = photoLayoutId(aboutPortraitSrc, "bio");
+                openPhotoFromEvent(event, {
                   src: aboutPortraitSrc,
                   alt: "Georgios Zerdalis with snare drum",
-                })
-              }
+                  layoutId,
+                });
+              }}
             >
-              <PhotoTilt className="he-bio__frame">
-                <img
-                  className="he-bio__image"
-                  src={aboutPortraitSrc}
-                  width={aboutPortraitWidth}
-                  height={aboutPortraitHeight}
-                  alt=""
-                  decoding="async"
-                  loading="lazy"
-                />
-              </PhotoTilt>
+              <SharedPhotoShell
+                layoutId={photoLayoutId(aboutPortraitSrc, "bio")}
+              >
+                <PhotoTilt className="he-bio__frame">
+                  <img
+                    className="he-bio__image"
+                    src={aboutPortraitSrc}
+                    width={aboutPortraitWidth}
+                    height={aboutPortraitHeight}
+                    alt=""
+                    decoding="async"
+                    loading="lazy"
+                  />
+                </PhotoTilt>
+              </SharedPhotoShell>
             </button>
           </Reveal>
         </div>
@@ -918,32 +959,35 @@ export default function HomeExperience({
 
   return (
     <MotionConfigProvider>
-      <div className="he">
-        <HeroSection
-          portraitSrc={portraitSrc}
-          portraitWidth={portraitWidth}
-          portraitHeight={portraitHeight}
-          hero={hero}
-          reduced={Boolean(reduced)}
-        />
-        <ChapterSection
-          chapter={chapter}
-          chapterImageSrc={chapterImageSrc}
-          chapterImageWidth={chapterImageWidth}
-          chapterImageHeight={chapterImageHeight}
-        />
-        <VenuesMarquee venues={venues} />
-        <AppointmentsSection appointments={appointments} />
-        <BioSection
-          bio={bio}
-          aboutPortraitSrc={aboutPortraitSrc}
-          aboutPortraitWidth={aboutPortraitWidth}
-          aboutPortraitHeight={aboutPortraitHeight}
-        />
-        <QuoteSection quote={quote} />
-        <PedagogySection pedagogy={pedagogy} />
-        <CloseSection endorsement={endorsement} />
-      </div>
+      <LayoutGroup>
+        <div className="he">
+          <HeroSection
+            portraitSrc={portraitSrc}
+            portraitWidth={portraitWidth}
+            portraitHeight={portraitHeight}
+            hero={hero}
+            reduced={Boolean(reduced)}
+          />
+          <ChapterSection
+            chapter={chapter}
+            chapterImageSrc={chapterImageSrc}
+            chapterImageWidth={chapterImageWidth}
+            chapterImageHeight={chapterImageHeight}
+          />
+          <VenuesMarquee venues={venues} />
+          <AppointmentsSection appointments={appointments} />
+          <BioSection
+            bio={bio}
+            aboutPortraitSrc={aboutPortraitSrc}
+            aboutPortraitWidth={aboutPortraitWidth}
+            aboutPortraitHeight={aboutPortraitHeight}
+          />
+          <QuoteSection quote={quote} />
+          <PedagogySection pedagogy={pedagogy} />
+          <CloseSection endorsement={endorsement} />
+        </div>
+        <PhotoLightbox />
+      </LayoutGroup>
     </MotionConfigProvider>
   );
 }

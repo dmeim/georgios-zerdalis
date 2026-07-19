@@ -1,11 +1,14 @@
 import {
   AnimatePresence,
+  animate,
   motion,
+  useMotionValue,
   useReducedMotion,
 } from "framer-motion";
 import {
   useEffect,
   useId,
+  useLayoutEffect,
   useRef,
   useState,
   type PointerEvent as ReactPointerEvent,
@@ -14,21 +17,46 @@ import { createPortal } from "react-dom";
 import { PhotoTilt } from "../../motion";
 import {
   closePhoto,
-  getPhotoLightboxState,
+  measurePhotoOrigin,
   showNextPhoto,
   showPrevPhoto,
-  subscribePhotoLightbox,
-  type PhotoLightboxState,
+  type PhotoOriginRect,
 } from "./store";
+import { usePhotoLightboxState } from "./usePhotoLightboxState";
 import "./PhotoLightbox.css";
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 const SWIPE_THRESHOLD = 56;
+const FLIP_DURATION = 0.48;
 
-function usePhotoLightboxState() {
-  const [state, setState] = useState<PhotoLightboxState>(getPhotoLightboxState);
-  useEffect(() => subscribePhotoLightbox(setState), []);
-  return state;
+type FlipPose = {
+  x: number;
+  y: number;
+  scaleX: number;
+  scaleY: number;
+};
+
+function flipFromRects(first: PhotoOriginRect, last: DOMRect): FlipPose {
+  return {
+    x:
+      first.left +
+      first.width / 2 -
+      (last.left + last.width / 2),
+    y:
+      first.top +
+      first.height / 2 -
+      (last.top + last.height / 2),
+    scaleX: first.width / Math.max(last.width, 1),
+    scaleY: first.height / Math.max(last.height, 1),
+  };
+}
+
+function readOrigin(layoutId: string, fallback: PhotoOriginRect | null) {
+  const el = document.querySelector(
+    `[data-photo-shell="${CSS.escape(layoutId)}"]`,
+  );
+  if (el) return measurePhotoOrigin(el);
+  return fallback;
 }
 
 export default function PhotoLightbox() {
@@ -36,25 +64,106 @@ export default function PhotoLightbox() {
   const reduced = useReducedMotion();
   const titleId = useId();
   const closeRef = useRef<HTMLButtonElement>(null);
+  const frameRef = useRef<HTMLDivElement>(null);
   const dragStartX = useRef<number | null>(null);
   const navigable = Boolean(state.items && state.items.length > 1);
   const [mounted, setMounted] = useState(false);
+  const [tiltReady, setTiltReady] = useState(false);
+  const [flipping, setFlipping] = useState(false);
+  const [closing, setClosing] = useState(false);
+  const openGen = useRef(0);
+  const navLock = useRef(false);
+  const didOpenFlip = useRef(false);
+
+  const x = useMotionValue(0);
+  const y = useMotionValue(0);
+  const scaleX = useMotionValue(1);
+  const scaleY = useMotionValue(1);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   useEffect(() => {
-    if (!state.open) return;
+    if (!state.open) {
+      setTiltReady(false);
+      setFlipping(false);
+      setClosing(false);
+      didOpenFlip.current = false;
+      openGen.current += 1; // invalidate in-flight flip promises
+      navLock.current = false;
+      x.set(0);
+      y.set(0);
+      scaleX.set(1);
+      scaleY.set(1);
+      document.documentElement.classList.remove("photo-lightbox-open");
+      return;
+    }
+
+    setTiltReady(false);
+    setClosing(false);
+
     const previousOverflow = document.body.style.overflow;
-    document.documentElement.classList.add("photo-lightbox-open");
     document.body.style.overflow = "hidden";
+    document.documentElement.classList.add("photo-lightbox-open");
     closeRef.current?.focus();
+
     return () => {
       document.documentElement.classList.remove("photo-lightbox-open");
       document.body.style.overflow = previousOverflow;
     };
-  }, [state.open]);
+  }, [state.open, reduced, x, y, scaleX, scaleY]);
+
+  // Pick-up: measure resting layout, snap to origin FLIP, animate to identity.
+  useLayoutEffect(() => {
+    if (!state.open || closing || reduced || didOpenFlip.current) return;
+
+    const frame = frameRef.current;
+    const origin = state.origin;
+    if (!frame) return;
+
+    didOpenFlip.current = true;
+    const gen = ++openGen.current;
+    setFlipping(true);
+
+    // Measure at identity (no visibility:hidden — that was leaving the photo blank).
+    x.set(0);
+    y.set(0);
+    scaleX.set(1);
+    scaleY.set(1);
+
+    const last = frame.getBoundingClientRect();
+    if (
+      !origin ||
+      origin.width < 1 ||
+      origin.height < 1 ||
+      last.width < 1 ||
+      last.height < 1
+    ) {
+      setFlipping(false);
+      setTiltReady(true);
+      return;
+    }
+
+    const from = flipFromRects(origin, last);
+    x.set(from.x);
+    y.set(from.y);
+    scaleX.set(from.scaleX);
+    scaleY.set(from.scaleY);
+
+    const controls = [
+      animate(x, 0, { duration: FLIP_DURATION, ease: EASE }),
+      animate(y, 0, { duration: FLIP_DURATION, ease: EASE }),
+      animate(scaleX, 1, { duration: FLIP_DURATION, ease: EASE }),
+      animate(scaleY, 1, { duration: FLIP_DURATION, ease: EASE }),
+    ];
+
+    void Promise.all(controls.map((c) => c.finished)).then(() => {
+      if (openGen.current !== gen) return;
+      setFlipping(false);
+      setTiltReady(true);
+    });
+  }, [state.open, state.origin, state.src, closing, reduced, x, y, scaleX, scaleY]);
 
   useEffect(() => {
     if (!state.open) return;
@@ -62,25 +171,82 @@ export default function PhotoLightbox() {
     function onKeyDown(event: KeyboardEvent) {
       if (event.key === "Escape") {
         event.preventDefault();
-        closePhoto();
+        beginClose();
         return;
       }
-      if (!navigable) return;
+      if (!navigable || closing || flipping) return;
       if (event.key === "ArrowLeft") {
         event.preventDefault();
-        showPrevPhoto();
+        navigate("prev");
       } else if (event.key === "ArrowRight") {
         event.preventDefault();
-        showNextPhoto();
+        navigate("next");
       }
     }
 
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [state.open, navigable]);
+  }, [state.open, navigable, closing, flipping]);
+
+  function beginClose() {
+    if (!state.open || closing) return;
+    setTiltReady(false);
+    setClosing(true);
+    setFlipping(true);
+
+    if (reduced || !frameRef.current) {
+      setClosing(false);
+      closePhoto();
+      return;
+    }
+
+    const origin = readOrigin(state.layoutId, state.origin);
+    if (!origin || origin.width < 1 || origin.height < 1) {
+      setClosing(false);
+      closePhoto();
+      return;
+    }
+
+    // Ensure resting transform before measuring / animating put-down.
+    x.set(0);
+    y.set(0);
+    scaleX.set(1);
+    scaleY.set(1);
+    const last = frameRef.current.getBoundingClientRect();
+    const to = flipFromRects(origin, last);
+    const gen = openGen.current;
+
+    const controls = [
+      animate(x, to.x, { duration: FLIP_DURATION, ease: EASE }),
+      animate(y, to.y, { duration: FLIP_DURATION, ease: EASE }),
+      animate(scaleX, to.scaleX, { duration: FLIP_DURATION, ease: EASE }),
+      animate(scaleY, to.scaleY, { duration: FLIP_DURATION, ease: EASE }),
+    ];
+
+    void Promise.all(controls.map((c) => c.finished)).then(() => {
+      if (openGen.current !== gen) return;
+      setFlipping(false);
+      setClosing(false);
+      closePhoto();
+    });
+  }
+
+  function navigate(direction: "prev" | "next") {
+    if (!navigable || navLock.current || !state.open || closing || flipping) {
+      return;
+    }
+    navLock.current = true;
+    setTiltReady(false);
+    if (direction === "prev") showPrevPhoto();
+    else showNextPhoto();
+    requestAnimationFrame(() => {
+      setTiltReady(true);
+      navLock.current = false;
+    });
+  }
 
   function onPointerDown(event: ReactPointerEvent<HTMLDivElement>) {
-    if (!navigable || event.pointerType === "mouse") return;
+    if (!navigable || event.pointerType === "mouse" || closing) return;
     dragStartX.current = event.clientX;
   }
 
@@ -89,8 +255,8 @@ export default function PhotoLightbox() {
     const delta = event.clientX - dragStartX.current;
     dragStartX.current = null;
     if (Math.abs(delta) < SWIPE_THRESHOLD) return;
-    if (delta > 0) showPrevPhoto();
-    else showNextPhoto();
+    if (delta > 0) navigate("prev");
+    else navigate("next");
   }
 
   function onPointerCancel() {
@@ -102,37 +268,40 @@ export default function PhotoLightbox() {
   return createPortal(
     <AnimatePresence>
       {state.open ? (
-        /*
-          Root must stay a plain fixed element — Framer opacity/transform on an
-          ancestor disables backdrop-filter, so the page never actually blurs.
-        */
         <div
           className="photo-lightbox"
           role="dialog"
           aria-modal="true"
           aria-labelledby={titleId}
         >
-          <button
+          <motion.button
             type="button"
             className="photo-lightbox__backdrop"
             aria-label="Close photo"
-            onClick={closePhoto}
+            onClick={beginClose}
+            initial={reduced ? false : { opacity: 0 }}
+            animate={{ opacity: closing ? 0 : 1 }}
+            exit={reduced ? undefined : { opacity: 0 }}
+            transition={{ duration: reduced ? 0.01 : FLIP_DURATION, ease: EASE }}
           />
 
           <div className="photo-lightbox__chrome">
             <motion.div
               className="photo-lightbox__chrome-inner"
               initial={reduced ? false : { opacity: 0 }}
-              animate={{ opacity: 1 }}
+              animate={{ opacity: closing || reduced ? 0 : 1 }}
               exit={reduced ? undefined : { opacity: 0 }}
-              transition={{ duration: reduced ? 0.01 : 0.28, ease: EASE }}
+              transition={{
+                duration: reduced ? 0.01 : FLIP_DURATION,
+                ease: EASE,
+              }}
             >
               <button
                 ref={closeRef}
                 type="button"
                 className="photo-lightbox__close"
                 aria-label="Close photo"
-                onClick={closePhoto}
+                onClick={beginClose}
               >
                 <span aria-hidden="true">&times;</span>
               </button>
@@ -142,7 +311,7 @@ export default function PhotoLightbox() {
                   type="button"
                   className="photo-lightbox__nav photo-lightbox__nav--prev"
                   aria-label="Previous photo"
-                  onClick={showPrevPhoto}
+                  onClick={() => navigate("prev")}
                 >
                   <span aria-hidden="true">‹</span>
                 </button>
@@ -153,7 +322,7 @@ export default function PhotoLightbox() {
                   type="button"
                   className="photo-lightbox__nav photo-lightbox__nav--next"
                   aria-label="Next photo"
-                  onClick={showNextPhoto}
+                  onClick={() => navigate("next")}
                 >
                   <span aria-hidden="true">›</span>
                 </button>
@@ -167,35 +336,63 @@ export default function PhotoLightbox() {
             onPointerUp={onPointerUp}
             onPointerCancel={onPointerCancel}
           >
-            <AnimatePresence mode="wait">
+            <div className="photo-lightbox__figure">
+              <span id={titleId} className="photo-lightbox__sr-only">
+                {state.alt || "Photo preview"}
+              </span>
               <motion.div
-                key={state.src + state.index}
-                className="photo-lightbox__figure"
-                initial={reduced ? false : { opacity: 0, scale: 0.97 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={reduced ? undefined : { opacity: 0, scale: 0.98 }}
-                transition={{ duration: reduced ? 0.01 : 0.32, ease: EASE }}
+                ref={frameRef}
+                className="photo-lightbox__frame"
+                style={{ x, y, scaleX, scaleY, transformOrigin: "center center" }}
               >
-                <span id={titleId} className="photo-lightbox__sr-only">
-                  {state.alt || "Photo preview"}
-                </span>
                 <PhotoTilt
-                  className="photo-lightbox__frame"
+                  className="photo-lightbox__tilt"
                   intensity="main"
+                  enabled={tiltReady && !reduced && !closing && !flipping}
                 >
-                  <img
-                    className="photo-lightbox__img"
-                    src={state.src}
-                    alt={state.alt}
-                    decoding="async"
-                    draggable={false}
-                  />
+                  <div className="photo-lightbox__clip">
+                    <AnimatePresence mode="wait" initial={false}>
+                      <motion.img
+                        key={state.src}
+                        className="photo-lightbox__img"
+                        src={state.src}
+                        alt={state.alt}
+                        decoding="async"
+                        draggable={false}
+                        initial={false}
+                        animate={{ opacity: 1 }}
+                        exit={
+                          reduced ? undefined : { opacity: 0 }
+                        }
+                        transition={{
+                          duration: reduced ? 0.01 : 0.28,
+                          ease: EASE,
+                        }}
+                      />
+                    </AnimatePresence>
+                  </div>
                 </PhotoTilt>
-                {state.caption ? (
-                  <p className="photo-lightbox__caption">{state.caption}</p>
-                ) : null}
               </motion.div>
-            </AnimatePresence>
+              <AnimatePresence mode="wait" initial={false}>
+                {state.caption ? (
+                  <motion.p
+                    key={state.caption + state.src}
+                    className="photo-lightbox__caption"
+                    initial={reduced ? false : { opacity: 0, y: 6 }}
+                    animate={{
+                      opacity: tiltReady && !closing ? 1 : 0,
+                    }}
+                    exit={reduced ? undefined : { opacity: 0 }}
+                    transition={{
+                      duration: reduced ? 0.01 : 0.28,
+                      ease: EASE,
+                    }}
+                  >
+                    {state.caption}
+                  </motion.p>
+                ) : null}
+              </AnimatePresence>
+            </div>
           </div>
         </div>
       ) : null}
