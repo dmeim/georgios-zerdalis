@@ -170,6 +170,7 @@ html.photo-lightbox-open body > :not(.photo-lightbox) {
   height: auto;
   object-fit: contain;
   vertical-align: top;
+  cursor: pointer;
 }
 
 .photo-lightbox__caption {

@@ -368,6 +368,10 @@ export default function PhotoLightbox() {
                         alt={state.alt}
                         decoding="async"
                         draggable={false}
+                        onClick={() => {
+                          if (!state.src) return;
+                          window.open(state.src, "_blank", "noopener,noreferrer");
+                        }}
                         initial={false}
                         animate={{ opacity: 1 }}
                         exit={
