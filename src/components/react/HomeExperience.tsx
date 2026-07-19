@@ -1,10 +1,8 @@
 import {
   AnimatePresence,
   motion,
-  useMotionValue,
   useReducedMotion,
   useScroll,
-  useSpring,
   useTransform,
   type MotionValue,
 } from "framer-motion";
@@ -14,11 +12,11 @@ import {
   useState,
   useRef,
   type FocusEvent,
-  type PointerEvent as ReactPointerEvent,
 } from "react";
 import {
   Magnetic,
   MotionConfigProvider,
+  PhotoTilt,
   Reveal,
   TextReveal,
 } from "../motion";
@@ -175,8 +173,6 @@ function HeroSection({
   reduced: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
-  const frameRef = useRef<HTMLDivElement>(null);
-  const canHover = useCanHover();
 
   const { scrollYProgress } = useScroll({
     target: ref,
@@ -186,25 +182,6 @@ function HeroSection({
   /* y drifts down; scale grows from top (CSS transform-origin) so the frame top stays pinned */
   const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
   const imageScale = useTransform(scrollYProgress, [0, 1], [1, 1.08]);
-
-  const tiltX = useMotionValue(0);
-  const tiltY = useMotionValue(0);
-  const springTiltX = useSpring(tiltX, { stiffness: 160, damping: 22, mass: 0.4 });
-  const springTiltY = useSpring(tiltY, { stiffness: 160, damping: 22, mass: 0.4 });
-
-  function onFramePointerMove(event: ReactPointerEvent<HTMLDivElement>) {
-    if (reduced || !canHover || !frameRef.current) return;
-    const rect = frameRef.current.getBoundingClientRect();
-    const px = (event.clientX - rect.left) / rect.width - 0.5;
-    const py = (event.clientY - rect.top) / rect.height - 0.5;
-    tiltY.set(px * 6);
-    tiltX.set(py * -5);
-  }
-
-  function onFramePointerLeave() {
-    tiltX.set(0);
-    tiltY.set(0);
-  }
 
   return (
     <section
@@ -298,18 +275,9 @@ function HeroSection({
         </div>
 
         <div className="he-hero__media" aria-hidden="true">
-          <motion.div
-            ref={frameRef}
+          <PhotoTilt
             className="he-hero__frame"
-            style={
-              reduced || !canHover
-                ? undefined
-                : {
-                    rotateX: springTiltX,
-                    rotateY: springTiltY,
-                    transformPerspective: 1200,
-                  }
-            }
+            intensity="main"
             initial={
               reduced
                 ? false
@@ -331,8 +299,6 @@ function HeroSection({
                   }
             }
             transition={{ duration: 1.25, ease: EASE, delay: 0.22 }}
-            onPointerMove={onFramePointerMove}
-            onPointerLeave={onFramePointerLeave}
           >
             <motion.div
               className="he-hero__image-wrap"
@@ -355,7 +321,7 @@ function HeroSection({
                 fetchPriority="high"
               />
             </motion.div>
-          </motion.div>
+          </PhotoTilt>
           <div className="he-hero__veil" />
         </div>
       </div>
@@ -420,7 +386,7 @@ function ChapterSection({
 
         <div className="he-chapter__media">
           <Reveal y={28} delay={0.1}>
-            <div className="he-chapter__frame">
+            <PhotoTilt className="he-chapter__frame">
               <img
                 className="he-chapter__image"
                 src={chapterImageSrc}
@@ -430,7 +396,7 @@ function ChapterSection({
                 decoding="async"
                 loading="lazy"
               />
-            </div>
+            </PhotoTilt>
           </Reveal>
         </div>
       </div>
@@ -450,16 +416,18 @@ function VenueCard({
       className="he-venues__item"
       aria-hidden={ariaHidden ? true : undefined}
     >
-      <img
-        className="he-venues__photo"
-        src={venue.image}
-        alt=""
-        width={360}
-        height={220}
-        loading="lazy"
-        decoding="async"
-        draggable={false}
-      />
+      <PhotoTilt className="he-venues__frame">
+        <img
+          className="he-venues__photo"
+          src={venue.image}
+          alt=""
+          width={360}
+          height={220}
+          loading="lazy"
+          decoding="async"
+          draggable={false}
+        />
+      </PhotoTilt>
       <figcaption className="he-venues__caption">
         <span className="he-venues__name">{venue.name}</span>
         <span className="he-venues__place">{venue.place}</span>
@@ -568,7 +536,7 @@ function AppointmentsSection({
                     </ul>
                   ) : null}
                 </div>
-                <figure className="he-appointments__media">
+                <PhotoTilt className="he-appointments__media">
                   <img
                     className="he-appointments__photo"
                     src={item.image}
@@ -578,7 +546,7 @@ function AppointmentsSection({
                     loading="lazy"
                     decoding="async"
                   />
-                </figure>
+                </PhotoTilt>
               </Reveal>
             </li>
           ))}
@@ -606,7 +574,7 @@ function BioSection({
       <div className="he__inner he-bio__layout">
         <div className="he-bio__media">
           <Reveal y={28}>
-            <div className="he-bio__frame">
+            <PhotoTilt className="he-bio__frame">
               <img
                 className="he-bio__image"
                 src={aboutPortraitSrc}
@@ -616,7 +584,7 @@ function BioSection({
                 decoding="async"
                 loading="lazy"
               />
-            </div>
+            </PhotoTilt>
           </Reveal>
         </div>
 

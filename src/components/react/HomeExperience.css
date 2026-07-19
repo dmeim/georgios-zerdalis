@@ -9,10 +9,10 @@
   --he-hero-soft: rgba(243, 238, 230, 0.68);
   --he-frame-radius: 1.15rem;
   --he-frame-shadow:
-    0 0 0 1px color-mix(in srgb, var(--color-ink) 8%, transparent),
-    0 4px 12px color-mix(in srgb, #000 10%, transparent),
-    0 22px 48px color-mix(in srgb, #000 22%, transparent),
-    0 48px 96px color-mix(in srgb, #000 18%, transparent);
+    0 0 0 1px color-mix(in srgb, var(--color-ink) 6%, transparent),
+    0 4px 12px color-mix(in srgb, var(--color-ink) 6%, transparent),
+    0 18px 40px color-mix(in srgb, var(--color-ink) 12%, transparent),
+    0 36px 72px color-mix(in srgb, var(--color-ink) 8%, transparent);
 
   color: var(--color-ink);
   font-family: var(--font-sans);
@@ -501,14 +501,20 @@
   flex-shrink: 0;
 }
 
+.he-venues__frame {
+  display: block;
+  width: 100%;
+  border-radius: var(--he-frame-radius);
+  overflow: hidden;
+  box-shadow: var(--he-frame-shadow);
+  background: color-mix(in srgb, var(--color-ink) 8%, transparent);
+}
+
 .he-venues__photo {
   display: block;
   width: 100%;
   aspect-ratio: 16 / 10;
   object-fit: cover;
-  border-radius: var(--he-frame-radius);
-  box-shadow: var(--he-frame-shadow);
-  background: color-mix(in srgb, var(--color-ink) 8%, transparent);
 }
 
 .he-venues__caption {

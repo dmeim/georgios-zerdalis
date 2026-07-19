@@ -5,6 +5,8 @@ export { Reveal } from "./Reveal";
 export type { RevealProps } from "./Reveal";
 export { Magnetic } from "./Magnetic";
 export type { MagneticProps } from "./Magnetic";
+export { PhotoTilt } from "./PhotoTilt";
+export type { PhotoTiltProps, PhotoTiltIntensity } from "./PhotoTilt";
 export { MotionConfigProvider } from "./MotionConfigProvider";
 export type { MotionConfigProviderProps } from "./MotionConfigProvider";
 export { Grain } from "./Grain";

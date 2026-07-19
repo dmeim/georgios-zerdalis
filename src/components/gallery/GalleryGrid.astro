@@ -3,6 +3,7 @@ import { Image } from 'astro:assets';
 import type { ImageMetadata } from 'astro';
 import type { GalleryItem } from './types';
 import GalleryVideo from './GalleryVideo.astro';
+import { PhotoTilt } from '../motion';
 
 interface Props {
   items: GalleryItem[];
@@ -63,30 +64,32 @@ function resolvePoster(item: GalleryItem): string | undefined {
 
       return (
         <li class="gallery-grid__item">
-          <button
-            type="button"
-            class="gallery-grid__trigger"
-            data-gallery-open
-            data-gallery-src={image.src}
-            data-gallery-alt={alt}
-            data-gallery-caption={caption}
-            aria-label={`View ${alt}`}
-          >
-            <Image
-              src={image}
-              alt={alt}
-              widths={[320, 480, 640, 960]}
-              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
-              loading={index < 4 ? 'eager' : 'lazy'}
-              decoding="async"
-              class="gallery-grid__img"
-            />
-            {caption && (
-              <span class="gallery-grid__caption gallery-grid__caption--overlay">
-                {caption}
-              </span>
-            )}
-          </button>
+          <PhotoTilt client:visible className="gallery-grid__tilt">
+            <button
+              type="button"
+              class="gallery-grid__trigger"
+              data-gallery-open
+              data-gallery-src={image.src}
+              data-gallery-alt={alt}
+              data-gallery-caption={caption}
+              aria-label={`View ${alt}`}
+            >
+              <Image
+                src={image}
+                alt={alt}
+                widths={[320, 480, 640, 960]}
+                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 280px"
+                loading={index < 4 ? 'eager' : 'lazy'}
+                decoding="async"
+                class="gallery-grid__img"
+              />
+              {caption && (
+                <span class="gallery-grid__caption gallery-grid__caption--overlay">
+                  {caption}
+                </span>
+              )}
+            </button>
+          </PhotoTilt>
         </li>
       );
     })
@@ -129,6 +132,11 @@ function resolvePoster(item: GalleryItem): string | undefined {
     .gallery-grid__item--video {
       grid-column: span 2;
     }
+  }
+
+  :global(.gallery-grid__tilt) {
+    display: block;
+    width: 100%;
   }
 
   .gallery-grid__trigger {
