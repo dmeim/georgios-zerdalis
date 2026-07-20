@@ -188,15 +188,9 @@ const { fields, submitLabel } = connect.form;
   .connect-form-wrapper {
     width: 100%;
     padding: var(--space-xl);
-    border: 1px solid color-mix(in srgb, var(--color-primary) 28%, transparent);
+    border: 1px solid color-mix(in srgb, var(--color-secondary) 40%, transparent);
     border-radius: var(--radius);
-    background:
-      radial-gradient(
-        ellipse 80% 60% at 0% 0%,
-        var(--color-spot),
-        transparent 55%
-      ),
-      color-mix(in srgb, var(--color-ground-elevated) 88%, transparent);
+    background: color-mix(in srgb, var(--color-ground-elevated) 88%, transparent);
   }
 
   .connect-form {
@@ -216,7 +210,7 @@ const { fields, submitLabel } = connect.form;
     font-weight: 300;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-primary);
+    color: var(--color-secondary);
   }
 
   .form-group input,
@@ -224,7 +218,7 @@ const { fields, submitLabel } = connect.form;
     width: 100%;
     padding: 0.85rem 0;
     border: none;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-secondary) 35%, transparent);
     border-radius: 0;
     background: transparent;
     color: var(--color-ink);
@@ -238,13 +232,13 @@ const { fields, submitLabel } = connect.form;
 
   .form-group input::placeholder,
   .form-group textarea::placeholder {
-    color: var(--color-ink-muted);
-    opacity: 0.65;
+    color: var(--color-primary);
+    opacity: 0.55;
   }
 
   .form-group input:hover,
   .form-group textarea:hover {
-    border-bottom-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
+    border-bottom-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
   }
 
   .form-group input:focus,

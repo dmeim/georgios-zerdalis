@@ -13,15 +13,20 @@ type FieldPoint = {
 const SPACING = 12;
 const DPR_CAP = 2;
 
-function readPrimaryRgb(): string {
-  const raw = getComputedStyle(document.documentElement)
-    .getPropertyValue("--color-primary")
-    .trim();
-  if (/^#[0-9a-fA-F]{6}$/.test(raw)) {
-    const n = parseInt(raw.slice(1), 16);
-    return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
-  }
-  return "2, 51, 65";
+function readCssColorRgb(varName: string, fallback: string): string {
+  const probe = document.createElement("span");
+  probe.style.cssText = `position:absolute;visibility:hidden;pointer-events:none;color:var(${varName})`;
+  document.documentElement.appendChild(probe);
+  const computed = getComputedStyle(probe).color;
+  probe.remove();
+
+  const match = computed.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
+  if (match) return `${match[1]}, ${match[2]}, ${match[3]}`;
+  return fallback;
+}
+
+function readGlyphRgb(): string {
+  return readCssColorRgb("--color-glyph", "2, 51, 65");
 }
 
 function prefersReducedMotion(): boolean {
@@ -62,7 +67,7 @@ export default function GlyphField() {
     if (!ctx) return;
 
     let points: FieldPoint[] = [];
-    let inkRgb = readPrimaryRgb();
+    let inkRgb = readGlyphRgb();
     let rafId = 0;
     let running = false;
     let reduced = prefersReducedMotion();
@@ -140,12 +145,12 @@ export default function GlyphField() {
     };
 
     const themeObserver = new MutationObserver(() => {
-      inkRgb = readPrimaryRgb();
+      inkRgb = readGlyphRgb();
       if (reduced || document.hidden || !running) paintStatic();
     });
     themeObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme"],
+      attributeFilter: ["data-theme", "data-page"],
     });
 
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
