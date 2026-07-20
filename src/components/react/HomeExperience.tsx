@@ -1,5 +1,4 @@
 import {
-  AnimatePresence,
   LayoutGroup,
   motion,
   useReducedMotion,
@@ -7,13 +6,7 @@ import {
   useTransform,
   type MotionValue,
 } from "framer-motion";
-import {
-  useEffect,
-  useId,
-  useState,
-  useRef,
-  type FocusEvent,
-} from "react";
+import { useRef } from "react";
 import {
   Magnetic,
   MotionConfigProvider,
@@ -67,20 +60,6 @@ export type HomeExperienceProps = {
   endorsement: { label: string; url: string };
   venues: { name: string; place: string; image: string }[];
 };
-
-function useCanHover() {
-  const [canHover, setCanHover] = useState(false);
-
-  useEffect(() => {
-    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
-    const sync = () => setCanHover(mq.matches);
-    sync();
-    mq.addEventListener("change", sync);
-    return () => mq.removeEventListener("change", sync);
-  }, []);
-
-  return canHover;
-}
 
 const EASE = [0.22, 1, 0.36, 1] as const;
 
@@ -799,39 +778,6 @@ function PedagogySection({
 }: {
   pedagogy: HomeExperienceProps["pedagogy"];
 }) {
-  const canHover = useCanHover();
-  const reduced = useReducedMotion();
-  const panelId = useId();
-  const [hoveredId, setHoveredId] = useState<number | null>(null);
-  const [pinnedId, setPinnedId] = useState<number | null>(null);
-
-  const activeId = hoveredId ?? pinnedId;
-  const activeItem = activeId !== null ? pedagogy[activeId] : null;
-
-  function activateFromHover(index: number) {
-    if (!canHover) return;
-    if (pinnedId !== null && pinnedId !== index) {
-      setPinnedId(index);
-    }
-    setHoveredId(index);
-  }
-
-  function clearHover() {
-    if (!canHover) return;
-    setHoveredId(null);
-  }
-
-  function handleListBlur(event: FocusEvent<HTMLOListElement>) {
-    if (!canHover) return;
-    const next = event.relatedTarget as Node | null;
-    if (next && event.currentTarget.contains(next)) return;
-    setHoveredId(null);
-  }
-
-  function togglePin(index: number) {
-    setPinnedId((current) => (current === index ? null : index));
-  }
-
   return (
     <section
       className="he-pedagogy he__section"
@@ -844,80 +790,20 @@ function PedagogySection({
           </Reveal>
         </header>
 
-        <div className="he-pedagogy__layout">
-          <ol
-            className="he-pedagogy__list"
-            onMouseLeave={clearHover}
-            onBlur={handleListBlur}
-          >
-            {pedagogy.map((item, i) => {
-              const isActive = activeId === i;
-              const isPinned = pinnedId === i;
-
-              return (
-                <li key={item.title} className="he-pedagogy__item">
-                  <Reveal
-                    delay={i * 0.07}
-                    y={26}
-                    className="he-pedagogy__reveal"
-                  >
-                    <button
-                      type="button"
-                      className={
-                        isActive
-                          ? "he-pedagogy__trigger is-active"
-                          : "he-pedagogy__trigger"
-                      }
-                      aria-expanded={isActive}
-                      aria-controls={panelId}
-                      data-pinned={isPinned ? "true" : undefined}
-                      onMouseEnter={() => activateFromHover(i)}
-                      onFocus={() => activateFromHover(i)}
-                      onClick={() => togglePin(i)}
-                    >
-                      <span className="he-pedagogy__num" aria-hidden="true">
-                        {padIndex(i + 1)}
-                      </span>
-                      <span className="he-pedagogy__line">{item.title}</span>
-                    </button>
-                  </Reveal>
-                </li>
-              );
-            })}
-          </ol>
-
-          <div
-            id={panelId}
-            className="he-pedagogy__panel"
-            aria-live="polite"
-            aria-atomic="true"
-          >
-            <AnimatePresence mode="wait">
-              {activeItem ? (
-                <motion.div
-                  key={activeItem.title}
-                  className="he-pedagogy__detail"
-                  initial={
-                    reduced ? false : { opacity: 0, x: 18, filter: "blur(4px)" }
-                  }
-                  animate={
-                    reduced
-                      ? { opacity: 1 }
-                      : { opacity: 1, x: 0, filter: "blur(0px)" }
-                  }
-                  exit={
-                    reduced
-                      ? { opacity: 0 }
-                      : { opacity: 0, x: 12, filter: "blur(4px)" }
-                  }
-                  transition={{ duration: reduced ? 0 : 0.38, ease: EASE }}
-                >
-                  <p className="he-pedagogy__body">{activeItem.body}</p>
-                </motion.div>
-              ) : null}
-            </AnimatePresence>
-          </div>
-        </div>
+        <ol className="he-pedagogy__list">
+          {pedagogy.map((item, i) => (
+            <li key={item.title} className="he-pedagogy__item">
+              <Reveal delay={i * 0.07} y={26} className="he-pedagogy__reveal">
+                <div className="he-pedagogy__row">
+                  <span className="he-pedagogy__num" aria-hidden="true">
+                    {padIndex(i + 1)}
+                  </span>
+                  <span className="he-pedagogy__line">{item.title}</span>
+                </div>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
       </div>
     </section>
   );

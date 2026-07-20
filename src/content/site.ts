@@ -77,6 +77,7 @@ export type ConnectContent = {
   email: string;
   location: string;
   locationDetail: string;
+  locationUrl: string;
   instagramUrl: string;
   instagramHandle: string;
   intro: string;
@@ -228,6 +229,8 @@ export const connect: ConnectContent = {
   email: "georgios.zerdalis@hotmail.com",
   location: "University of Miami · Frost School of Music",
   locationDetail: "Miami, Florida, USA",
+  locationUrl:
+    "https://www.google.com/maps/search/?api=1&query=Frost+School+of+Music+University+of+Miami",
   instagramUrl: "https://www.instagram.com/georgezerdalis/",
   instagramHandle: "@georgezerdalis",
   intro:
