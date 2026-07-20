@@ -400,7 +400,7 @@ p {
 }
 
 .site-nav a:hover {
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .site-nav a[aria-current="page"],
@@ -564,7 +564,7 @@ p {
 }
 
 .theme-toggle-option:hover {
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .theme-toggle-option[aria-checked="true"]:hover {
