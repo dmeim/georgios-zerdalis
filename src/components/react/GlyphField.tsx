@@ -18,7 +18,7 @@ const GLYPH_RGB_LIGHT = "253, 94, 2"; // #fd5e02
 const GLYPH_RGB_DARK = "255, 122, 51"; // #ff7a33
 
 /** Dark ground needs stronger dots; light cream already reads well. */
-const DARK_ALPHA_MULT = 3.4;
+const DARK_ALPHA_MULT = 1.5;
 
 function isDarkTheme(): boolean {
   return document.documentElement.getAttribute("data-theme") === "dark";
