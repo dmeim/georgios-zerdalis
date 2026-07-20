@@ -407,10 +407,6 @@
    Mobile: text, then framed landscape photo.
    Desktop (≥900px): About pairing mirrored — text left, photo right. */
 
-.he-chapter {
-  border-bottom: 1px solid var(--color-border);
-}
-
 .he-chapter__layout {
   display: grid;
   gap: var(--space-xl);
@@ -494,7 +490,6 @@
   /* Target ~2.5 cards in view: stride = card + gap = 100vw / 2.5 */
   --he-venues-card: calc(100vw / 2.5 - var(--he-venues-gap));
   padding-block: clamp(2.5rem, 7vh, 4.5rem);
-  border-bottom: 1px solid var(--color-border);
 }
 
 /* Same centered pair as .he-chapter__layout so the label
@@ -645,10 +640,6 @@
 }
 
 /* ——— Appointments ——— */
-
-.he-appointments {
-  border-bottom: 1px solid var(--color-border);
-}
 
 .he-appointments__header {
   margin-bottom: clamp(2rem, 5vh, 3.5rem);
@@ -802,10 +793,6 @@
 /* ——— Education ———
    Timeline twin of appointments, without media. */
 
-.he-education {
-  border-bottom: 1px solid var(--color-border);
-}
-
 .he-education__header {
   margin-bottom: clamp(2rem, 5vh, 3.5rem);
 }
@@ -899,10 +886,6 @@
 /* ——— Bio ———
    Mobile: framed portrait, then text.
    Desktop (≥900px): hero mirror — portrait left, text right. */
-
-.he-bio {
-  border-bottom: 1px solid var(--color-border);
-}
 
 .he-bio__layout {
   display: grid;
@@ -1001,10 +984,6 @@
 }
 
 /* ——— Quote ——— */
-
-.he-quote {
-  border-bottom: 1px solid var(--color-border);
-}
 
 .he-quote__block {
   margin: 0;
