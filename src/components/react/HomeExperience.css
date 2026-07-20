@@ -37,6 +37,7 @@
   --he-pad: clamp(4rem, 12vh, 8rem);
   --he-gutter: 1rem;
   --he-max: var(--site-max);
+  --he-label-size: 1rem;
   --he-hero-ink: #f3eee6;
   --he-hero-muted: rgba(243, 238, 230, 0.78);
   --he-hero-soft: rgba(243, 238, 230, 0.68);
@@ -64,7 +65,7 @@
 .he__eyebrow {
   margin: 0 0 var(--space-sm);
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: var(--he-label-size);
   font-weight: 300;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -242,14 +243,14 @@
 }
 
 .he-hero__ctas .btn--ghost {
-  color: var(--color-secondary);
-  border-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
+  color: var(--color-primary);
+  border-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
 }
 
 .he-hero__ctas .btn--ghost:hover {
-  color: var(--color-ink-on-secondary);
-  border-color: var(--color-secondary);
-  background: var(--color-secondary);
+  color: var(--color-ink-on-primary);
+  border-color: var(--color-primary);
+  background: var(--color-primary);
 }
 
 .he-hero__scroll {
@@ -266,7 +267,7 @@
 }
 
 .he-hero__scroll-label {
-  font-size: 0.65rem;
+  font-size: var(--he-label-size);
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
@@ -274,7 +275,7 @@
 }
 
 .he-hero__scroll-line {
-  width: 1px;
+  width: 3px;
   height: 2.75rem;
   background: linear-gradient(
     180deg,
@@ -332,14 +333,14 @@
   }
 
   .he-hero__ctas .btn--ghost {
-    color: var(--color-secondary);
-    border-color: color-mix(in srgb, var(--color-secondary) 45%, transparent);
+    color: var(--color-primary);
+    border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
   }
 
   .he-hero__ctas .btn--ghost:hover {
-    color: var(--color-ink-on-secondary);
-    border-color: var(--color-secondary);
-    background: var(--color-secondary);
+    color: var(--color-ink-on-primary);
+    border-color: var(--color-primary);
+    background: var(--color-primary);
   }
 
   .he-hero__media {
@@ -504,7 +505,7 @@
   max-width: none;
   margin: 0;
   font-family: var(--font-sans);
-  font-size: 0.75rem;
+  font-size: var(--he-label-size);
   font-weight: 300;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -685,14 +686,14 @@
 }
 
 .he-appointments__dates {
-  font-size: 0.875rem;
+  font-size: var(--he-label-size);
   font-weight: 300;
   letter-spacing: 0.04em;
   color: var(--color-secondary);
 }
 
 .he-appointments__place {
-  font-size: 0.875rem;
+  font-size: var(--he-label-size);
   color: var(--color-secondary);
 }
 
@@ -837,14 +838,14 @@
 }
 
 .he-education__year {
-  font-size: 0.875rem;
+  font-size: var(--he-label-size);
   font-weight: 300;
   letter-spacing: 0.04em;
   color: var(--color-secondary);
 }
 
 .he-education__place {
-  font-size: 0.875rem;
+  font-size: var(--he-label-size);
   color: var(--color-secondary);
 }
 
