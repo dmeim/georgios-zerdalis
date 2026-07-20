@@ -229,8 +229,8 @@ export const endorsement: Endorsement = {
 
 export const connect: ConnectContent = {
   email: "georgios.zerdalis@hotmail.com",
-  location: "Miami, Florida, USA",
-  locationDetail: "Based in the United States · Frost School of Music",
+  location: "University of Miami · Frost School of Music",
+  locationDetail: "Miami, Florida, USA",
   instagramUrl: "https://www.instagram.com/georgezerdalis/",
   instagramHandle: "@georgezerdalis",
   intro:

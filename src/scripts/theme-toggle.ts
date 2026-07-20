@@ -1,4 +1,5 @@
 import { createElement, Moon, Sun, SunMoon } from 'lucide';
+import { SlidingThumb } from './sliding-thumb';
 
 export type ThemePreference = 'light' | 'system' | 'dark';
 
@@ -52,12 +53,17 @@ function applyPreference(pref: ThemePreference): void {
 export class ThemeToggle {
   private root: HTMLElement;
   private options: HTMLButtonElement[] = [];
+  private thumb: SlidingThumb;
   private mediaQuery: MediaQueryList;
   private onMediaChange: () => void;
 
   constructor(host: HTMLElement) {
     this.root = this.build();
     host.replaceChildren(this.root);
+    this.thumb = new SlidingThumb(this.root, {
+      itemSelector: '.theme-toggle-option',
+      activeSelector: '.theme-toggle-option[aria-checked="true"]',
+    });
     this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     this.onMediaChange = () => {
       const pref = getStoredPreference();
@@ -72,15 +78,10 @@ export class ThemeToggle {
 
   private build(): HTMLElement {
     const root = document.createElement('div');
-    root.className = 'theme-toggle';
+    root.className = 'theme-toggle segment-track';
     root.id = 'theme-toggle';
     root.setAttribute('role', 'radiogroup');
     root.setAttribute('aria-label', 'Color theme');
-
-    const thumb = document.createElement('span');
-    thumb.className = 'theme-toggle-thumb';
-    thumb.setAttribute('aria-hidden', 'true');
-    root.appendChild(thumb);
 
     for (const pref of PREFERENCES) {
       const button = document.createElement('button');
@@ -119,10 +120,17 @@ export class ThemeToggle {
       button.setAttribute('aria-checked', selected ? 'true' : 'false');
       button.tabIndex = selected ? 0 : -1;
     }
+    this.thumb.sync();
   }
 
   destroy(): void {
+    this.thumb.destroy();
     this.mediaQuery.removeEventListener('change', this.onMediaChange);
+  }
+
+  /** Re-measure the sliding thumb after layout / view transitions. */
+  resync(): void {
+    this.thumb.sync();
   }
 }
 
@@ -134,7 +142,12 @@ function mountThemeToggle(): void {
     document.querySelector<HTMLElement>('.header-right');
 
   if (!host) return;
-  if (host.querySelector('#theme-toggle') && mounted) return;
+
+  const existing = host.querySelector('#theme-toggle');
+  if (existing && mounted && host.contains(existing)) {
+    mounted.resync();
+    return;
+  }
 
   mounted?.destroy();
   mounted = new ThemeToggle(host);
