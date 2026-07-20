@@ -246,6 +246,38 @@ p {
   max-width: var(--measure);
 }
 
+/* ——— Scroll veil (soft glass under header) ——— */
+
+.site-scroll-veil {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  /* Full frost through the header band; stronger/longer fade only below it.
+     Blur strength aims at the lightbox page-blur look (filter: blur(28px)). */
+  --scroll-veil-fade: 7rem;
+  height: calc(var(--header-offset) + var(--scroll-veil-fade));
+  z-index: 40;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--color-ground) 88%, transparent);
+  backdrop-filter: blur(48px) saturate(1.05);
+  -webkit-backdrop-filter: blur(48px) saturate(1.05);
+  mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 var(--header-offset),
+    rgba(0, 0, 0, 0.55) calc(var(--header-offset) + 2rem),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 var(--header-offset),
+    rgba(0, 0, 0, 0.55) calc(var(--header-offset) + 2rem),
+    transparent 100%
+  );
+}
+
 /* ——— Header (detached green furniture mass) ——— */
 
 .site-header {
