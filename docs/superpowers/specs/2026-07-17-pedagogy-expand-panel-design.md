@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-17  
 **Status:** Approved for implementation  
-**Scope:** Home page “How Georgios teaches” (`PedagogySection` in `HomeExperience`)
+**Scope:** Home page “How George teaches” (`PedagogySection` in `HomeExperience`)
 
 ## Goal
 

@@ -87,8 +87,8 @@
 .he-hero {
   position: relative;
   isolation: isolate;
-  min-height: calc(100dvh - var(--header-height));
-  min-height: calc(100svh - var(--header-height));
+  min-height: calc(100dvh - var(--header-offset));
+  min-height: calc(100svh - var(--header-offset));
   color: var(--he-hero-ink);
   overflow: clip;
 }
@@ -177,14 +177,40 @@
   color: var(--he-hero-ink);
 }
 
-.he-hero__role {
+.he-hero__roles {
   margin: 0 0 var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
   max-width: 42ch;
+}
+
+.he-hero__role,
+.he-hero__doctoral,
+.he-hero__endorse-link {
+  margin: 0;
   font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 400;
   letter-spacing: 0.02em;
   line-height: 1.4;
   color: var(--he-hero-muted);
+}
+
+.he-hero__endorse {
+  margin: 0;
+}
+
+.he-hero__endorse-link {
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition:
+    color var(--duration) var(--ease-out),
+    border-color var(--duration) var(--ease-out);
+}
+
+.he-hero__endorse-link:hover {
+  color: var(--he-hero-ink);
+  border-bottom-color: color-mix(in srgb, var(--he-hero-ink) 45%, transparent);
 }
 
 .he-hero__sentence {
@@ -285,8 +311,15 @@
     color: var(--color-ink);
   }
 
-  .he-hero__role {
+  .he-hero__role,
+  .he-hero__doctoral,
+  .he-hero__endorse-link {
     color: var(--color-ink-muted);
+  }
+
+  .he-hero__endorse-link:hover {
+    color: var(--color-primary);
+    border-bottom-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
   }
 
   .he-hero__sentence {
@@ -606,7 +639,8 @@
 
 .he-appointments__title {
   margin: 0;
-  max-width: 16ch;
+  max-width: none;
+  white-space: nowrap;
   font-size: clamp(2rem, 4.2vw, 3rem);
 }
 
@@ -1006,61 +1040,6 @@
   font-size: clamp(1rem, 1.5vw, 1.125rem);
   line-height: 1.65;
   color: var(--color-ink-muted);
-}
-
-/* ——— Close / endorsement ——— */
-
-.he-close {
-  text-align: center;
-  padding-block: var(--he-pad) clamp(5rem, 14vh, 9rem);
-}
-
-.he-close__endorse {
-  margin: 0 0 clamp(2.5rem, 6vh, 4rem);
-}
-
-.he-close__endorse-link {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2.75rem;
-  padding-inline: 0.25rem;
-  font-size: 0.8125rem;
-  font-weight: 500;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--color-ink-muted);
-  text-decoration: none;
-  border-bottom: 1px solid transparent;
-  transition:
-    color var(--duration) var(--ease-out),
-    border-color var(--duration) var(--ease-out);
-}
-
-.he-close__endorse-link:hover {
-  color: var(--color-primary);
-  border-bottom-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
-}
-
-.he-close__title {
-  margin: 0 auto var(--space-md);
-  max-width: 14ch;
-  font-size: clamp(2.35rem, 6vw, 4.5rem);
-  line-height: 1.05;
-}
-
-.he-close__body {
-  margin: 0 auto var(--space-xl);
-  max-width: 34ch;
-  color: var(--color-ink-muted);
-}
-
-.he-close__cta {
-  min-height: 2.75rem;
-}
-
-.he-close .btn--primary {
-  color: var(--color-ink-on-secondary);
 }
 
 /* ——— Reduced motion ——— */

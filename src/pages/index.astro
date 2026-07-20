@@ -15,15 +15,15 @@ import {
 
 /** Served from public/images/ */
 const heroPortrait = {
-  src: '/images/Georgios%20Zerdalis.jpeg',
-  width: 853,
-  height: 1280,
+  src: '/images/George-Zerdalis-Hero.JPG',
+  width: 4209,
+  height: 6313,
 };
 
 const aboutPortrait = {
-  src: '/images/Georgios-Zerdalis-2.jpg',
-  width: 1440,
-  height: 1920,
+  src: '/images/George-Zerdalis-Jacket.jpeg',
+  width: 3058,
+  height: 4588,
 };
 
 const chapterImage = {
@@ -33,7 +33,7 @@ const chapterImage = {
 };
 ---
 
-<BaseLayout title="Georgios Zerdalis" description={meta.description}>
+<BaseLayout title="George Zerdalis" description={meta.description}>
   <HomeExperience
     client:load
     portraitSrc={heroPortrait.src}
@@ -70,10 +70,11 @@ const chapterImage = {
   @media (min-width: 900px) {
     body:has(.he) .site-header {
       position: fixed;
-      top: 0;
+      top: var(--chrome-inset);
       left: 0;
       right: 0;
       width: 100%;
+      margin-top: 0;
     }
 
     body:has(.he) .he-hero {

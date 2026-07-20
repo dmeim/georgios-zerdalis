@@ -1,6 +1,6 @@
-# Georgios Zerdalis
+# George Zerdalis
 
-Portfolio site for [Georgios Zerdalis](https://github.com/dmeim/georgios-zerdalis) — DMA candidate at the University of Miami Frost School of Music; timpanist, percussionist, and educator.
+Portfolio site for [George Zerdalis](https://github.com/dmeim/georgios-zerdalis) — DMA candidate at the University of Miami Frost School of Music; timpanist, percussionist, and educator.
 
 **Production:** https://georgios-zerdalis.dimitri-meimaridis.workers.dev
 

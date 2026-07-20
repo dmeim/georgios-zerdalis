@@ -9,12 +9,12 @@ interface Props {
 }
 
 const {
-  title = 'Georgios Zerdalis',
-  description = 'Timpanist & Educator — portfolio of Georgios Zerdalis.',
+  title = 'George Zerdalis',
+  description = 'Timpanist, Percussionist, and Educator — portfolio of George Zerdalis.',
 } = Astro.props;
 
 const pageTitle =
-  title === 'Georgios Zerdalis' ? title : `${title} · Georgios Zerdalis`;
+  title === 'George Zerdalis' ? title : `${title} · George Zerdalis`;
 
 const pathname = Astro.url.pathname;
 
@@ -78,7 +78,7 @@ const year = new Date().getFullYear();
   <body>
     <header class="site-header">
       <div class="site-header__inner">
-        <a class="site-brand" href="/">Georgios Zerdalis</a>
+        <a class="site-brand" href="/">George Zerdalis</a>
 
         <nav class="site-nav" aria-label="Primary">
           {
@@ -135,7 +135,7 @@ const year = new Date().getFullYear();
 
     <footer class="site-footer">
       <p class="site-footer__line">
-        &copy; {year} Georgios Zerdalis - Timpanist &amp; Educator
+        &copy; {year} George Zerdalis - Timpanist, Percussionist, and Educator
       </p>
     </footer>
 

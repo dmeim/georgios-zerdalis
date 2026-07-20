@@ -39,6 +39,7 @@ export type HomeExperienceProps = {
   hero: {
     name: string;
     role: string;
+    doctoral: string;
     sentence: string;
     ctas: { label: string; href: string }[];
   };
@@ -171,12 +172,14 @@ function HeroSection({
   portraitWidth,
   portraitHeight,
   hero,
+  endorsement,
   reduced,
 }: {
   portraitSrc: string;
   portraitWidth: number;
   portraitHeight: number;
   hero: HomeExperienceProps["hero"];
+  endorsement: HomeExperienceProps["endorsement"];
   reduced: boolean;
 }) {
   const ref = useRef<HTMLElement>(null);
@@ -226,8 +229,8 @@ function HeroSection({
               />
             </motion.div>
 
-            <motion.p
-              className="he-hero__role"
+            <motion.div
+              className="he-hero__roles"
               variants={{
                 hidden: { opacity: 0, y: 22 },
                 visible: {
@@ -237,8 +240,19 @@ function HeroSection({
                 },
               }}
             >
-              {hero.role}
-            </motion.p>
+              <p className="he-hero__role">{hero.role}</p>
+              <p className="he-hero__doctoral">{hero.doctoral}</p>
+              <p className="he-hero__endorse">
+                <a
+                  className="he-hero__endorse-link"
+                  href={endorsement.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {endorsement.label}
+                </a>
+              </p>
+            </motion.div>
 
             <motion.p
               className="he-hero__sentence"
@@ -285,12 +299,13 @@ function HeroSection({
           <button
             type="button"
             className="he-photo-trigger he-photo-trigger--fill"
-            aria-label="View portrait of Georgios Zerdalis"
+            aria-label="View portrait of George Zerdalis"
             onClick={(event) => {
               const layoutId = photoLayoutId(portraitSrc, "hero");
               openPhotoFromEvent(event, {
                 src: portraitSrc,
-                alt: "Georgios Zerdalis",
+                alt: "George Zerdalis",
+                caption: "Photo By: @photoshooters_co",
                 layoutId,
               });
             }}
@@ -553,14 +568,10 @@ function AppointmentsSection({
     >
       <div className="he__inner">
         <header className="he-appointments__header">
-          <Reveal>
-            <p className="he__eyebrow">Selected appointments</p>
-          </Reveal>
           <TextReveal
             text="Where the work lives"
             as="h2"
             className="he-appointments__title he__serif-title"
-            delay={0.06}
           />
         </header>
 
@@ -662,12 +673,12 @@ function BioSection({
             <button
               type="button"
               className="he-photo-trigger he-photo-trigger--fill"
-              aria-label="View Georgios Zerdalis with snare drum"
+              aria-label="View portrait of George Zerdalis"
               onClick={(event) => {
                 const layoutId = photoLayoutId(aboutPortraitSrc, "bio");
                 openPhotoFromEvent(event, {
                   src: aboutPortraitSrc,
-                  alt: "Georgios Zerdalis with snare drum",
+                  alt: "George Zerdalis",
                   layoutId,
                 });
               }}
@@ -796,12 +807,12 @@ function PedagogySection({
   return (
     <section
       className="he-pedagogy he__section"
-      aria-label="How Georgios teaches"
+      aria-label="How George teaches"
     >
       <div className="he__inner">
         <header className="he-pedagogy__header">
           <Reveal>
-            <p className="he__eyebrow">How Georgios teaches</p>
+            <p className="he__eyebrow">How George teaches</p>
           </Reveal>
         </header>
 
@@ -884,58 +895,6 @@ function PedagogySection({
   );
 }
 
-function CloseSection({
-  endorsement,
-}: {
-  endorsement: HomeExperienceProps["endorsement"];
-}) {
-  return (
-    <section
-      className="he-close he__section"
-      aria-label="Begin a conversation"
-    >
-      <div className="he__inner">
-        <Reveal>
-          <p className="he-close__endorse">
-            <Magnetic strength={0.18}>
-              <a
-                className="he-close__endorse-link"
-                href={endorsement.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {endorsement.label}
-              </a>
-            </Magnetic>
-          </p>
-        </Reveal>
-
-        <TextReveal
-          text="Begin a conversation"
-          as="h2"
-          className="he-close__title he__serif-title"
-          delay={0.08}
-        />
-
-        <Reveal delay={0.12}>
-          <p className="he-close__body">
-            For collaborations, lessons, or inquiries — Georgios welcomes your
-            message.
-          </p>
-        </Reveal>
-
-        <Reveal delay={0.18}>
-          <Magnetic strength={0.25}>
-            <a className="btn btn--primary he-close__cta" href="/connect">
-              Get in Touch
-            </a>
-          </Magnetic>
-        </Reveal>
-      </div>
-    </section>
-  );
-}
-
 export default function HomeExperience({
   portraitSrc,
   portraitWidth,
@@ -966,6 +925,7 @@ export default function HomeExperience({
             portraitWidth={portraitWidth}
             portraitHeight={portraitHeight}
             hero={hero}
+            endorsement={endorsement}
             reduced={Boolean(reduced)}
           />
           <ChapterSection
@@ -984,7 +944,6 @@ export default function HomeExperience({
           />
           <QuoteSection quote={quote} />
           <PedagogySection pedagogy={pedagogy} />
-          <CloseSection endorsement={endorsement} />
         </div>
         <PhotoLightbox />
       </LayoutGroup>

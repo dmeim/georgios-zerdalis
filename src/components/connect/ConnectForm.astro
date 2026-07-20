@@ -147,7 +147,7 @@ const { fields, submitLabel } = connect.form;
 
       if (!webhook) {
         setStatus(
-          'Thanks for filling this out — the form is not connected yet. Please email Georgios directly for now.',
+          'Thanks for filling this out — the form is not connected yet. Please email George directly for now.',
           'disconnected',
         );
         return;
@@ -168,10 +168,10 @@ const { fields, submitLabel } = connect.form;
         }
 
         form.reset();
-        setStatus('Message sent — thank you. Georgios will be in touch soon.', 'success');
+        setStatus('Message sent — thank you. George will be in touch soon.', 'success');
       } catch {
         setStatus(
-          'Something went wrong sending your message. Please try again or email Georgios directly.',
+          'Something went wrong sending your message. Please try again or email George directly.',
           'error',
         );
       } finally {

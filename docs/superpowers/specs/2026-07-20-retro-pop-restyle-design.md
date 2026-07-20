@@ -2,7 +2,7 @@
 
 **Date:** 2026-07-20  
 **Status:** Approved for implementation planning  
-**Scope:** Light-mode visual restyle of the existing Georgios Zerdalis site toward the “retro-pop” language from the reference café/retail interiors
+**Scope:** Light-mode visual restyle of the existing George Zerdalis site toward the “retro-pop” language from the reference café/retail interiors
 
 ## Goal
 

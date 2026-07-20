@@ -4,7 +4,6 @@ import { appointments } from '../../content/site';
 
 <section class="appointments reveal" aria-labelledby="appointments-title">
   <header class="appointments__header">
-    <p class="appointments__eyebrow">Selected appointments</p>
     <h2 id="appointments-title" class="appointments__title">Where the work lives</h2>
   </header>
 
@@ -43,18 +42,10 @@ import { appointments } from '../../content/site';
     margin-bottom: var(--space-2xl);
   }
 
-  .appointments__eyebrow {
-    margin: 0 0 var(--space-md);
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.16em;
-    text-transform: uppercase;
-    color: var(--color-primary);
-  }
-
   .appointments__title {
     margin: 0;
-    max-width: 16ch;
+    max-width: none;
+    white-space: nowrap;
   }
 
   .appointments__list {

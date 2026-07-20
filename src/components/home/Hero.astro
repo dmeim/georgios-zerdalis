@@ -1,13 +1,13 @@
 ---
-import { hero } from '../../content/site';
+import { hero, endorsement } from '../../content/site';
 ---
 
 <section class="hero" aria-label="Introduction">
   <div class="hero__media" aria-hidden="true">
     <img
-      src="/images/Georgios%20Zerdalis.jpeg"
-      width="853"
-      height="1280"
+      src="/images/George-Zerdalis-Hero.JPG"
+      width="4209"
+      height="6313"
       alt=""
       class="hero__image"
       loading="eager"
@@ -19,7 +19,20 @@ import { hero } from '../../content/site';
 
   <div class="hero__content">
     <h1 class="hero__name">{hero.name}</h1>
-    <p class="hero__role">{hero.role}</p>
+    <div class="hero__roles">
+      <p class="hero__role">{hero.role}</p>
+      <p class="hero__doctoral">{hero.doctoral}</p>
+      <p class="hero__endorse">
+        <a
+          class="hero__endorse-link"
+          href={endorsement.url}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          {endorsement.label}
+        </a>
+      </p>
+    </div>
     <p class="hero__sentence">{hero.sentence}</p>
     <div class="hero__ctas">
       {
@@ -42,8 +55,8 @@ import { hero } from '../../content/site';
     isolation: isolate;
     display: grid;
     align-items: end;
-    min-height: calc(100dvh - var(--header-height));
-    min-height: calc(100svh - var(--header-height));
+    min-height: calc(100dvh - var(--header-offset));
+    min-height: calc(100svh - var(--header-offset));
     color: #f3eee6;
   }
 
@@ -102,14 +115,40 @@ import { hero } from '../../content/site';
     color: #f3eee6;
   }
 
-  .hero__role {
+  .hero__roles {
     margin: 0 0 var(--space-lg);
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
     max-width: 42ch;
+  }
+
+  .hero__role,
+  .hero__doctoral,
+  .hero__endorse-link {
+    margin: 0;
     font-size: clamp(1.05rem, 2vw, 1.25rem);
     font-weight: 400;
     letter-spacing: 0.02em;
     line-height: 1.4;
     color: rgba(243, 238, 230, 0.82);
+  }
+
+  .hero__endorse {
+    margin: 0;
+  }
+
+  .hero__endorse-link {
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    transition:
+      color var(--duration) var(--ease-out),
+      border-color var(--duration) var(--ease-out);
+  }
+
+  .hero__endorse-link:hover {
+    color: #f3eee6;
+    border-bottom-color: rgba(243, 238, 230, 0.45);
   }
 
   .hero__sentence {

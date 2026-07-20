@@ -1,5 +1,5 @@
 /**
- * Site content for Georgios Zerdalis.
+ * Site content for George Zerdalis.
  * Primary source: https://groverpro.com/artist/georgios-zerdalis
  * Secondary: local CV PDF + legacy src/main.js (email, venues, form labels).
  */
@@ -48,6 +48,7 @@ export type SiteMeta = {
 export type HeroContent = {
   name: string;
   role: string;
+  doctoral: string;
   sentence: string;
   ctas: Cta[];
 };
@@ -101,18 +102,20 @@ export type SiteContent = {
 };
 
 export const meta: SiteMeta = {
-  title: "Georgios Zerdalis | Timpanist & Educator",
+  title: "George Zerdalis | Timpanist, Percussionist, and Educator",
   description:
-    "Georgios Zerdalis — timpanist, percussionist, and educator. Doctoral Candidate (DMA) at the University of Miami Frost School of Music; formerly timpani lecturer at Hochschule für Musik Detmold and solo guest timpanist of the Detmold Chamber Orchestra.",
+    "George Zerdalis — timpanist, percussionist, and educator. Doctoral Candidate (DMA) at the University of Miami Frost School of Music; formerly timpani lecturer at Hochschule für Musik Detmold and solo guest timpanist of the Detmold Chamber Orchestra.",
 };
 
 export const hero: HeroContent = {
-  name: "Georgios Zerdalis",
-  role: "Timpanist & Educator · Doctoral Candidate, Frost School of Music",
+  name: "George Zerdalis",
+  role: "Timpanist, Percussionist, and Educator",
+  doctoral:
+    "Doctoral Candidate, University of Miami · Frost School of Music",
   sentence:
-    "Based in the United States, Georgios combines technical excellence with a mindful, student-centered approach as a performer and educator.",
+    "Based in the United States, George combines technical excellence with a mindful, student-centered approach as a performer and educator.",
   ctas: [
-    { label: "Get in Touch", href: "/connect" },
+    { label: "Let's Connect", href: "/connect" },
     { label: "View Gallery", href: "/gallery" },
   ],
 };
@@ -120,7 +123,7 @@ export const hero: HeroContent = {
 export const currentChapter: CurrentChapter = {
   eyebrow: "Current chapter",
   title: "Doctor of Musical Arts — Frost School of Music",
-  body: "Based in the United States, Georgios Zerdalis is pursuing his Doctor of Musical Arts (DMA) at the University of Miami’s Frost School of Music (expected 2029). Prior to Miami, he served as timpani and percussion lecturer at the Hochschule für Musik Detmold and as solo guest timpanist and percussionist of the Detmold Chamber Orchestra (DKO).",
+  body: "Based in the United States, George Zerdalis is pursuing his Doctor of Musical Arts (DMA) at the University of Miami’s Frost School of Music (expected 2029). Prior to Miami, he served as timpani and percussion lecturer at the Hochschule für Musik Detmold and as solo guest timpanist and percussionist of the Detmold Chamber Orchestra (DKO).",
 };
 
 export const appointments: Appointment[] = [
@@ -128,7 +131,7 @@ export const appointments: Appointment[] = [
     title: "Lecturer of Timpani & Percussion",
     organization: "Hochschule für Musik Detmold",
     location: "Germany",
-    dates: "2023–Present",
+    dates: "2023–2026",
     image: "/images/Hochschule-für-Musik-Detmold.jpg",
     url: "https://www.hfm-detmold.de/",
     bullets: [
@@ -141,7 +144,7 @@ export const appointments: Appointment[] = [
     title: "Solo Guest Performer",
     organization: "Detmold Chamber Orchestra (DKO)",
     location: "Germany",
-    dates: "2023–Present",
+    dates: "2023–2026",
     image: "/images/Detmold-Chamber-Orchestra-(DKO).jpg",
     url: "https://www.detmolder-kammerorchester.de/",
     bullets: [
@@ -184,13 +187,13 @@ export const education: EducationItem[] = [
   },
 ];
 
-/** ~175 words — adapted from Grover Pro + CV; always Georgios on-site. */
-export const shortBio = `Based in the United States, timpanist and percussionist Georgios Zerdalis is pursuing his Doctor of Musical Arts (DMA) at the University of Miami’s Frost School of Music, with an expected completion in 2029. Prior to his move to Miami, Georgios served as the timpani and percussion lecturer at the Hochschule für Musik Detmold and as the solo guest timpanist and percussionist of the Detmold Chamber Orchestra. An internationally active performer and educator who has presented masterclasses across Europe and the U.S., including at SUNY Fredonia, he combines technical excellence with a mindful, student-centered approach in all his artistic endeavors. Known for precision, musical depth, and leadership in ensemble work, Georgios brings a distinctive blend of artistry and pedagogy that fosters growth both on and off the stage. His path also includes principal timpani with the Athens Philharmonia Orchestra and formative study with mentors such as Professor Peter Prommel and Marinos Tranoudakis, Principal Timpanist of the Greek National Opera.`;
+/** ~175 words — adapted from Grover Pro + CV; always George on-site. */
+export const shortBio = `Based in the United States, timpanist and percussionist George Zerdalis is pursuing his Doctor of Musical Arts (DMA) at the University of Miami’s Frost School of Music, with an expected completion in 2029. Prior to his move to Miami, George served as the timpani and percussion lecturer at the Hochschule für Musik Detmold and as the solo guest timpanist and percussionist of the Detmold Chamber Orchestra. An internationally active performer and educator who has presented masterclasses across Europe and the U.S., including at SUNY Fredonia, he combines technical excellence with a mindful, student-centered approach in all his artistic endeavors. Known for precision, musical depth, and leadership in ensemble work, George brings a distinctive blend of artistry and pedagogy that fosters growth both on and off the stage. His path also includes principal timpani with the Athens Philharmonia Orchestra and formative study with mentors such as Professor Peter Prommel and Marinos Tranoudakis, Principal Timpanist of the Greek National Opera.`;
 
 /** Full quote from Grover Pro artist page (mentor / pedagogy statement). */
 export const mentorQuote: MentorQuote = {
   text: "My commitment to the fine details of craftsmanship and sound is something I owe directly to my mentors. My standards of discipline and vital orchestral knowledge were shaped by my lifelong mentor, Professor Peter Prommel, at the Hochschule für Musik Detmold completely transformed my worldview—teaching me to stay endlessly curious, continuously evolve, and integrate a heavy focus on psychology and mindfulness into my own pedagogy. And of course, my teacher Mr. Marinos Tranoudakis (Principal Timpanist of the Greek National Opera), who continues to serve as a steady, guiding hand whenever I need it.",
-  attribution: "Georgios Zerdalis",
+  attribution: "George Zerdalis",
 };
 
 const pedagogyPlaceholder =
@@ -272,7 +275,7 @@ export const venues: VenueHighlight[] = [
   {
     name: "Carnegie Hall",
     place: "New York City, USA",
-    image: "/images/Carnegie-Hall.jpg",
+    image: "/images/Carnegie-Hall.png",
   },
   {
     name: "Konzerthaus",

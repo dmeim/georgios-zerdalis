@@ -1,11 +1,11 @@
 {
   "source": "instagram:@georgezerdalis temporary",
   "status": "partial",
-  "notes": "Instagram feed scrape blocked (401/403). Only low-res public profile pic obtained via instaloader. Studio hero portrait included as primary gallery placeholder. Additional HQ images/videos pending delivery from Georgios. No videos available.",
+  "notes": "Instagram feed scrape blocked (401/403). Only low-res public profile pic obtained via instaloader. Studio hero portrait included as primary gallery placeholder. Additional HQ images/videos pending delivery from George. No videos available.",
   "portrait": {
-    "path": "public/images/Georgios Zerdalis.jpeg",
-    "filename": "Georgios Zerdalis.jpeg",
-    "source": "public/images/Georgios Zerdalis.jpeg"
+    "path": "public/images/George Zerdalis.jpeg",
+    "filename": "George Zerdalis.jpeg",
+    "source": "public/images/George Zerdalis.jpeg"
   },
   "items": [
     {
@@ -13,7 +13,7 @@
       "type": "image",
       "filename": "studio-portrait.jpeg",
       "path": "src/assets/gallery/studio-portrait.jpeg",
-      "alt": "Georgios Zerdalis studio portrait",
+      "alt": "George Zerdalis studio portrait",
       "caption": "Studio portrait",
       "source": "instagram:@georgezerdalis temporary"
     },
@@ -22,7 +22,7 @@
       "type": "image",
       "filename": "ig-profile.jpg",
       "path": "src/assets/gallery/ig-profile.jpg",
-      "alt": "Georgios Zerdalis Instagram profile photo",
+      "alt": "George Zerdalis Instagram profile photo",
       "caption": "Instagram profile photo (320×320 placeholder)",
       "source": "instagram:@georgezerdalis temporary"
     }
