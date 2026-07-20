@@ -111,7 +111,7 @@ export const hero: HeroContent = {
   name: "George Zerdalis",
   role: "Timpanist, Percussionist, and Educator",
   doctoral:
-    "Doctoral Candidate, University of Miami · Frost School of Music",
+    "Doctoral Candidate\nUniversity of Miami · Frost School of Music",
   sentence:
     "Based in the United States, George combines technical excellence with a mindful, student-centered approach as a performer and educator.",
   ctas: [
@@ -145,7 +145,7 @@ export const appointments: Appointment[] = [
     organization: "Detmold Chamber Orchestra (DKO)",
     location: "Germany",
     dates: "2023–2026",
-    image: "/images/Detmold-Chamber-Orchestra-(DKO).jpg",
+    image: "/images/Solo Guest Performer.jpg",
     url: "https://www.detmolder-kammerorchester.de/",
     bullets: [
       "Featured soloist and principal timpanist on national tours",
@@ -157,7 +157,7 @@ export const appointments: Appointment[] = [
     organization: "Athens Philharmonia Orchestra",
     location: "Greece",
     dates: "2022–2023",
-    image: "/images/Athens-Philharmonia-Orchestra.jpg",
+    image: "/images/Principal Timpanist.jpeg",
     url: "https://www.apho.gr/home/en",
     bullets: [
       "Won national audition to serve as principal timpanist",

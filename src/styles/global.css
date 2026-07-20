@@ -35,7 +35,7 @@
 
   --measure: 65ch;
   --site-max: 80rem;
-  --chrome-inset: 0.75rem;
+  --chrome-inset: 1.5rem;
   --header-height: 4.25rem;
   --header-offset: calc(var(--chrome-inset) + var(--header-height));
   --radius: 0.85rem;
@@ -250,21 +250,19 @@ p {
 
 .site-header {
   position: sticky;
-  top: var(--chrome-inset);
+  top: 0;
   z-index: 50;
-  height: var(--header-height);
-  margin-top: var(--chrome-inset);
-  display: flex;
-  align-items: center;
+  /* Equal cream gap on top / left / right — same token as footer */
+  padding: var(--chrome-inset) var(--chrome-inset) 0;
   background: transparent;
   color: var(--color-ink-on-primary);
+  box-sizing: border-box;
 }
 
 .site-header__inner {
-  width: min(100% - 2rem, var(--site-max));
-  height: 100%;
-  margin-inline: auto;
-  padding-inline: var(--space-md);
+  width: 100%;
+  height: var(--header-height);
+  padding-inline: var(--chrome-inset);
   display: grid;
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
@@ -272,6 +270,7 @@ p {
   border-radius: var(--he-frame-radius);
   background: var(--color-primary);
   border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
+  box-sizing: border-box;
 }
 
 .site-brand {
@@ -543,7 +542,7 @@ p {
   position: relative;
   z-index: 1;
   flex: 1;
-  width: min(100% - 2rem, var(--site-max));
+  width: min(calc(100% - 2 * var(--chrome-inset)), var(--site-max));
   margin-inline: auto;
   padding-block: var(--space-2xl);
 }
@@ -551,14 +550,14 @@ p {
 .site-footer {
   position: relative;
   z-index: 1;
-  width: min(100% - 2rem, var(--site-max));
+  width: calc(100% - 2 * var(--chrome-inset));
   margin-inline: auto;
   margin-bottom: var(--chrome-inset);
-  padding-block: var(--space-lg);
-  padding-inline: var(--space-md);
+  padding: var(--chrome-inset);
   border-radius: var(--he-frame-radius);
   background: var(--color-primary);
   border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
+  box-sizing: border-box;
 }
 
 .site-footer__line {

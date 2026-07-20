@@ -523,8 +523,10 @@ function VenuesMarquee({
   const loop = [...items, ...items];
 
   return (
-    <section className="he-venues he__bleed" aria-label="Stages">
-      <p className="he-venues__label">Stages</p>
+    <section className="he-venues" aria-label="Stages">
+      <div className="he__inner he-venues__label-row">
+        <p className="he-venues__label">Stages</p>
+      </div>
 
       {reduced ? (
         <div className="he-venues__static">
@@ -537,7 +539,7 @@ function VenuesMarquee({
           ))}
         </div>
       ) : (
-        <div className="he-venues__track-wrap">
+        <div className="he-venues__track-wrap he__bleed">
           <div className="he-venues__track he-venues__track--animate">
             <div className="he-venues__group">
               {loop.map((venue, i) => (

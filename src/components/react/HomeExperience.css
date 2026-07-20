@@ -185,6 +185,10 @@
   max-width: 42ch;
 }
 
+.he-hero__doctoral {
+  white-space: pre-line;
+}
+
 .he-hero__role,
 .he-hero__doctoral,
 .he-hero__endorse-link {
@@ -197,7 +201,8 @@
 }
 
 .he-hero__endorse {
-  margin: 0;
+  /* Match space between endorse → sentence (roles margin-bottom) */
+  margin: calc(var(--space-lg) - 0.35rem) 0 0;
 }
 
 .he-hero__endorse-link {
@@ -498,18 +503,38 @@
   --he-venues-card: calc(100vw / 2.5 - var(--he-venues-gap));
   padding-block: clamp(2.5rem, 7vh, 4.5rem);
   border-bottom: 1px solid var(--color-border);
-  overflow: hidden;
+}
+
+/* Same centered pair as .he-chapter__layout so the label
+   shares the Current Chapter left edge on desktop. */
+.he-venues__label-row {
+  margin-bottom: var(--space-lg);
 }
 
 .he-venues__label {
-  width: min(100% - 2 * var(--he-gutter), var(--he-max));
-  margin: 0 auto var(--space-lg);
+  /* Override global `p { max-width: 65ch }` — that + auto margins
+     was centering this label in the viewport. */
+  max-width: none;
+  margin: 0;
   font-family: var(--font-sans);
   font-size: 0.75rem;
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-primary);
+}
+
+@media (min-width: 900px) {
+  .he-venues__label-row {
+    display: grid;
+    grid-template-columns: minmax(0, 36rem) minmax(0, 40rem);
+    justify-content: center;
+    gap: clamp(3.5rem, 7vw, 7rem);
+  }
+
+  .he-venues__label {
+    grid-column: 1;
+  }
 }
 
 .he-venues__track-wrap {
@@ -928,10 +953,6 @@
 
 /* ——— Pedagogy ——— */
 
-.he-pedagogy {
-  border-bottom: 1px solid var(--color-border);
-}
-
 .he-pedagogy__header {
   margin-bottom: clamp(2rem, 5vh, 3.25rem);
 }
@@ -954,10 +975,6 @@
 
 .he-pedagogy__item {
   border-top: 1px solid var(--color-border);
-}
-
-.he-pedagogy__item:last-child {
-  border-bottom: 1px solid var(--color-border);
 }
 
 .he-pedagogy__reveal {
