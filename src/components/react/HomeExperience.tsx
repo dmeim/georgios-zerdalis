@@ -40,7 +40,6 @@ export type HomeExperienceProps = {
     name: string;
     role: string;
     doctoral: string;
-    sentence: string;
     ctas: { label: string; href: string }[];
   };
   chapter: { eyebrow: string; title: string; body: string };
@@ -211,6 +210,7 @@ function HeroSection({
       <div className="he-hero__layout">
         <div className="he-hero__content">
           <motion.div
+            className="he-hero__stack"
             initial={reduced ? false : "hidden"}
             animate={reduced ? undefined : "visible"}
             variants={{
@@ -262,20 +262,6 @@ function HeroSection({
                 </a>
               </p>
             </motion.div>
-
-            <motion.p
-              className="he-hero__sentence"
-              variants={{
-                hidden: { opacity: 0, y: 22 },
-                visible: {
-                  opacity: 1,
-                  y: 0,
-                  transition: { duration: 0.8, ease: EASE },
-                },
-              }}
-            >
-              {hero.sentence}
-            </motion.p>
 
             <motion.div
               className="he-hero__ctas"

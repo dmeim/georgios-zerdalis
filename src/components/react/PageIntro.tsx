@@ -6,7 +6,7 @@ import {
 import "./PageIntro.css";
 
 type PageIntroProps = {
-  title: string;
+  title?: string;
   lede?: string;
   eyebrow?: string;
   className?: string;
@@ -20,6 +20,8 @@ export function PageIntro({
   className = "",
   titleId,
 }: PageIntroProps) {
+  const hasTitle = Boolean(title?.trim());
+
   return (
     <MotionConfigProvider>
       <header className={`page-intro ${className}`.trim()}>
@@ -28,16 +30,24 @@ export function PageIntro({
             <p className="page-intro__eyebrow">{eyebrow}</p>
           </Reveal>
         ) : null}
-        <TextReveal
-          text={title}
-          as="h1"
-          className="page-intro__title"
-          delay={eyebrow ? 0.08 : 0}
-          id={titleId}
-        />
+        {hasTitle ? (
+          <TextReveal
+            text={title!}
+            as="h1"
+            className="page-intro__title"
+            delay={eyebrow ? 0.08 : 0}
+            id={titleId}
+          />
+        ) : null}
         {lede ? (
-          <Reveal delay={0.18} y={20}>
-            <p className="page-intro__lede">{lede}</p>
+          <Reveal delay={hasTitle ? 0.18 : 0} y={20}>
+            {hasTitle ? (
+              <p className="page-intro__lede">{lede}</p>
+            ) : (
+              <h1 className="page-intro__lede" id={titleId}>
+                {lede}
+              </h1>
+            )}
           </Reveal>
         ) : null}
       </header>

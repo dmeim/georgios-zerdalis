@@ -49,7 +49,6 @@ export type HeroContent = {
   name: string;
   role: string;
   doctoral: string;
-  sentence: string;
   ctas: Cta[];
 };
 
@@ -112,8 +111,6 @@ export const hero: HeroContent = {
   role: "Timpanist, Percussionist, and Educator",
   doctoral:
     "Doctoral Candidate\nUniversity of Miami · Frost School of Music",
-  sentence:
-    "Based in the United States, George combines technical excellence with a mindful, student-centered approach as a performer and educator.",
   ctas: [
     { label: "Let's Connect", href: "/connect" },
     { label: "View Gallery", href: "/gallery" },

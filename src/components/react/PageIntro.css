@@ -30,6 +30,7 @@
   max-width: 36ch;
   font-family: var(--font-sans);
   font-size: 1.0625rem;
+  font-weight: 400;
   line-height: 1.65;
   color: var(--color-ink-muted);
 }

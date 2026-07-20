@@ -2,6 +2,8 @@ export type PhotoLightboxItem = {
   src: string;
   alt?: string;
   caption?: string;
+  /** When set, closing the lightbox should restore this collection’s modal. */
+  collectionId?: string;
 };
 
 export type PhotoOriginRect = {

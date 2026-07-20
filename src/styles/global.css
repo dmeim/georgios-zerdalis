@@ -14,7 +14,7 @@
   --color-accent: var(--color-secondary);
   --color-accent-soft: #3a6874;
   --color-border: color-mix(in srgb, var(--color-primary) 22%, transparent);
-  --color-glyph: var(--color-primary);
+  --color-glyph: var(--color-secondary);
   --color-overlay: color-mix(in srgb, var(--color-ground) 88%, transparent);
   --color-spot: color-mix(in srgb, var(--color-primary) 10%, transparent);
   --color-chrome: #c8cbc9;
@@ -58,10 +58,6 @@
   color-scheme: light;
 }
 
-html[data-page="connect"] {
-  --color-glyph: var(--color-secondary);
-}
-
 [data-theme="light"] {
   color-scheme: light;
 }
@@ -79,7 +75,7 @@ html[data-page="connect"] {
   --color-accent: var(--color-secondary);
   --color-accent-soft: #4a7a85;
   --color-border: rgba(236, 234, 230, 0.1);
-  --color-glyph: var(--color-primary);
+  --color-glyph: var(--color-secondary);
   --color-overlay: rgba(5, 6, 7, 0.75);
   --color-spot: color-mix(in srgb, var(--color-primary) 14%, transparent);
   --color-chrome: #9aa0a8;

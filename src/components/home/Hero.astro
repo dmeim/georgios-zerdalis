@@ -33,7 +33,6 @@ import { hero, endorsement } from '../../content/site';
         </a>
       </p>
     </div>
-    <p class="hero__sentence">{hero.sentence}</p>
     <div class="hero__ctas">
       {
         hero.ctas.map((cta, i) => (
@@ -151,14 +150,6 @@ import { hero, endorsement } from '../../content/site';
     border-bottom-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
   }
 
-  .hero__sentence {
-    margin: 0 0 var(--space-xl);
-    max-width: 36ch;
-    font-size: 1.05rem;
-    line-height: 1.55;
-    color: rgba(243, 238, 230, 0.72);
-  }
-
   .hero__ctas {
     display: flex;
     flex-wrap: wrap;
@@ -232,10 +223,6 @@ import { hero, endorsement } from '../../content/site';
   @media (max-width: 640px) {
     .hero__name {
       max-width: none;
-    }
-
-    .hero__sentence {
-      max-width: 42ch;
     }
   }
 </style>

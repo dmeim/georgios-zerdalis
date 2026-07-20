@@ -13,20 +13,19 @@ type FieldPoint = {
 const SPACING = 12;
 const DPR_CAP = 2;
 
-function readCssColorRgb(varName: string, fallback: string): string {
-  const probe = document.createElement("span");
-  probe.style.cssText = `position:absolute;visibility:hidden;pointer-events:none;color:var(${varName})`;
-  document.documentElement.appendChild(probe);
-  const computed = getComputedStyle(probe).color;
-  probe.remove();
+/** Always secondary orange — never page- or primary-tinted. */
+const GLYPH_RGB_LIGHT = "253, 94, 2"; // #fd5e02
+const GLYPH_RGB_DARK = "255, 122, 51"; // #ff7a33
 
-  const match = computed.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/);
-  if (match) return `${match[1]}, ${match[2]}, ${match[3]}`;
-  return fallback;
+/** Dark ground needs stronger dots; light cream already reads well. */
+const DARK_ALPHA_MULT = 3.4;
+
+function isDarkTheme(): boolean {
+  return document.documentElement.getAttribute("data-theme") === "dark";
 }
 
-function readGlyphRgb(): string {
-  return readCssColorRgb("--color-glyph", "2, 51, 65");
+function glyphRgb(): string {
+  return isDarkTheme() ? GLYPH_RGB_DARK : GLYPH_RGB_LIGHT;
 }
 
 function prefersReducedMotion(): boolean {
@@ -67,11 +66,17 @@ export default function GlyphField() {
     if (!ctx) return;
 
     let points: FieldPoint[] = [];
-    let inkRgb = readGlyphRgb();
+    let inkRgb = glyphRgb();
+    let alphaMult = isDarkTheme() ? DARK_ALPHA_MULT : 1;
     let rafId = 0;
     let running = false;
     let reduced = prefersReducedMotion();
     let resizeTimer = 0;
+
+    const syncAppearance = () => {
+      inkRgb = glyphRgb();
+      alphaMult = isDarkTheme() ? DARK_ALPHA_MULT : 1;
+    };
 
     const sizeCanvas = () => {
       const dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
@@ -97,7 +102,7 @@ export default function GlyphField() {
         const y = p.y + wave * p.amplitude;
 
         ctx.beginPath();
-        ctx.fillStyle = `rgba(${inkRgb}, ${p.alpha})`;
+        ctx.fillStyle = `rgba(${inkRgb}, ${Math.min(1, p.alpha * alphaMult)})`;
         ctx.arc(x, y, p.radius, 0, Math.PI * 2);
         ctx.fill();
       }
@@ -144,20 +149,27 @@ export default function GlyphField() {
       else syncMotion();
     };
 
-    const themeObserver = new MutationObserver(() => {
-      inkRgb = readGlyphRgb();
+    const onAppearanceChange = () => {
+      syncAppearance();
       if (reduced || document.hidden || !running) paintStatic();
-    });
+    };
+
+    const themeObserver = new MutationObserver(onAppearanceChange);
     themeObserver.observe(document.documentElement, {
       attributes: true,
-      attributeFilter: ["data-theme", "data-page"],
+      attributeFilter: ["data-theme"],
     });
+
+    // ClientRouter can keep this island alive across soft navigations —
+    // re-sync so Home never keeps a stale primary/blue ink from an older paint.
+    document.addEventListener("astro:page-load", onAppearanceChange);
 
     const motionMq = window.matchMedia("(prefers-reduced-motion: reduce)");
     const onMotionChange = () => syncMotion();
     motionMq.addEventListener("change", onMotionChange);
 
     sizeCanvas();
+    syncAppearance();
     syncMotion();
 
     window.addEventListener("resize", onResize);
@@ -168,6 +180,7 @@ export default function GlyphField() {
       window.clearTimeout(resizeTimer);
       window.removeEventListener("resize", onResize);
       document.removeEventListener("visibilitychange", onVisibility);
+      document.removeEventListener("astro:page-load", onAppearanceChange);
       motionMq.removeEventListener("change", onMotionChange);
       themeObserver.disconnect();
     };
