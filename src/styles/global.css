@@ -388,10 +388,13 @@ p {
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding-inline: 0.75rem;
+  /* Asymmetric padding: +letter-spacing on the start balances the trailing
+     tracking space; slight top pad drops all-caps into optical center. */
+  padding: 1.5px calc(0.75rem) 0 calc(0.75rem + 0.12em);
   font-family: var(--font-sans);
   font-size: 0.8125rem;
   font-weight: 300;
+  line-height: 1;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: inherit;
