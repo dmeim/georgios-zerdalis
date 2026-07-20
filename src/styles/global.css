@@ -1,16 +1,22 @@
-/* Georgios Zerdalis — Midnight Concert Hall */
+/* Georgios Zerdalis — Retro-pop (cream room, green furniture) */
 
 :root {
-  /* Cool stage night — dark default */
-  --color-ground: #050607;
-  --color-ground-elevated: #0e1014;
-  --color-ink: #eceae6;
-  --color-ink-muted: #9aa0a8;
-  --color-accent: #d4bc8a;
-  --color-accent-soft: #8fa3b0;
-  --color-border: rgba(236, 234, 230, 0.1);
-  --color-overlay: rgba(5, 6, 7, 0.75);
-  --color-spot: rgba(212, 188, 138, 0.12);
+  /* Light is the designed default */
+  --color-ground: #f3efe8;
+  --color-ground-elevated: #ebe5db;
+  --color-ink: #1a1f1c;
+  --color-ink-muted: #5c6862;
+  --color-primary: #467066;
+  --color-secondary: #c24427;
+  --color-ink-on-primary: #f3efe8;
+  --color-ink-on-secondary: #f3efe8;
+  /* Action alias — CTAs / focus / active. Decorative accents use --color-primary. */
+  --color-accent: var(--color-secondary);
+  --color-accent-soft: #6a8a80;
+  --color-border: color-mix(in srgb, var(--color-primary) 22%, transparent);
+  --color-overlay: color-mix(in srgb, var(--color-ground) 88%, transparent);
+  --color-spot: color-mix(in srgb, var(--color-primary) 10%, transparent);
+  --color-chrome: #c8cbc9;
 
   --font-display: "Syne", system-ui, sans-serif;
   --font-serif: "Instrument Serif", Georgia, serif;
@@ -30,7 +36,7 @@
   --measure: 65ch;
   --site-max: 80rem;
   --header-height: 4.25rem;
-  --radius: 2px;
+  --radius: 0.85rem;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
@@ -46,25 +52,30 @@
     0 18px 40px color-mix(in srgb, var(--color-ink) 12%, transparent),
     0 36px 72px color-mix(in srgb, var(--color-ink) 8%, transparent);
 
-  color-scheme: dark;
+  color-scheme: light;
 }
 
 [data-theme="light"] {
-  /* Cooler parchment — not warm cream */
-  --color-ground: #e6e8ec;
-  --color-ground-elevated: #dfe3e8;
-  --color-ink: #0c0e12;
-  --color-ink-muted: #4a5160;
-  --color-accent: #8a7349;
-  --color-accent-soft: #5c7385;
-  --color-border: rgba(12, 14, 18, 0.12);
-  --color-overlay: rgba(230, 232, 236, 0.85);
-  --color-spot: rgba(138, 115, 73, 0.1);
-
   color-scheme: light;
 }
 
 [data-theme="dark"] {
+  /* Cheap compatibility — not a designed dark retro-pop pass */
+  --color-ground: #050607;
+  --color-ground-elevated: #0e1014;
+  --color-ink: #eceae6;
+  --color-ink-muted: #9aa0a8;
+  --color-primary: #5a8578;
+  --color-secondary: #d45a3a;
+  --color-ink-on-primary: #f3efe8;
+  --color-ink-on-secondary: #f3efe8;
+  --color-accent: var(--color-secondary);
+  --color-accent-soft: #7a9aa0;
+  --color-border: rgba(236, 234, 230, 0.1);
+  --color-overlay: rgba(5, 6, 7, 0.75);
+  --color-spot: color-mix(in srgb, var(--color-primary) 14%, transparent);
+  --color-chrome: #9aa0a8;
+
   color-scheme: dark;
 }
 
@@ -99,12 +110,12 @@ html {
 }
 
 ::selection {
-  background: color-mix(in srgb, var(--color-accent) 55%, transparent);
+  background: color-mix(in srgb, var(--color-secondary) 45%, transparent);
   color: var(--color-ink);
 }
 
 :focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-secondary);
   outline-offset: 3px;
 }
 
@@ -125,7 +136,7 @@ body {
   background-image:
     radial-gradient(
       ellipse 90% 55% at 12% -10%,
-      color-mix(in srgb, var(--color-accent-soft) 18%, transparent),
+      color-mix(in srgb, var(--color-primary) 12%, transparent),
       transparent 58%
     ),
     radial-gradient(
@@ -135,7 +146,7 @@ body {
     ),
     radial-gradient(
       ellipse 60% 40% at 50% 100%,
-      color-mix(in srgb, var(--color-accent-soft) 8%, transparent),
+      color-mix(in srgb, var(--color-primary) 6%, transparent),
       transparent 55%
     ),
     linear-gradient(
@@ -160,16 +171,16 @@ body::before {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-  opacity: 0.035;
+  opacity: 0.045;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 180px 180px;
-  mix-blend-mode: overlay;
+  mix-blend-mode: multiply;
 }
 
-[data-theme="light"] body::before {
-  opacity: 0.045;
-  mix-blend-mode: multiply;
+[data-theme="dark"] body::before {
+  opacity: 0.035;
+  mix-blend-mode: overlay;
 }
 
 /* Soft dotted wave field — between body atmosphere and page content.
@@ -193,14 +204,14 @@ svg {
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--color-primary);
   text-decoration-thickness: 1px;
   text-underline-offset: 0.2em;
   transition: color var(--duration) var(--ease-out);
 }
 
 a:hover {
-  color: var(--color-ink);
+  color: var(--color-secondary);
 }
 
 h1,
@@ -233,7 +244,7 @@ p {
   max-width: var(--measure);
 }
 
-/* ——— Header (floating translucent) ——— */
+/* ——— Header (green furniture mass) ——— */
 
 .site-header {
   position: sticky;
@@ -242,10 +253,9 @@ p {
   height: var(--header-height);
   display: flex;
   align-items: center;
-  border-bottom: 1px solid var(--color-border);
-  background: color-mix(in srgb, var(--color-ground) 72%, transparent);
-  backdrop-filter: blur(16px) saturate(1.1);
-  -webkit-backdrop-filter: blur(16px) saturate(1.1);
+  border-bottom: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
+  background: var(--color-primary);
+  color: var(--color-ink-on-primary);
 }
 
 .site-header__inner {
@@ -263,14 +273,15 @@ p {
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: -0.01em;
-  color: var(--color-ink);
+  color: var(--color-ink-on-primary);
   text-decoration: none;
   white-space: nowrap;
   transition: color var(--duration) var(--ease-out);
 }
 
 .site-brand:hover {
-  color: var(--color-accent);
+  color: var(--color-ink-on-primary);
+  opacity: 0.88;
 }
 
 /* Desktop nav */
@@ -288,7 +299,7 @@ p {
   font-weight: 500;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-ink-muted);
+  color: color-mix(in srgb, var(--color-ink-on-primary) 78%, transparent);
   text-decoration: none;
   transition: color var(--duration) var(--ease-out);
 }
@@ -300,7 +311,7 @@ p {
   bottom: -0.35em;
   width: 100%;
   height: 1px;
-  background: var(--color-accent);
+  background: var(--color-secondary);
   transform: scaleX(0);
   transform-origin: left;
   transition: transform var(--duration) var(--ease-expo);
@@ -308,7 +319,7 @@ p {
 
 .site-nav a:hover,
 .site-nav a[aria-current="page"] {
-  color: var(--color-ink);
+  color: var(--color-ink-on-primary);
 }
 
 .site-nav a[aria-current="page"]::after,
@@ -324,10 +335,10 @@ p {
   width: 2.5rem;
   height: 2.5rem;
   padding: 0;
-  border: 1px solid var(--color-border);
+  border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 28%, transparent);
   border-radius: var(--radius);
   background: transparent;
-  color: var(--color-ink);
+  color: var(--color-ink-on-primary);
   cursor: pointer;
   transition:
     color var(--duration) var(--ease-out),
@@ -336,8 +347,9 @@ p {
 }
 
 .nav-toggle:hover {
-  color: var(--color-accent);
-  border-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+  color: var(--color-ink-on-primary);
+  border-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
+  background: color-mix(in srgb, var(--color-ink-on-primary) 8%, transparent);
 }
 
 .nav-toggle__bars {
@@ -384,10 +396,10 @@ p {
   gap: var(--space-lg);
   padding: var(--space-2xl) var(--space-lg);
   padding-bottom: calc(var(--space-2xl) + env(safe-area-inset-bottom, 0px));
-  background: color-mix(in srgb, var(--color-ground) 94%, transparent);
-  backdrop-filter: blur(20px) saturate(1.15);
-  -webkit-backdrop-filter: blur(20px) saturate(1.15);
-  border-top: 1px solid var(--color-border);
+  background: var(--color-primary);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  border-top: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
@@ -406,7 +418,7 @@ p {
   right: 0;
   top: 100%;
   height: 100lvh;
-  background: var(--color-ground);
+  background: var(--color-primary);
   pointer-events: none;
 }
 
@@ -423,14 +435,14 @@ p {
   font-size: clamp(1.75rem, 6vw, 2.5rem);
   font-weight: 600;
   letter-spacing: -0.02em;
-  color: var(--color-ink-muted);
+  color: color-mix(in srgb, var(--color-ink-on-primary) 72%, transparent);
   text-decoration: none;
   transition: color var(--duration) var(--ease-out);
 }
 
 .mobile-nav a:hover,
 .mobile-nav a[aria-current="page"] {
-  color: var(--color-accent);
+  color: var(--color-ink-on-primary);
 }
 
 .site-header__actions {
@@ -455,10 +467,10 @@ p {
   position: relative;
   flex-shrink: 0;
   box-sizing: border-box;
-  border: 1px solid var(--color-border);
+  border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 28%, transparent);
   border-radius: var(--radius);
-  background: var(--color-ground-elevated);
-  color: var(--color-ink-muted);
+  background: color-mix(in srgb, var(--color-ink-on-primary) 10%, transparent);
+  color: color-mix(in srgb, var(--color-ink-on-primary) 72%, transparent);
 }
 
 .theme-toggle-thumb {
@@ -467,12 +479,12 @@ p {
   left: 2px;
   width: calc((100% - 4px) / 3);
   height: calc(100% - 4px);
-  border-radius: var(--radius);
+  border-radius: calc(var(--radius) - 2px);
   pointer-events: none;
   transition: transform 0.2s ease;
   z-index: 0;
-  background: color-mix(in srgb, var(--color-spot) 80%, var(--color-ground-elevated));
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-accent) 35%, transparent);
+  background: color-mix(in srgb, var(--color-ink-on-primary) 18%, transparent);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink-on-primary) 22%, transparent);
 }
 
 [data-theme-pref="system"] .theme-toggle-thumb {
@@ -501,12 +513,12 @@ p {
 
 .theme-toggle-option[aria-checked="true"] {
   opacity: 1;
-  color: var(--color-accent);
+  color: var(--color-ink-on-primary);
 }
 
 .theme-toggle-option:hover {
   opacity: 0.85;
-  color: var(--color-ink);
+  color: var(--color-ink-on-primary);
 }
 
 .theme-toggle-option:focus-visible {
@@ -532,16 +544,16 @@ p {
 .site-footer {
   position: relative;
   z-index: 1;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
   padding-block: var(--space-lg);
   padding-inline: 1rem;
-  background: color-mix(in srgb, var(--color-ground-elevated) 55%, transparent);
+  background: var(--color-primary);
 }
 
 .site-footer__line {
   margin: 0;
   max-width: none;
-  color: var(--color-ink-muted);
+  color: color-mix(in srgb, var(--color-ink-on-primary) 78%, transparent);
   font-size: 0.8125rem;
   letter-spacing: 0.02em;
   text-align: center;
@@ -574,31 +586,31 @@ p {
 
 .btn:hover {
   color: var(--color-ink);
-  border-color: color-mix(in srgb, var(--color-accent) 50%, var(--color-border));
+  border-color: color-mix(in srgb, var(--color-primary) 50%, var(--color-border));
 }
 
 .btn--primary {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-ground);
+  background: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: var(--color-ink-on-secondary);
 }
 
 .btn--primary:hover {
-  background: color-mix(in srgb, var(--color-accent) 88%, var(--color-ink));
-  border-color: color-mix(in srgb, var(--color-accent) 88%, var(--color-ink));
-  color: var(--color-ground);
+  background: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
+  border-color: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
+  color: var(--color-ink-on-secondary);
 }
 
 .btn--ghost {
   background: transparent;
-  border-color: var(--color-border);
-  color: var(--color-ink-muted);
+  border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+  color: var(--color-primary);
 }
 
 .btn--ghost:hover {
-  color: var(--color-ink);
-  border-color: var(--color-accent-soft);
-  background: color-mix(in srgb, var(--color-spot) 40%, transparent);
+  color: var(--color-ink-on-primary);
+  border-color: var(--color-primary);
+  background: var(--color-primary);
 }
 
 /* ——— Utilities ——— */
@@ -610,7 +622,7 @@ p {
   font-weight: 500;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .section {

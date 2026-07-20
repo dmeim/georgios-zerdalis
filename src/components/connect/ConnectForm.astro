@@ -188,7 +188,8 @@ const { fields, submitLabel } = connect.form;
   .connect-form-wrapper {
     width: 100%;
     padding: var(--space-xl);
-    border: 1px solid var(--color-border);
+    border: 1px solid color-mix(in srgb, var(--color-primary) 28%, transparent);
+    border-radius: var(--radius);
     background:
       radial-gradient(
         ellipse 80% 60% at 0% 0%,
@@ -215,7 +216,7 @@ const { fields, submitLabel } = connect.form;
     font-weight: 500;
     letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-primary);
   }
 
   .form-group input,
@@ -243,13 +244,13 @@ const { fields, submitLabel } = connect.form;
 
   .form-group input:hover,
   .form-group textarea:hover {
-    border-bottom-color: color-mix(in srgb, var(--color-accent) 40%, var(--color-border));
+    border-bottom-color: color-mix(in srgb, var(--color-primary) 40%, var(--color-border));
   }
 
   .form-group input:focus,
   .form-group textarea:focus {
     outline: none;
-    border-bottom-color: var(--color-accent);
+    border-bottom-color: var(--color-secondary);
     background: color-mix(in srgb, var(--color-spot) 35%, transparent);
     padding-inline: 0.5rem;
   }
@@ -263,9 +264,10 @@ const { fields, submitLabel } = connect.form;
     align-self: flex-start;
     margin-top: var(--space-sm);
     padding: 0.9rem 1.85rem;
-    border: 1px solid var(--color-accent);
-    background: var(--color-accent);
-    color: var(--color-ground);
+    border: 1px solid var(--color-secondary);
+    border-radius: var(--radius);
+    background: var(--color-secondary);
+    color: var(--color-ink-on-secondary);
     font-family: var(--font-sans);
     font-size: 0.8125rem;
     font-weight: 600;
@@ -280,8 +282,9 @@ const { fields, submitLabel } = connect.form;
   }
 
   .btn-primary:hover:not(:disabled) {
-    background: transparent;
-    color: var(--color-accent);
+    background: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
+    border-color: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
+    color: var(--color-ink-on-secondary);
   }
 
   .btn-primary:disabled {
@@ -304,7 +307,7 @@ const { fields, submitLabel } = connect.form;
   }
 
   .form-status--success {
-    border-top-color: color-mix(in srgb, var(--color-accent) 55%, var(--color-border));
+    border-top-color: color-mix(in srgb, var(--color-primary) 55%, var(--color-border));
     color: var(--color-ink);
   }
 

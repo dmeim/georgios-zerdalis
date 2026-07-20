@@ -132,7 +132,7 @@ const showMediaNote = isEmpty || isPartial;
     font-weight: 500;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--color-accent);
+    color: var(--color-primary);
   }
 
   .gallery-page__note p {
@@ -149,14 +149,15 @@ const showMediaNote = isEmpty || isPartial;
 
   .gallery-page__note-link a {
     text-decoration: none;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-accent) 45%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
     transition:
       color var(--duration) var(--ease-out),
       border-color var(--duration) var(--ease-out);
   }
 
   .gallery-page__note-link a:hover {
-    border-color: var(--color-accent);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
   }
 
   .gallery-page__empty {
@@ -178,12 +179,13 @@ const showMediaNote = isEmpty || isPartial;
     width: min(100%, 16rem);
     aspect-ratio: 4 / 3;
     border: 1px solid var(--color-border);
+    border-radius: var(--he-frame-radius);
     background:
       linear-gradient(
         135deg,
         transparent 47.5%,
-        color-mix(in srgb, var(--color-accent) 28%, transparent) 49%,
-        color-mix(in srgb, var(--color-accent) 28%, transparent) 51%,
+        color-mix(in srgb, var(--color-primary) 28%, transparent) 49%,
+        color-mix(in srgb, var(--color-primary) 28%, transparent) 51%,
         transparent 52.5%
       ),
       radial-gradient(

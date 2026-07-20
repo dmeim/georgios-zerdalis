@@ -51,7 +51,7 @@
 .gallery-masonry__trigger:focus-visible .gallery-masonry__frame {
   box-shadow:
     var(--he-frame-shadow),
-    0 0 0 2px color-mix(in srgb, var(--color-accent) 45%, transparent);
+    0 0 0 2px color-mix(in srgb, var(--color-secondary) 45%, transparent);
 }
 
 .gallery-masonry__frame {

@@ -21,7 +21,7 @@ function readInkRgb(): string {
     const n = parseInt(raw.slice(1), 16);
     return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
   }
-  return "236, 234, 230";
+  return "26, 31, 28";
 }
 
 function prefersReducedMotion(): boolean {

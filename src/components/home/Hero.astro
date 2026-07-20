@@ -132,6 +132,7 @@ import { hero } from '../../content/site';
     justify-content: center;
     min-height: 2.75rem;
     padding: 0.7rem 1.35rem;
+    border-radius: var(--radius);
     font-size: 0.8125rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -144,15 +145,15 @@ import { hero } from '../../content/site';
   }
 
   .hero__cta--primary {
-    background: var(--color-accent);
-    color: #0c0b0a;
-    border: 1px solid var(--color-accent);
+    background: var(--color-secondary);
+    color: var(--color-ink-on-secondary);
+    border: 1px solid var(--color-secondary);
   }
 
   .hero__cta--primary:hover {
-    background: #c4a06a;
-    border-color: #c4a06a;
-    color: #0c0b0a;
+    background: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
+    border-color: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
+    color: var(--color-ink-on-secondary);
   }
 
   .hero__cta--ghost {
