@@ -133,7 +133,7 @@ export const appointments: Appointment[] = [
     location: "Germany",
     dates: "2023–2026",
     image: "/images/Hochschule-für-Musik-Detmold.jpg",
-    url: "https://www.hfm-detmold.de/",
+    url: "https://www.hfm-detmold.de/die-hochschule/personenverzeichnis/lehrende/vita/georgios-zerdalis/",
     bullets: [
       "Private lessons, group studio classes, and ensemble coaching",
       "Lead the HfM Percussion Ensemble",
