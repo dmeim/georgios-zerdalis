@@ -56,6 +56,12 @@ export type HomeExperienceProps = {
     image: string;
     url: string;
   }[];
+  education: {
+    degree: string;
+    institution: string;
+    location?: string;
+    year: string;
+  }[];
   bio: string;
   quote: { text: string; attribution?: string };
   pedagogy: { title: string; body: string }[];
@@ -124,11 +130,14 @@ function QuoteWord({
   const start = index / total;
   const end = Math.min(1, (index + 2.2) / total);
   const opacity = useTransform(progress, [start, end], [0.18, 1]);
+  // Dim words stay ink; revealed words fill secondary orange.
+  // Hexes match --color-ink / --color-secondary (framer needs concrete colors).
+  const color = useTransform(progress, [start, end], ["#1a1f1c", "#c24427"]);
 
   return (
     <motion.span
       className="he-quote__word"
-      style={{ opacity }}
+      style={{ opacity, color }}
       aria-hidden="true"
     >
       {word}
@@ -391,8 +400,6 @@ function ChapterSection({
   chapterImageWidth: number;
   chapterImageHeight: number;
 }) {
-  const reduced = useReducedMotion();
-
   return (
     <section className="he-chapter he__section" aria-label={chapter.title}>
       <div className="he__inner he-chapter__layout">
@@ -400,15 +407,6 @@ function ChapterSection({
           <Reveal>
             <p className="he__eyebrow">{chapter.eyebrow}</p>
           </Reveal>
-
-          <motion.span
-            className="he-chapter__rule"
-            aria-hidden="true"
-            initial={reduced ? false : { scaleX: 0 }}
-            whileInView={reduced ? undefined : { scaleX: 1 }}
-            viewport={{ once: true, margin: "-10%" }}
-            transition={{ duration: 0.9, ease: EASE, delay: 0.1 }}
-          />
 
           <TextReveal
             text={chapter.title}
@@ -645,6 +643,48 @@ function AppointmentsSection({
                     </PhotoTilt>
                   </SharedPhotoShell>
                 </button>
+              </Reveal>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+  );
+}
+
+function EducationSection({
+  education,
+}: {
+  education: HomeExperienceProps["education"];
+}) {
+  return (
+    <section className="he-education he__section" aria-label="Education">
+      <div className="he__inner">
+        <header className="he-education__header">
+          <TextReveal
+            text="Education"
+            as="h2"
+            className="he-education__title he__serif-title"
+          />
+        </header>
+
+        <ol className="he-education__list">
+          {education.map((item, i) => (
+            <li
+              key={`${item.institution}-${item.year}`}
+              className="he-education__item"
+            >
+              <Reveal delay={i * 0.08} y={32} className="he-education__grid">
+                <div className="he-education__meta">
+                  <span className="he-education__year">{item.year}</span>
+                  {item.location ? (
+                    <span className="he-education__place">{item.location}</span>
+                  ) : null}
+                </div>
+                <div className="he-education__body">
+                  <h3 className="he-education__degree">{item.degree}</h3>
+                  <p className="he-education__institution">{item.institution}</p>
+                </div>
               </Reveal>
             </li>
           ))}
@@ -910,6 +950,7 @@ export default function HomeExperience({
   chapterImageWidth,
   chapterImageHeight,
   appointments,
+  education,
   bio,
   quote,
   pedagogy,
@@ -936,8 +977,8 @@ export default function HomeExperience({
             chapterImageWidth={chapterImageWidth}
             chapterImageHeight={chapterImageHeight}
           />
-          <VenuesMarquee venues={venues} />
           <AppointmentsSection appointments={appointments} />
+          <EducationSection education={education} />
           <BioSection
             bio={bio}
             aboutPortraitSrc={aboutPortraitSrc}
@@ -946,6 +987,7 @@ export default function HomeExperience({
           />
           <QuoteSection quote={quote} />
           <PedagogySection pedagogy={pedagogy} />
+          <VenuesMarquee venues={venues} />
         </div>
         <PhotoLightbox />
       </LayoutGroup>

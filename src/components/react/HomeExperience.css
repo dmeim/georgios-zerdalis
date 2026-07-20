@@ -68,7 +68,7 @@
   font-weight: 300;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .he__serif-title {
@@ -242,14 +242,14 @@
 }
 
 .he-hero__ctas .btn--ghost {
-  color: var(--he-hero-ink);
-  border-color: rgba(243, 238, 230, 0.42);
+  color: var(--color-secondary);
+  border-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
 }
 
 .he-hero__ctas .btn--ghost:hover {
-  color: var(--he-hero-ink);
-  border-color: var(--he-hero-ink);
-  background: rgba(243, 238, 230, 0.08);
+  color: var(--color-ink-on-secondary);
+  border-color: var(--color-secondary);
+  background: var(--color-secondary);
 }
 
 .he-hero__scroll {
@@ -270,7 +270,7 @@
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: rgba(243, 238, 230, 0.55);
+  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
 }
 
 .he-hero__scroll-line {
@@ -278,7 +278,7 @@
   height: 2.75rem;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--color-primary) 85%, transparent),
+    color-mix(in srgb, var(--color-secondary) 85%, transparent),
     rgba(243, 238, 230, 0)
   );
   transform-origin: top center;
@@ -332,14 +332,14 @@
   }
 
   .he-hero__ctas .btn--ghost {
-    color: var(--color-primary);
-    border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+    color: var(--color-secondary);
+    border-color: color-mix(in srgb, var(--color-secondary) 45%, transparent);
   }
 
   .he-hero__ctas .btn--ghost:hover {
-    color: var(--color-ink-on-primary);
-    border-color: var(--color-primary);
-    background: var(--color-primary);
+    color: var(--color-ink-on-secondary);
+    border-color: var(--color-secondary);
+    background: var(--color-secondary);
   }
 
   .he-hero__media {
@@ -377,13 +377,13 @@
   }
 
   .he-hero__scroll-label {
-    color: color-mix(in srgb, var(--color-ink-muted) 80%, transparent);
+    color: color-mix(in srgb, var(--color-secondary) 82%, transparent);
   }
 
   .he-hero__scroll-line {
     background: linear-gradient(
       180deg,
-      color-mix(in srgb, var(--color-primary) 85%, transparent),
+      color-mix(in srgb, var(--color-secondary) 85%, transparent),
       transparent
     );
   }
@@ -420,15 +420,6 @@
 .he-chapter__content {
   display: flex;
   flex-direction: column;
-}
-
-.he-chapter__rule {
-  display: block;
-  width: min(6rem, 28vw);
-  height: 1px;
-  margin: 0 0 var(--space-xl);
-  background: var(--color-primary);
-  transform-origin: left center;
 }
 
 .he-chapter__title {
@@ -522,7 +513,7 @@
   font-weight: 300;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 @media (min-width: 900px) {
@@ -706,7 +697,7 @@
   font-size: 0.875rem;
   font-weight: 300;
   letter-spacing: 0.04em;
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 .he-appointments__place {
@@ -805,6 +796,103 @@
 
   .he-appointments__media {
     justify-self: end;
+  }
+}
+
+/* ——— Education ———
+   Timeline twin of appointments, without media. */
+
+.he-education {
+  border-bottom: 1px solid var(--color-border);
+}
+
+.he-education__header {
+  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+}
+
+.he-education__title {
+  margin: 0;
+  max-width: none;
+  white-space: nowrap;
+  font-size: clamp(2rem, 4.2vw, 3rem);
+}
+
+.he-education__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.he-education__item {
+  padding-block: var(--space-xl);
+  border-top: 1px solid var(--color-border);
+}
+
+.he-education__item:last-child {
+  padding-bottom: 0;
+}
+
+.he-education__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-md);
+  align-items: start;
+}
+
+.he-education__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-xs) var(--space-md);
+}
+
+.he-education__year {
+  font-size: 0.875rem;
+  font-weight: 300;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+}
+
+.he-education__place {
+  font-size: 0.875rem;
+  color: var(--color-ink-muted);
+}
+
+.he-education__body {
+  min-width: 0;
+}
+
+.he-education__degree {
+  margin: 0 0 var(--space-2xs);
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 2.2vw, 1.55rem);
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+}
+
+.he-education__institution {
+  margin: 0;
+  max-width: 52ch;
+  color: var(--color-ink-muted);
+  font-size: 0.9875rem;
+  line-height: 1.55;
+}
+
+@media (min-width: 900px) {
+  .he-education__grid {
+    grid-template-columns: minmax(8rem, 12rem) minmax(0, 1fr);
+    gap: var(--space-lg) var(--space-2xl);
+  }
+
+  .he-education__meta {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-xs);
+    padding-top: 0.25rem;
   }
 }
 
