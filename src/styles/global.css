@@ -1,18 +1,18 @@
-/* George Zerdalis — Retro-pop (cream room, green furniture) */
+/* George Zerdalis — Retro-pop (cream room, blue furniture) */
 
 :root {
   /* Light is the designed default */
-  --color-ground: #f3efe8;
-  --color-ground-elevated: #ebe5db;
+  --color-ground: #fcf5e3;
+  --color-ground-elevated: #f4ebd6;
   --color-ink: #1a1f1c;
   --color-ink-muted: #5c6862;
-  --color-primary: #467066;
-  --color-secondary: #c24427;
-  --color-ink-on-primary: #f3efe8;
-  --color-ink-on-secondary: #f3efe8;
+  --color-primary: #023341;
+  --color-secondary: #fd5e02;
+  --color-ink-on-primary: #fcf5e3;
+  --color-ink-on-secondary: #fcf5e3;
   /* Action alias — CTAs / focus / active. Decorative accents use --color-primary. */
   --color-accent: var(--color-secondary);
-  --color-accent-soft: #6a8a80;
+  --color-accent-soft: #3a6874;
   --color-border: color-mix(in srgb, var(--color-primary) 22%, transparent);
   --color-overlay: color-mix(in srgb, var(--color-ground) 88%, transparent);
   --color-spot: color-mix(in srgb, var(--color-primary) 10%, transparent);
@@ -67,12 +67,12 @@
   --color-ground-elevated: #0e1014;
   --color-ink: #eceae6;
   --color-ink-muted: #9aa0a8;
-  --color-primary: #5a8578;
-  --color-secondary: #d45a3a;
-  --color-ink-on-primary: #f3efe8;
-  --color-ink-on-secondary: #f3efe8;
+  --color-primary: #1a5a6b;
+  --color-secondary: #ff7a33;
+  --color-ink-on-primary: #fcf5e3;
+  --color-ink-on-secondary: #fcf5e3;
   --color-accent: var(--color-secondary);
-  --color-accent-soft: #7a9aa0;
+  --color-accent-soft: #4a7a85;
   --color-border: rgba(236, 234, 230, 0.1);
   --color-overlay: rgba(5, 6, 7, 0.75);
   --color-spot: color-mix(in srgb, var(--color-primary) 14%, transparent);

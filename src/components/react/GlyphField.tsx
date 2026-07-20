@@ -13,15 +13,15 @@ type FieldPoint = {
 const SPACING = 12;
 const DPR_CAP = 2;
 
-function readInkRgb(): string {
+function readPrimaryRgb(): string {
   const raw = getComputedStyle(document.documentElement)
-    .getPropertyValue("--color-ink")
+    .getPropertyValue("--color-primary")
     .trim();
   if (/^#[0-9a-fA-F]{6}$/.test(raw)) {
     const n = parseInt(raw.slice(1), 16);
     return `${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}`;
   }
-  return "26, 31, 28";
+  return "2, 51, 65";
 }
 
 function prefersReducedMotion(): boolean {
@@ -62,7 +62,7 @@ export default function GlyphField() {
     if (!ctx) return;
 
     let points: FieldPoint[] = [];
-    let inkRgb = readInkRgb();
+    let inkRgb = readPrimaryRgb();
     let rafId = 0;
     let running = false;
     let reduced = prefersReducedMotion();
@@ -140,7 +140,7 @@ export default function GlyphField() {
     };
 
     const themeObserver = new MutationObserver(() => {
-      inkRgb = readInkRgb();
+      inkRgb = readPrimaryRgb();
       if (reduced || document.hidden || !running) paintStatic();
     });
     themeObserver.observe(document.documentElement, {
