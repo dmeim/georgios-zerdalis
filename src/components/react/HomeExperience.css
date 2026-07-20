@@ -65,7 +65,7 @@
   margin: 0 0 var(--space-sm);
   font-family: var(--font-sans);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -74,7 +74,7 @@
 .he__serif-title {
   margin: 0;
   font-family: var(--font-serif);
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.15;
   color: var(--color-ink);
@@ -171,7 +171,7 @@
   max-width: 12ch;
   font-family: var(--font-display);
   font-size: clamp(3.25rem, 8vw, 6.75rem);
-  font-weight: 600;
+  font-weight: 700;
   line-height: 1.05;
   letter-spacing: -0.03em;
   color: var(--he-hero-ink);
@@ -194,7 +194,7 @@
 .he-hero__endorse-link {
   margin: 0;
   font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 400;
+  font-weight: 300;
   letter-spacing: 0.02em;
   line-height: 1.4;
   color: var(--he-hero-muted);
@@ -214,8 +214,8 @@
 }
 
 .he-hero__endorse-link:hover {
-  color: var(--he-hero-ink);
-  border-bottom-color: color-mix(in srgb, var(--he-hero-ink) 45%, transparent);
+  color: var(--color-secondary);
+  border-bottom-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
 }
 
 .he-hero__sentence {
@@ -267,7 +267,7 @@
 
 .he-hero__scroll-label {
   font-size: 0.65rem;
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: rgba(243, 238, 230, 0.55);
@@ -323,8 +323,8 @@
   }
 
   .he-hero__endorse-link:hover {
-    color: var(--color-primary);
-    border-bottom-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
+    color: var(--color-secondary);
+    border-bottom-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
   }
 
   .he-hero__sentence {
@@ -433,8 +433,9 @@
 
 .he-chapter__title {
   margin: 0 0 var(--space-lg);
-  max-width: 22ch;
+  max-width: 26ch;
   font-size: clamp(2rem, 4.5vw, 3.25rem);
+  white-space: pre-line;
 }
 
 .he-chapter__body {
@@ -518,7 +519,7 @@
   margin: 0;
   font-family: var(--font-sans);
   font-size: 0.75rem;
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--color-primary);
@@ -613,7 +614,7 @@
   font-family: var(--font-serif);
   font-size: clamp(1.45rem, 2.8vw, 2.1rem);
   font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
   letter-spacing: -0.01em;
   line-height: 1.2;
   color: color-mix(in srgb, var(--color-ink) 78%, transparent);
@@ -703,7 +704,7 @@
 
 .he-appointments__dates {
   font-size: 0.875rem;
-  font-weight: 600;
+  font-weight: 300;
   letter-spacing: 0.04em;
   color: var(--color-primary);
 }
@@ -721,7 +722,7 @@
   margin: 0 0 var(--space-2xs);
   font-family: var(--font-display);
   font-size: clamp(1.25rem, 2.2vw, 1.55rem);
-  font-weight: 600;
+  font-weight: 500;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
@@ -740,8 +741,8 @@
 
 .he-appointments__org:hover,
 .he-appointments__org:focus-visible {
-  color: var(--color-ink);
-  border-bottom-color: var(--color-primary);
+  color: var(--color-secondary);
+  border-bottom-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
 }
 
 .he-appointments__bullets {
@@ -927,7 +928,7 @@
   font-family: var(--font-serif);
   font-size: clamp(1.55rem, 4.2vw, 2.85rem);
   font-style: italic;
-  font-weight: 400;
+  font-weight: 300;
   line-height: 1.28;
   letter-spacing: -0.015em;
   color: var(--color-ink);
@@ -945,7 +946,7 @@
   font-family: var(--font-sans);
   font-size: 0.8125rem;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--color-ink-muted);
@@ -1017,7 +1018,7 @@
 .he-pedagogy__num {
   font-family: var(--font-sans);
   font-size: 0.8125rem;
-  font-weight: 500;
+  font-weight: 300;
   letter-spacing: 0.12em;
   color: var(--color-primary);
   transition:
@@ -1035,7 +1036,7 @@
   max-width: none;
   font-family: var(--font-serif);
   font-size: clamp(1.25rem, 2.6vw, 1.7rem);
-  font-weight: 400;
+  font-weight: 500;
   line-height: 1.3;
   letter-spacing: -0.01em;
   color: var(--color-ink);

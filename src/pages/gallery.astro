@@ -129,7 +129,7 @@ const showMediaNote = isEmpty || isPartial;
     margin: 0;
     font-family: var(--font-sans);
     font-size: 0.6875rem;
-    font-weight: 500;
+    font-weight: 300;
     letter-spacing: 0.18em;
     text-transform: uppercase;
     color: var(--color-primary);
@@ -149,15 +149,15 @@ const showMediaNote = isEmpty || isPartial;
 
   .gallery-page__note-link a {
     text-decoration: none;
-    border-bottom: 1px solid color-mix(in srgb, var(--color-primary) 45%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--color-secondary) 45%, transparent);
     transition:
       color var(--duration) var(--ease-out),
       border-color var(--duration) var(--ease-out);
   }
 
   .gallery-page__note-link a:hover {
-    border-color: var(--color-secondary);
-    color: var(--color-secondary);
+    border-color: color-mix(in srgb, var(--color-secondary) 82%, var(--color-ink));
+    color: color-mix(in srgb, var(--color-secondary) 82%, var(--color-ink));
   }
 
   .gallery-page__empty {

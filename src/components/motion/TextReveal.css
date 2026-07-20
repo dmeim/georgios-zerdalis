@@ -1,4 +1,8 @@
-/* Clip mask for the rise — padding keeps Syne descenders (g, y, etc.) visible */
+/* Clip mask for the rise — padding keeps Nunito descenders (g, y, etc.) visible */
+.text-reveal__line {
+  display: inline;
+}
+
 .text-reveal__clip {
   display: inline-block;
   overflow: hidden;

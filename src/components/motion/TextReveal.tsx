@@ -31,7 +31,10 @@ export function TextReveal({
   id,
 }: TextRevealProps) {
   const reduced = useReducedMotion();
-  const words = text.trim().split(/\s+/).filter(Boolean);
+  const lines = text
+    .trim()
+    .split("\n")
+    .map((line) => line.trim().split(/\s+/).filter(Boolean));
   const MotionTag = motionTags[as];
 
   if (reduced) {
@@ -43,6 +46,8 @@ export function TextReveal({
     );
   }
 
+  let wordIndex = 0;
+
   return (
     <MotionTag
       id={id}
@@ -50,30 +55,38 @@ export function TextReveal({
       initial="hidden"
       whileInView="visible"
       viewport={{ once, margin: "-10%" }}
-      aria-label={text}
+      aria-label={text.replace(/\n+/g, " ")}
     >
-      {words.map((word, i) => (
-        <span
-          key={`${word}-${i}`}
-          className="text-reveal__clip"
-          aria-hidden="true"
-        >
-          <motion.span
-            className="text-reveal__word"
-            variants={{
-              hidden: { y: "115%" },
-              visible: {
-                y: "0%",
-                transition: {
-                  duration: 0.7,
-                  ease: EASE,
-                  delay: delay + i * 0.045,
-                },
-              },
-            }}
-          >
-            {word}
-          </motion.span>
+      {lines.map((words, lineIndex) => (
+        <span key={`line-${lineIndex}`} className="text-reveal__line">
+          {lineIndex > 0 ? <br /> : null}
+          {words.map((word) => {
+            const i = wordIndex++;
+            return (
+              <span
+                key={`${word}-${i}`}
+                className="text-reveal__clip"
+                aria-hidden="true"
+              >
+                <motion.span
+                  className="text-reveal__word"
+                  variants={{
+                    hidden: { y: "115%" },
+                    visible: {
+                      y: "0%",
+                      transition: {
+                        duration: 0.7,
+                        ease: EASE,
+                        delay: delay + i * 0.045,
+                      },
+                    },
+                  }}
+                >
+                  {word}
+                </motion.span>
+              </span>
+            );
+          })}
         </span>
       ))}
     </MotionTag>
