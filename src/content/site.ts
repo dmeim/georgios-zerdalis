@@ -123,7 +123,7 @@ export const hero: HeroContent = {
 export const currentChapter: CurrentChapter = {
   eyebrow: "Current chapter",
   title: "Doctor of Musical Arts\nFrost School of Music",
-  body: "Based in the United States, George Zerdalis is pursuing his Doctor of Musical Arts (DMA) at the University of Miami’s Frost School of Music (expected 2029). Prior to Miami, he served as timpani and percussion lecturer at the Hochschule für Musik Detmold and as solo guest timpanist and percussionist of the Detmold Chamber Orchestra (DKO).",
+  body: "Based in the United States, George Zerdalis is pursuing his Doctor of Musical Arts (DMA) at the University of Miami’s Frost School of Music under Professor Svetoslav Stoyanov, Leonardo Soto and Pablo Rieppi.",
 };
 
 export const appointments: Appointment[] = [

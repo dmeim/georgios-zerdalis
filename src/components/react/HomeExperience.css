@@ -34,7 +34,10 @@
 }
 
 .he {
+  /* Intro after hero — kept large so the hero reads as the page opening */
   --he-pad: clamp(4rem, 12vh, 8rem);
+  /* Body sections: half of the old Education↔About gap (was 2× --he-pad) */
+  --he-section-gap: calc(var(--he-pad) / 2);
   --he-gutter: 1rem;
   --he-max: var(--site-max);
   --he-label-size: 1rem;
@@ -59,7 +62,12 @@
 }
 
 .he__section {
-  padding-block: var(--he-pad);
+  padding-block: var(--he-section-gap);
+}
+
+/* Preserve the larger breath between hero and Current Chapter */
+.he-chapter.he__section {
+  padding-block-start: var(--he-pad);
 }
 
 .he__eyebrow {
@@ -490,7 +498,7 @@
   --he-venues-gap: clamp(1.5rem, 2.5vw, 2.5rem);
   /* Target ~2.5 cards in view: stride = card + gap = 100vw / 2.5 */
   --he-venues-card: calc(100vw / 2.5 - var(--he-venues-gap));
-  padding-block: clamp(2.5rem, 7vh, 4.5rem);
+  padding-block: var(--he-section-gap);
 }
 
 /* Same centered pair as .he-chapter__layout so the label
