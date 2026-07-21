@@ -4,14 +4,8 @@ import HomeExperience from '../components/react/HomeExperience';
 import {
   meta,
   hero,
-  currentChapter,
-  appointments,
-  education,
-  shortBio,
   mentorQuote,
-  pedagogy,
   endorsement,
-  venues,
 } from '../content/site';
 
 /** Served from public/images/ */
@@ -19,18 +13,6 @@ const heroPortrait = {
   src: '/images/George-Zerdalis-Hero.JPG',
   width: 4209,
   height: 6313,
-};
-
-const aboutPortrait = {
-  src: '/images/George-Zerdalis-Jacket.jpeg',
-  width: 3058,
-  height: 4588,
-};
-
-const chapterImage = {
-  src: '/images/Frost-School-Of-Music.jpg',
-  width: 1200,
-  height: 630,
 };
 ---
 
@@ -40,21 +22,9 @@ const chapterImage = {
     portraitSrc={heroPortrait.src}
     portraitWidth={heroPortrait.width}
     portraitHeight={heroPortrait.height}
-    aboutPortraitSrc={aboutPortrait.src}
-    aboutPortraitWidth={aboutPortrait.width}
-    aboutPortraitHeight={aboutPortrait.height}
     hero={hero}
-    chapter={currentChapter}
-    chapterImageSrc={chapterImage.src}
-    chapterImageWidth={chapterImage.width}
-    chapterImageHeight={chapterImage.height}
-    appointments={appointments}
-    education={education}
-    bio={shortBio}
     quote={mentorQuote}
-    pedagogy={pedagogy}
     endorsement={endorsement}
-    venues={venues}
   />
 </BaseLayout>
 
@@ -70,7 +40,7 @@ const chapterImage = {
   /* Desktop only: overlay nav so hero centering uses the full viewport.
      Mobile keeps the normal in-flow sticky header so it doesn't cover the photo. */
   @media (min-width: 900px) {
-    body:has(.he) .site-header {
+    body:has(.he-hero) .site-header {
       position: fixed;
       top: 0;
       left: 0;
@@ -78,7 +48,7 @@ const chapterImage = {
       width: 100%;
     }
 
-    body:has(.he) .he-hero {
+    body:has(.he-hero) .he-hero {
       min-height: 100dvh;
       min-height: 100svh;
     }

@@ -64,8 +64,13 @@
   padding-block: var(--he-section-gap);
 }
 
-/* Preserve the larger breath between hero and Current Chapter */
-.he-chapter.he__section {
+/* About page opens on Biography — give it opening breath */
+.he--about > .he__section:first-child {
+  padding-block-start: var(--he-pad);
+}
+
+/* Home: breath between hero and quote */
+.he-quote.he__section {
   padding-block-start: var(--he-pad);
 }
 

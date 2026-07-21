@@ -1,0 +1,53 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AboutExperience from '../components/react/AboutExperience';
+import {
+  meta,
+  currentChapter,
+  appointments,
+  education,
+  shortBio,
+  pedagogy,
+  venues,
+} from '../content/site';
+
+const aboutPortrait = {
+  src: '/images/George-Zerdalis-Jacket.jpeg',
+  width: 3058,
+  height: 4588,
+};
+
+const chapterImage = {
+  src: '/images/Frost-School-Of-Music.jpg',
+  width: 1200,
+  height: 630,
+};
+---
+
+<BaseLayout title="About" description={meta.description}>
+  <AboutExperience
+    client:load
+    aboutPortraitSrc={aboutPortrait.src}
+    aboutPortraitWidth={aboutPortrait.width}
+    aboutPortraitHeight={aboutPortrait.height}
+    bio={shortBio}
+    chapter={currentChapter}
+    chapterImageSrc={chapterImage.src}
+    chapterImageWidth={chapterImage.width}
+    chapterImageHeight={chapterImage.height}
+    appointments={appointments}
+    education={education}
+    pedagogy={pedagogy}
+    venues={venues}
+  />
+</BaseLayout>
+
+<style is:global>
+  /* Full-bleed about composition inside constrained .site-main */
+  .site-main:has(.he--about) {
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-block: 0;
+  }
+</style>
