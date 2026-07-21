@@ -2,18 +2,21 @@
 
 :root {
   /* ——— Brand (edit these three) ——— */
-  --color-primary: #002942;
-  --color-secondary: #E45826;
+  /* Current pair is the dark palette; light mode swaps primary ↔ secondary. */
+  --brand-dark: #19181b;
+  --brand-light-accent: hsl(17, 90%, 40%);
+  --color-primary: var(--brand-dark);
+  --color-secondary: var(--brand-light-accent);
   --color-tertiary: #e6e6e6;
 
-  /* Light is the designed default */
-  --color-ink: #1a1f1c;
-  --color-ink-muted: #5c6862;
-  --color-ground: var(--color-tertiary);
-  --color-ground-elevated: color-mix(in srgb, var(--color-tertiary) 90%, var(--color-ink));
+  /* Dark-leaning default; light theme remaps brand roles below */
+  --color-ink: var(--color-tertiary);
+  --color-ink-muted: color-mix(in srgb, var(--color-tertiary) 62%, var(--color-primary));
+  --color-ground: var(--color-primary);
+  --color-ground-elevated: color-mix(in srgb, var(--color-primary) 90%, var(--color-ink));
   --color-ink-on-primary: var(--color-tertiary);
-  /* Dark ink on secondary — tertiary fails WCAG on #E45826 (~2.9:1) */
-  --color-ink-on-secondary: var(--color-ink);
+  /* Dark ink on secondary — tertiary fails WCAG on the orange (~2.9:1) */
+  --color-ink-on-secondary: #1a1f1c;
   /* Action alias — CTAs / focus / active. Decorative accents use --color-primary. */
   --color-accent: var(--color-secondary);
   --color-accent-soft: color-mix(in srgb, var(--color-primary) 72%, white);
@@ -23,9 +26,9 @@
   --color-spot: color-mix(in srgb, var(--color-primary) 10%, transparent);
   --color-chrome: #c8cbc9;
 
-  --font-display: "Nunito", system-ui, sans-serif;
-  --font-serif: "Nunito", system-ui, sans-serif;
-  --font-sans: "Nunito", system-ui, sans-serif;
+  --font-display: "Roboto", system-ui, sans-serif;
+  --font-serif: "Roboto", system-ui, sans-serif;
+  --font-sans: "Roboto", system-ui, sans-serif;
 
   --space-3xs: 0.125rem;
   --space-2xs: 0.25rem;
@@ -63,12 +66,17 @@
 }
 
 [data-theme="light"] {
+  /* Swap brand roles — orange becomes primary mass, dark becomes secondary accent */
+  --color-primary: var(--brand-light-accent);
+  --color-secondary: var(--brand-dark);
   color-scheme: light;
 }
 
 [data-theme="dark"] {
-  /* Brand primary / secondary / tertiary inherit from :root.
+  /* Brand primary / secondary stay as :root dark palette.
      Only neutrals shift for a cheap dark fallback. */
+  --color-primary: var(--brand-dark);
+  --color-secondary: var(--brand-light-accent);
   --color-ground: #050607;
   --color-ground-elevated: #0e1014;
   --color-ink: #eceae6;
@@ -452,10 +460,10 @@ p {
   height: 36px;
   box-sizing: border-box;
   flex-shrink: 0;
-  border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 40%, transparent);
+  border: 1px solid var(--color-primary);
   border-radius: var(--radius);
-  background: var(--color-ink-on-primary);
-  color: color-mix(in srgb, var(--color-primary) 62%, transparent);
+  background: var(--color-primary);
+  color: color-mix(in srgb, var(--color-tertiary) 62%, transparent);
 }
 
 .segment-thumb {
@@ -466,8 +474,9 @@ p {
   border-radius: calc(var(--radius) - 2px);
   pointer-events: none;
   z-index: 0;
-  background: var(--color-secondary);
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--color-ink) 8%, transparent);
+  background: var(--color-primary);
+  border: 1px solid var(--color-secondary);
+  box-shadow: none;
   transition:
     transform 0.2s ease,
     width 0.2s ease,
@@ -496,10 +505,10 @@ p {
   min-width: 17.5rem;
   box-sizing: border-box;
   flex-shrink: 0;
-  border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 40%, transparent);
+  border: 1px solid var(--color-primary);
   border-radius: var(--radius);
-  background: var(--color-ink-on-primary);
-  color: color-mix(in srgb, var(--color-primary) 62%, transparent);
+  background: var(--color-primary);
+  color: color-mix(in srgb, var(--color-tertiary) 62%, transparent);
 }
 
 .site-nav a {
@@ -529,7 +538,8 @@ p {
 
 .site-nav a[aria-current="page"],
 .site-nav a[aria-current="page"]:hover {
-  color: var(--color-ink-on-secondary);
+  color: var(--color-secondary);
+  font-weight: 600;
 }
 
 /* Hamburger toggle — hidden on desktop */
@@ -654,7 +664,7 @@ p {
 }
 
 .theme-toggle-option[aria-checked="true"] {
-  color: var(--color-ink-on-secondary);
+  color: var(--color-secondary);
 }
 
 .theme-toggle-option:hover {
@@ -662,7 +672,7 @@ p {
 }
 
 .theme-toggle-option[aria-checked="true"]:hover {
-  color: var(--color-ink-on-secondary);
+  color: var(--color-secondary);
 }
 
 .theme-toggle-option:focus-visible {

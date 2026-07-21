@@ -1,11 +1,20 @@
-/** Read a CSS custom property from :root (SSR-safe with fallback). */
+/** Read a CSS custom property as a resolved `rgb(...)` color (SSR-safe with fallback).
+ *  `getPropertyValue` leaves `var(...)` chains unresolved — Framer color
+ *  interpolation needs a concrete rgb/hex, so we resolve via a probe element. */
 export function readCssColor(varName: string, fallback: string): string {
   if (typeof document === "undefined") return fallback;
-  return (
-    getComputedStyle(document.documentElement)
-      .getPropertyValue(varName)
-      .trim() || fallback
-  );
+
+  const probe = document.createElement("span");
+  probe.style.color = `var(${varName})`;
+  probe.style.position = "absolute";
+  probe.style.visibility = "hidden";
+  probe.style.pointerEvents = "none";
+  document.documentElement.appendChild(probe);
+  const resolved = getComputedStyle(probe).color.trim();
+  probe.remove();
+
+  if (!resolved || resolved === "rgba(0, 0, 0, 0)") return fallback;
+  return resolved;
 }
 
 /** Convert `#rgb` / `#rrggbb` / `rgb(...)` to `"r, g, b"` for canvas fills. */

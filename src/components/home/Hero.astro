@@ -174,28 +174,18 @@ import { hero, endorsement } from '../../content/site';
       border-color var(--duration) var(--ease-out);
   }
 
-  .hero__cta--primary {
-    background: var(--color-secondary);
-    color: var(--color-ink-on-secondary);
-    border: 1px solid var(--color-secondary);
-  }
-
-  .hero__cta--primary:hover {
-    background: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
-    border-color: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
-    color: var(--color-ink-on-secondary);
-  }
-
+  .hero__cta--primary,
   .hero__cta--ghost {
-    background: transparent;
-    color: #f3eee6;
-    border: 1px solid rgba(243, 238, 230, 0.45);
+    background: var(--color-primary);
+    color: var(--color-tertiary);
+    border: 1px solid var(--color-primary);
   }
 
+  .hero__cta--primary:hover,
   .hero__cta--ghost:hover {
-    border-color: #f3eee6;
-    color: #f3eee6;
-    background: rgba(243, 238, 230, 0.08);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-tertiary);
   }
 
   @keyframes hero-settle {

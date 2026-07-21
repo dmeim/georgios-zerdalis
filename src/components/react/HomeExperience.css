@@ -250,19 +250,18 @@
   min-height: 2.75rem;
 }
 
-.he-hero__ctas .btn--primary {
-  color: var(--color-ink-on-secondary);
-}
-
+.he-hero__ctas .btn--primary,
 .he-hero__ctas .btn--ghost {
-  color: var(--color-primary);
-  border-color: color-mix(in srgb, var(--color-primary) 55%, transparent);
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-tertiary);
 }
 
+.he-hero__ctas .btn--primary:hover,
 .he-hero__ctas .btn--ghost:hover {
-  color: var(--color-ink-on-primary);
-  border-color: var(--color-primary);
   background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-tertiary);
 }
 
 .he-hero__scroll {
@@ -283,7 +282,7 @@
   font-weight: 300;
   letter-spacing: 0.2em;
   text-transform: uppercase;
-  color: color-mix(in srgb, var(--color-secondary) 78%, transparent);
+  color: color-mix(in srgb, var(--color-tertiary) 78%, transparent);
 }
 
 .he-hero__scroll-line {
@@ -291,8 +290,8 @@
   height: 2.75rem;
   background: linear-gradient(
     180deg,
-    color-mix(in srgb, var(--color-secondary) 85%, transparent),
-    rgba(243, 238, 230, 0)
+    color-mix(in srgb, var(--color-tertiary) 85%, transparent),
+    transparent
   );
   transform-origin: top center;
   animation: he-scroll-pulse 2.2s var(--ease-in-out) infinite;
@@ -354,17 +353,6 @@
     border-bottom-color: color-mix(in srgb, var(--color-secondary) 55%, transparent);
   }
 
-  .he-hero__ctas .btn--ghost {
-    color: var(--color-primary);
-    border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
-  }
-
-  .he-hero__ctas .btn--ghost:hover {
-    color: var(--color-ink-on-primary);
-    border-color: var(--color-primary);
-    background: var(--color-primary);
-  }
-
   .he-hero__media {
     position: relative;
     inset: auto;
@@ -405,13 +393,13 @@
   }
 
   .he-hero__scroll-label {
-    color: color-mix(in srgb, var(--color-secondary) 82%, transparent);
+    color: color-mix(in srgb, var(--color-tertiary) 82%, transparent);
   }
 
   .he-hero__scroll-line {
     background: linear-gradient(
       180deg,
-      color-mix(in srgb, var(--color-secondary) 85%, transparent),
+      color-mix(in srgb, var(--color-tertiary) 85%, transparent),
       transparent
     );
   }
@@ -1026,7 +1014,7 @@
   font-weight: 300;
   line-height: 1.22;
   letter-spacing: -0.015em;
-  color: var(--color-ink);
+  color: var(--color-tertiary);
 }
 
 .he-quote__word {
@@ -1044,7 +1032,7 @@
   font-weight: 300;
   letter-spacing: 0.14em;
   text-transform: uppercase;
-  color: var(--color-ink-muted);
+  color: var(--color-tertiary);
 }
 
 /* ——— Pedagogy ——— */

@@ -12,7 +12,6 @@ import {
   Magnetic,
   MotionConfigProvider,
   PhotoTilt,
-  Reveal,
   TextReveal,
 } from "../motion";
 import {
@@ -44,61 +43,94 @@ function QuoteWord({
   index,
   total,
   progress,
+  withSpace,
 }: {
   word: string;
   index: number;
   total: number;
   progress: MotionValue<number>;
+  withSpace: boolean;
 }) {
   const start = index / total;
   const end = Math.min(1, (index + 2.2) / total);
-  const opacity = useTransform(progress, [start, end], [0.18, 1]);
-  // Dim words stay ink; revealed words fill secondary.
+  // Dim words use secondary (dark in light mode); revealed words fill tertiary.
   // Framer needs concrete colors — read from CSS tokens (SSR fallbacks match :root).
   const color = useTransform(progress, [start, end], [
-    readCssColor("--color-ink", "#1a1f1c"),
-    readCssColor("--color-secondary", "#b31b17"),
+    readCssColor("--color-secondary", "#19181b"),
+    readCssColor("--color-tertiary", "#e6e6e6"),
   ]);
 
   return (
     <motion.span
       className="he-quote__word"
-      style={{ opacity, color }}
+      style={{ color }}
       aria-hidden="true"
     >
       {word}
-      {index < total - 1 ? " " : ""}
+      {withSpace ? " " : ""}
     </motion.span>
   );
 }
 
 function QuoteWords({
   text,
+  attribution,
   progress,
   reduced,
 }: {
   text: string;
+  attribution?: string;
   progress: MotionValue<number>;
   reduced: boolean;
 }) {
-  const words = text.trim().split(/\s+/).filter(Boolean);
+  const bodyWords = text.trim().split(/\s+/).filter(Boolean);
+  const attrWords = attribution?.trim().split(/\s+/).filter(Boolean) ?? [];
+  const total = bodyWords.length + attrWords.length;
 
   if (reduced) {
-    return <p className="he-quote__text">{text}</p>;
+    return (
+      <>
+        <p className="he-quote__text">{text}</p>
+        {attribution ? (
+          <footer className="he-quote__footer">
+            <cite className="he-quote__cite">{attribution}</cite>
+          </footer>
+        ) : null}
+      </>
+    );
   }
 
   return (
-    <p className="he-quote__text" aria-label={text}>
-      {words.map((word, i) => (
-        <QuoteWord
-          key={`${word}-${i}`}
-          word={word}
-          index={i}
-          total={words.length}
-          progress={progress}
-        />
-      ))}
-    </p>
+    <>
+      <p className="he-quote__text" aria-label={text}>
+        {bodyWords.map((word, i) => (
+          <QuoteWord
+            key={`body-${word}-${i}`}
+            word={word}
+            index={i}
+            total={total}
+            progress={progress}
+            withSpace={i < bodyWords.length - 1}
+          />
+        ))}
+      </p>
+      {attrWords.length > 0 ? (
+        <footer className="he-quote__footer">
+          <cite className="he-quote__cite" aria-label={attribution}>
+            {attrWords.map((word, i) => (
+              <QuoteWord
+                key={`attr-${word}-${i}`}
+                word={word}
+                index={bodyWords.length + i}
+                total={total}
+                progress={progress}
+                withSpace={i < attrWords.length - 1}
+              />
+            ))}
+          </cite>
+        </footer>
+      ) : null}
+    </>
   );
 }
 
@@ -309,9 +341,11 @@ function QuoteSection({
 }) {
   const reduced = useReducedMotion();
   const ref = useRef<HTMLElement>(null);
+  // Complete when the section bottom hits the viewport bottom — required when
+  // the quote is the last content on the page (can't scroll past "end center").
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start center", "end center"],
+    offset: ["start center", "end end"],
   });
 
   return (
@@ -324,16 +358,10 @@ function QuoteSection({
         <blockquote className="he-quote__block">
           <QuoteWords
             text={quote.text}
+            attribution={quote.attribution}
             progress={scrollYProgress}
             reduced={Boolean(reduced)}
           />
-          {quote.attribution ? (
-            <Reveal delay={0.15}>
-              <footer className="he-quote__footer">
-                <cite className="he-quote__cite">{quote.attribution}</cite>
-              </footer>
-            </Reveal>
-          ) : null}
         </blockquote>
       </div>
     </section>
