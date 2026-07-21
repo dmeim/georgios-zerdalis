@@ -291,6 +291,7 @@ p {
   background: transparent;
   color: var(--color-ink-on-primary);
   box-sizing: border-box;
+  overflow: visible;
 }
 
 .site-header__inner {
@@ -305,6 +306,7 @@ p {
   background: var(--color-primary);
   border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
   box-sizing: border-box;
+  overflow: visible;
 }
 
 .site-brand {
@@ -322,6 +324,18 @@ p {
 .site-brand:hover {
   color: var(--color-ink-on-primary);
   opacity: 0.88;
+}
+
+.site-header__center {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.nav-menu {
+  display: none;
+  position: relative;
 }
 
 /* Shared segmented track (theme toggle + desktop nav) */
@@ -368,7 +382,6 @@ p {
 /* Desktop nav — full track styles here so the pill doesn't depend only on
    .segment-track landing via HMR (avoids falling back to old underline links). */
 .site-nav {
-  justify-self: center;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   align-items: center;
@@ -467,45 +480,25 @@ p {
   transform: translateY(-6px) rotate(-45deg);
 }
 
-/* Mobile drawer — closed by default */
+/* Mobile nav popover — closed by default */
 .mobile-nav {
-  position: fixed;
-  top: var(--header-offset);
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* lvh covers the largest Safari chrome state so the URL bar can’t leave a hole */
-  min-height: calc(100lvh - var(--header-offset));
-  z-index: 45;
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-lg);
-  padding: var(--space-2xl) var(--space-lg);
-  padding-bottom: calc(var(--space-2xl) + env(safe-area-inset-bottom, 0px));
-  background: var(--color-primary);
-  backdrop-filter: none;
-  -webkit-backdrop-filter: none;
-  border-top: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 50%;
+  z-index: 60;
+  display: block;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
   visibility: hidden;
   opacity: 0;
   pointer-events: none;
-  transform: translateY(-0.5rem);
+  transform: translateX(-50%) translateY(-0.35rem);
   transition:
     opacity var(--duration) var(--ease-out),
     visibility var(--duration) var(--ease-out),
     transform var(--duration) var(--ease-expo);
-}
-
-/* Extend past the bottom edge — same iOS gap pattern as the header */
-.mobile-nav::after {
-  content: "";
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 100%;
-  height: 100lvh;
-  background: var(--color-primary);
-  pointer-events: none;
 }
 
 .mobile-nav[data-open="true"],
@@ -513,22 +506,12 @@ p {
   visibility: visible;
   opacity: 1;
   pointer-events: auto;
-  transform: translateY(0);
+  transform: translateX(-50%) translateY(0);
 }
 
-.mobile-nav a {
-  font-family: var(--font-display);
-  font-size: clamp(1.75rem, 6vw, 2.5rem);
-  font-weight: 500;
-  letter-spacing: -0.02em;
-  color: color-mix(in srgb, var(--color-ink-on-primary) 72%, transparent);
-  text-decoration: none;
-  transition: color var(--duration) var(--ease-out);
-}
-
-.mobile-nav a:hover,
-.mobile-nav a[aria-current="page"] {
-  color: var(--color-ink-on-primary);
+.mobile-nav .site-nav {
+  display: grid;
+  box-shadow: 0 8px 24px color-mix(in srgb, var(--color-ink) 18%, transparent);
 }
 
 .site-header__actions {
@@ -706,17 +689,16 @@ p {
 /* ——— Responsive ——— */
 
 @media (max-width: 768px) {
-  .site-nav {
+  .site-header__center > .site-nav {
     display: none;
+  }
+
+  .nav-menu {
+    display: block;
   }
 
   .nav-toggle {
     display: inline-flex;
-  }
-
-  .site-header__inner {
-    grid-template-columns: 1fr auto;
-    gap: var(--space-sm);
   }
 
   .site-brand {

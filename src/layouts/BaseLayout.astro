@@ -114,56 +114,65 @@ const year = new Date().getFullYear();
       <div class="site-header__inner">
         <a class="site-brand" href="/">George Zerdalis</a>
 
-        <nav class="site-nav segment-track" aria-label="Primary">
-          {
-            nav.map(({ href, label }) => (
-              <a
-                href={href}
-                aria-current={isCurrent(href) ? 'page' : undefined}
-              >
-                {label}
-              </a>
-            ))
-          }
-        </nav>
+        <div class="site-header__center">
+          <nav class="site-nav segment-track" aria-label="Primary">
+            {
+              nav.map(({ href, label }) => (
+                <a
+                  href={href}
+                  aria-current={isCurrent(href) ? 'page' : undefined}
+                >
+                  {label}
+                </a>
+              ))
+            }
+          </nav>
+
+          <div class="nav-menu">
+            <button
+              type="button"
+              class="nav-toggle"
+              id="nav-toggle"
+              aria-label="Open menu"
+              aria-controls="mobile-nav"
+              aria-expanded="false"
+            >
+              <span class="nav-toggle__bars" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+              </span>
+            </button>
+
+            <nav
+              class="mobile-nav"
+              id="mobile-nav"
+              aria-label="Mobile"
+              data-open="false"
+            >
+              <div class="site-nav segment-track">
+                {
+                  nav.map(({ href, label }) => (
+                    <a
+                      href={href}
+                      aria-current={isCurrent(href) ? 'page' : undefined}
+                    >
+                      {label}
+                    </a>
+                  ))
+                }
+              </div>
+            </nav>
+          </div>
+        </div>
 
         <div class="site-header__actions">
           <div id="theme-toggle-host" class="theme-toggle-host"></div>
-
-          <button
-            type="button"
-            class="nav-toggle"
-            id="nav-toggle"
-            aria-label="Open menu"
-            aria-controls="mobile-nav"
-            aria-expanded="false"
-          >
-            <span class="nav-toggle__bars" aria-hidden="true">
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-          </button>
         </div>
       </div>
     </header>
 
     <div class="site-scroll-veil" aria-hidden="true"></div>
-
-    <nav
-      class="mobile-nav"
-      id="mobile-nav"
-      aria-label="Mobile"
-      data-open="false"
-    >
-      {
-        nav.map(({ href, label }) => (
-          <a href={href} aria-current={isCurrent(href) ? 'page' : undefined}>
-            {label}
-          </a>
-        ))
-      }
-    </nav>
 
     <main class="site-main" id="main">
       <slot />
@@ -184,66 +193,69 @@ const year = new Date().getFullYear();
 
     <script is:inline>
       (function () {
+        function setClosed(toggle, popover) {
+          popover.setAttribute('data-open', 'false');
+          popover.classList.remove('is-open');
+          toggle.setAttribute('aria-expanded', 'false');
+          toggle.setAttribute('aria-label', 'Open menu');
+        }
+
+        function setOpen(toggle, popover) {
+          popover.setAttribute('data-open', 'true');
+          popover.classList.add('is-open');
+          toggle.setAttribute('aria-expanded', 'true');
+          toggle.setAttribute('aria-label', 'Close menu');
+        }
+
         function bindMobileNav() {
           var toggle = document.getElementById('nav-toggle');
-          var drawer = document.getElementById('mobile-nav');
-          if (!toggle || !drawer) return;
-
-          var lastFocus = null;
-
-          function focusables() {
-            return Array.prototype.slice.call(
-              drawer.querySelectorAll(
-                'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-              ),
-            );
-          }
+          var popover = document.getElementById('mobile-nav');
+          var menu = toggle && toggle.closest('.nav-menu');
+          if (!toggle || !popover || !menu) return;
 
           function isOpen() {
-            return drawer.getAttribute('data-open') === 'true';
+            return popover.getAttribute('data-open') === 'true';
           }
 
           function openNav() {
-            lastFocus = document.activeElement;
-            drawer.setAttribute('data-open', 'true');
-            drawer.classList.add('is-open');
-            toggle.setAttribute('aria-expanded', 'true');
-            toggle.setAttribute('aria-label', 'Close menu');
-            document.body.style.overflow = 'hidden';
-            var items = focusables();
-            if (items.length) items[0].focus();
+            setOpen(toggle, popover);
+            var first = popover.querySelector('a[href]');
+            if (first) first.focus();
           }
 
-          function closeNav() {
-            drawer.setAttribute('data-open', 'false');
-            drawer.classList.remove('is-open');
-            toggle.setAttribute('aria-expanded', 'false');
-            toggle.setAttribute('aria-label', 'Open menu');
-            document.body.style.overflow = '';
-            if (lastFocus && typeof lastFocus.focus === 'function') {
-              try {
-                lastFocus.focus();
-              } catch (_) {}
-            }
+          function closeNav(restoreFocus) {
+            setClosed(toggle, popover);
+            if (restoreFocus) toggle.focus();
           }
 
-          // Reset drawer after client navigations
-          closeNav();
+          // Reset after client navigations
+          closeNav(false);
 
           if (toggle.dataset.bound === '1') return;
           toggle.dataset.bound = '1';
 
-          toggle.addEventListener('click', function () {
-            if (isOpen()) closeNav();
+          toggle.addEventListener('click', function (e) {
+            e.stopPropagation();
+            if (isOpen()) closeNav(false);
             else openNav();
           });
 
-          drawer.addEventListener('click', function (e) {
-            if (e.target.tagName === 'A') closeNav();
+          popover.addEventListener('click', function (e) {
+            if (e.target.tagName === 'A') closeNav(false);
           });
 
           if (!window.__gzNavListeners) {
             window.__gzNavListeners = true;
+
+            document.addEventListener('pointerdown', function (e) {
+              var t = document.getElementById('nav-toggle');
+              var d = document.getElementById('mobile-nav');
+              var m = t && t.closest('.nav-menu');
+              if (!t || !d || !m || d.getAttribute('data-open') !== 'true')
+                return;
+              if (m.contains(e.target)) return;
+              setClosed(t, d);
+            });
 
             document.addEventListener('keydown', function (e) {
               var t = document.getElementById('nav-toggle');
@@ -252,34 +264,8 @@ const year = new Date().getFullYear();
 
               if (e.key === 'Escape') {
                 e.preventDefault();
-                d.setAttribute('data-open', 'false');
-                d.classList.remove('is-open');
-                t.setAttribute('aria-expanded', 'false');
-                t.setAttribute('aria-label', 'Open menu');
-                document.body.style.overflow = '';
+                setClosed(t, d);
                 t.focus();
-                return;
-              }
-
-              if (e.key !== 'Tab') return;
-
-              var items = Array.prototype.slice.call(
-                d.querySelectorAll(
-                  'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-                ),
-              );
-              if (!items.length) return;
-
-              var first = items[0];
-              var last = items[items.length - 1];
-              var active = document.activeElement;
-
-              if (e.shiftKey && (active === first || active === t)) {
-                e.preventDefault();
-                last.focus();
-              } else if (!e.shiftKey && active === last) {
-                e.preventDefault();
-                first.focus();
               }
             });
 
@@ -288,11 +274,7 @@ const year = new Date().getFullYear();
               var t = document.getElementById('nav-toggle');
               var d = document.getElementById('mobile-nav');
               if (!t || !d || d.getAttribute('data-open') !== 'true') return;
-              d.setAttribute('data-open', 'false');
-              d.classList.remove('is-open');
-              t.setAttribute('aria-expanded', 'false');
-              t.setAttribute('aria-label', 'Open menu');
-              document.body.style.overflow = '';
+              setClosed(t, d);
             });
           }
         }
