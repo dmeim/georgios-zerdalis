@@ -26,9 +26,9 @@
   --color-spot: color-mix(in srgb, var(--color-primary) 10%, transparent);
   --color-chrome: #c8cbc9;
 
-  --font-display: "Roboto", system-ui, sans-serif;
-  --font-serif: "Roboto", system-ui, sans-serif;
-  --font-sans: "Roboto", system-ui, sans-serif;
+  --font-display: "Science Gothic", system-ui, sans-serif;
+  --font-serif: "Science Gothic", system-ui, sans-serif;
+  --font-sans: "Science Gothic", system-ui, sans-serif;
 
   --space-3xs: 0.125rem;
   --space-2xs: 0.25rem;
