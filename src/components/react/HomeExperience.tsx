@@ -7,6 +7,7 @@ import {
   type MotionValue,
 } from "framer-motion";
 import { useRef } from "react";
+import { readCssColor } from "../../lib/cssColor";
 import {
   Magnetic,
   MotionConfigProvider,
@@ -108,9 +109,12 @@ function QuoteWord({
   const start = index / total;
   const end = Math.min(1, (index + 2.2) / total);
   const opacity = useTransform(progress, [start, end], [0.18, 1]);
-  // Dim words stay ink; revealed words fill secondary orange.
-  // Hexes match --color-ink / --color-secondary (framer needs concrete colors).
-  const color = useTransform(progress, [start, end], ["#1a1f1c", "#ff7a33"]);
+  // Dim words stay ink; revealed words fill secondary.
+  // Framer needs concrete colors — read from CSS tokens (SSR fallbacks match :root).
+  const color = useTransform(progress, [start, end], [
+    readCssColor("--color-ink", "#1a1f1c"),
+    readCssColor("--color-secondary", "#b31b17"),
+  ]);
 
   return (
     <motion.span

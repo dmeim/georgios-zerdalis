@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { cssColorToRgbTriplet, readCssColor } from "../../lib/cssColor";
 
 type FieldPoint = {
   x: number;
@@ -13,10 +14,6 @@ type FieldPoint = {
 const SPACING = 12;
 const DPR_CAP = 2;
 
-/** Always secondary orange — never page- or primary-tinted. */
-const GLYPH_RGB_LIGHT = "255, 122, 51"; // #ff7a33
-const GLYPH_RGB_DARK = "255, 122, 51"; // #ff7a33
-
 /** Dark ground needs stronger dots; light cream already reads well. */
 const DARK_ALPHA_MULT = 1.5;
 
@@ -24,8 +21,12 @@ function isDarkTheme(): boolean {
   return document.documentElement.getAttribute("data-theme") === "dark";
 }
 
+/** Always --color-secondary — never page- or primary-tinted. */
 function glyphRgb(): string {
-  return isDarkTheme() ? GLYPH_RGB_DARK : GLYPH_RGB_LIGHT;
+  return cssColorToRgbTriplet(
+    readCssColor("--color-secondary", "#b31b17"),
+    "179, 27, 23",
+  );
 }
 
 function prefersReducedMotion(): boolean {

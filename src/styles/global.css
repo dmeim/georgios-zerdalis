@@ -1,18 +1,22 @@
-/* George Zerdalis — Retro-pop (cream room, blue furniture) */
+/* George Zerdalis — brand palette via primary / secondary / tertiary */
 
 :root {
+  /* ——— Brand (edit these three) ——— */
+  --color-primary: #002942;
+  --color-secondary: #E45826;
+  --color-tertiary: #e6e6e6;
+
   /* Light is the designed default */
-  --color-ground: #fcf5e3;
-  --color-ground-elevated: #f4ebd6;
   --color-ink: #1a1f1c;
   --color-ink-muted: #5c6862;
-  --color-primary: #1a5a6b;
-  --color-secondary: #ff7a33;
-  --color-ink-on-primary: #fcf5e3;
-  --color-ink-on-secondary: #fcf5e3;
+  --color-ground: var(--color-tertiary);
+  --color-ground-elevated: color-mix(in srgb, var(--color-tertiary) 90%, var(--color-ink));
+  --color-ink-on-primary: var(--color-tertiary);
+  /* Dark ink on secondary — tertiary fails WCAG on #E45826 (~2.9:1) */
+  --color-ink-on-secondary: var(--color-ink);
   /* Action alias — CTAs / focus / active. Decorative accents use --color-primary. */
   --color-accent: var(--color-secondary);
-  --color-accent-soft: #4a7a85;
+  --color-accent-soft: color-mix(in srgb, var(--color-primary) 72%, white);
   --color-border: color-mix(in srgb, var(--color-primary) 22%, transparent);
   --color-glyph: var(--color-secondary);
   --color-overlay: color-mix(in srgb, var(--color-ground) 88%, transparent);
@@ -38,7 +42,7 @@
   --site-max: 80rem;
   --chrome-inset: 0.5rem;
   --header-height: 3.35rem;
-  --header-offset: calc(var(--chrome-inset) + var(--header-height));
+  --header-offset: var(--header-height);
   --radius: 0.85rem;
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -63,17 +67,17 @@
 }
 
 [data-theme="dark"] {
-  /* Cheap compatibility — not a designed dark retro-pop pass */
+  /* Brand primary / secondary / tertiary inherit from :root.
+     Only neutrals shift for a cheap dark fallback. */
   --color-ground: #050607;
   --color-ground-elevated: #0e1014;
   --color-ink: #eceae6;
   --color-ink-muted: #9aa0a8;
-  --color-primary: #1a5a6b;
-  --color-secondary: #ff7a33;
-  --color-ink-on-primary: #fcf5e3;
-  --color-ink-on-secondary: #fcf5e3;
+  --color-ink-on-primary: var(--color-tertiary);
+  /* Keep dark type on secondary — theme ink flips light in dark mode */
+  --color-ink-on-secondary: #1a1f1c;
   --color-accent: var(--color-secondary);
-  --color-accent-soft: #4a7a85;
+  --color-accent-soft: color-mix(in srgb, var(--color-primary) 72%, white);
   --color-border: rgba(236, 234, 230, 0.1);
   --color-glyph: var(--color-secondary);
   --color-overlay: rgba(5, 6, 7, 0.75);
@@ -284,9 +288,10 @@ p {
   position: sticky;
   top: 0;
   z-index: 50;
-  /* Equal cream gap on top / left / right — same token as footer */
-  padding: var(--chrome-inset) var(--chrome-inset) 0;
-  background: transparent;
+  /* Full-bleed — flush to viewport top and sides */
+  padding: 0;
+  /* Match the bar so subpixel gaps can't flash cream at the edges */
+  background: var(--color-primary);
   color: var(--color-ink-on-primary);
   box-sizing: border-box;
   overflow: visible;
@@ -303,11 +308,10 @@ p {
   grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: var(--space-md);
-  /* Square the bottom so the fade reads as one continuous edge */
-  border-radius: var(--he-frame-radius) var(--he-frame-radius) 0 0;
+  border-radius: 0;
   background: var(--color-primary);
-  border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
-  border-bottom: none;
+  /* No border — hairlines read as cream gaps on flush edges */
+  border: none;
   box-sizing: border-box;
   overflow: visible;
 }
@@ -323,8 +327,8 @@ p {
 .site-header__waves,
 .site-footer__waves {
   position: absolute;
-  left: -1px;
-  right: -1px;
+  left: 0;
+  right: 0;
   height: calc(var(--chrome-fade) + var(--chrome-wave-overlap));
   overflow: hidden;
   pointer-events: none;
@@ -686,15 +690,14 @@ p {
   --chrome-wave-overlap: 1.15rem;
   position: relative;
   z-index: 1;
-  width: calc(100% - 2 * var(--chrome-inset));
-  margin-inline: auto;
-  margin-bottom: var(--chrome-inset);
-  padding: 0.4rem var(--chrome-inset);
-  /* Square the top so the upward fade reads as one continuous edge */
-  border-radius: 0 0 var(--he-frame-radius) var(--he-frame-radius);
+  width: 100%;
+  margin-inline: 0;
+  margin-bottom: 0;
+  padding: 0.4rem max(var(--chrome-inset), 0.85rem);
+  border-radius: 0;
   background: var(--color-primary);
-  border: 1px solid color-mix(in srgb, var(--color-ink-on-primary) 14%, transparent);
-  border-top: none;
+  /* No border — hairlines read as cream gaps on flush edges */
+  border: none;
   box-sizing: border-box;
   overflow: visible;
 }
