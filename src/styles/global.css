@@ -6,13 +6,13 @@
   --color-ground-elevated: #f4ebd6;
   --color-ink: #1a1f1c;
   --color-ink-muted: #5c6862;
-  --color-primary: #023341;
-  --color-secondary: #fd5e02;
+  --color-primary: #1a5a6b;
+  --color-secondary: #ff7a33;
   --color-ink-on-primary: #fcf5e3;
   --color-ink-on-secondary: #fcf5e3;
   /* Action alias — CTAs / focus / active. Decorative accents use --color-primary. */
   --color-accent: var(--color-secondary);
-  --color-accent-soft: #3a6874;
+  --color-accent-soft: #4a7a85;
   --color-border: color-mix(in srgb, var(--color-primary) 22%, transparent);
   --color-glyph: var(--color-secondary);
   --color-overlay: color-mix(in srgb, var(--color-ground) 88%, transparent);

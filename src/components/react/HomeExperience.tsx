@@ -110,7 +110,7 @@ function QuoteWord({
   const opacity = useTransform(progress, [start, end], [0.18, 1]);
   // Dim words stay ink; revealed words fill secondary orange.
   // Hexes match --color-ink / --color-secondary (framer needs concrete colors).
-  const color = useTransform(progress, [start, end], ["#1a1f1c", "#fd5e02"]);
+  const color = useTransform(progress, [start, end], ["#1a1f1c", "#ff7a33"]);
 
   return (
     <motion.span

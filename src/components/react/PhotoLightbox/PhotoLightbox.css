@@ -74,13 +74,19 @@ html.photo-lightbox-open body > :not(.photo-lightbox) {
   border-radius: 999px;
   background: color-mix(in srgb, var(--color-ground) 88%, transparent);
   color: var(--color-primary);
-  font-size: 1.5rem;
-  line-height: 1;
   cursor: pointer;
   transition:
     background var(--duration) var(--ease-out),
     border-color var(--duration) var(--ease-out),
     color var(--duration) var(--ease-out);
+}
+
+.photo-lightbox__close svg,
+.photo-lightbox__nav svg {
+  display: block;
+  flex-shrink: 0;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .photo-lightbox__close:hover,
@@ -106,7 +112,6 @@ html.photo-lightbox-open body > :not(.photo-lightbox) {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  font-size: 1.85rem;
 }
 
 .photo-lightbox__nav--prev {

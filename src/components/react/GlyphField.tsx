@@ -14,7 +14,7 @@ const SPACING = 12;
 const DPR_CAP = 2;
 
 /** Always secondary orange — never page- or primary-tinted. */
-const GLYPH_RGB_LIGHT = "253, 94, 2"; // #fd5e02
+const GLYPH_RGB_LIGHT = "255, 122, 51"; // #ff7a33
 const GLYPH_RGB_DARK = "255, 122, 51"; // #ff7a33
 
 /** Dark ground needs stronger dots; light cream already reads well. */

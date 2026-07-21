@@ -8,6 +8,7 @@ import {
 } from "react";
 import { createPortal } from "react-dom";
 import { LayoutGroup } from "framer-motion";
+import { X } from "lucide-react";
 import {
   findLightboxIndex,
   flattenGalleryPeers,
@@ -151,10 +152,7 @@ function CollectionModal({
         tabIndex={-1}
         onClick={onClose}
       />
-      <div className="gallery-collection-modal__panel">
-        <h2 id={titleId} className="gallery-collection-modal__sr-only">
-          Photo collection
-        </h2>
+      <div className="gallery-collection-modal__shell">
         <button
           ref={closeRef}
           type="button"
@@ -162,35 +160,40 @@ function CollectionModal({
           aria-label="Close collection"
           onClick={onClose}
         >
-          <span aria-hidden="true">×</span>
+          <X aria-hidden="true" strokeWidth={2.5} />
         </button>
-        <ul className="gallery-collection-modal__grid" role="list">
-          {collection.images.map((image, index) => {
-            const layoutId = photoLayoutId(image.src, `collection-${collection.id}-${index}`);
-            return (
-              <li key={image.id} className="gallery-collection-modal__item">
-                <button
-                  type="button"
-                  className="gallery-collection-modal__trigger"
-                  aria-label="View gallery photo"
-                  onClick={(event) => onSelectImage(event, image.src)}
-                >
-                  <SharedPhotoShell layoutId={layoutId}>
-                    <PhotoTilt className="gallery-collection-modal__frame">
-                      <img
-                        className="gallery-collection-modal__img"
-                        src={image.src}
-                        alt={image.alt}
-                        loading={index < 6 ? "eager" : "lazy"}
-                        decoding="async"
-                      />
-                    </PhotoTilt>
-                  </SharedPhotoShell>
-                </button>
-              </li>
-            );
-          })}
-        </ul>
+        <div className="gallery-collection-modal__panel">
+          <h2 id={titleId} className="gallery-collection-modal__sr-only">
+            Photo collection
+          </h2>
+          <ul className="gallery-collection-modal__grid" role="list">
+            {collection.images.map((image, index) => {
+              const layoutId = photoLayoutId(image.src, `collection-${collection.id}-${index}`);
+              return (
+                <li key={image.id} className="gallery-collection-modal__item">
+                  <button
+                    type="button"
+                    className="gallery-collection-modal__trigger"
+                    aria-label="View gallery photo"
+                    onClick={(event) => onSelectImage(event, image.src)}
+                  >
+                    <SharedPhotoShell layoutId={layoutId}>
+                      <PhotoTilt className="gallery-collection-modal__frame">
+                        <img
+                          className="gallery-collection-modal__img"
+                          src={image.src}
+                          alt={image.alt}
+                          loading={index < 6 ? "eager" : "lazy"}
+                          decoding="async"
+                        />
+                      </PhotoTilt>
+                    </SharedPhotoShell>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
       </div>
     </div>,
     document.body,

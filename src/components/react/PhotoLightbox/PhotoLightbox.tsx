@@ -5,6 +5,7 @@ import {
   useMotionValue,
   useReducedMotion,
 } from "framer-motion";
+import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import {
   useEffect,
   useId,
@@ -312,7 +313,7 @@ export default function PhotoLightbox() {
                 aria-label="Close photo"
                 onClick={beginClose}
               >
-                <span aria-hidden="true">&times;</span>
+                <X aria-hidden="true" strokeWidth={2.5} />
               </button>
 
               {navigable ? (
@@ -322,7 +323,7 @@ export default function PhotoLightbox() {
                   aria-label="Previous photo"
                   onClick={() => navigate("prev")}
                 >
-                  <span aria-hidden="true">‹</span>
+                  <ChevronLeft aria-hidden="true" strokeWidth={2.5} />
                 </button>
               ) : null}
 
@@ -333,7 +334,7 @@ export default function PhotoLightbox() {
                   aria-label="Next photo"
                   onClick={() => navigate("next")}
                 >
-                  <span aria-hidden="true">›</span>
+                  <ChevronRight aria-hidden="true" strokeWidth={2.5} />
                 </button>
               ) : null}
             </motion.div>
