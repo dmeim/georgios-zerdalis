@@ -211,11 +211,11 @@
   width: 2.75rem;
   height: 2.75rem;
   padding: 0;
-  border: 1px solid color-mix(in srgb, var(--color-primary) 28%, transparent);
+  border: 1px solid var(--color-secondary);
   border-radius: 999px;
   transform: translate(40%, -40%);
-  background: var(--color-ground);
-  color: var(--color-primary);
+  background: var(--color-primary);
+  color: var(--color-secondary);
   cursor: pointer;
   transition:
     background var(--duration) var(--ease-out),
@@ -231,9 +231,9 @@
 }
 
 .gallery-collection-modal__close:hover {
-  border-color: var(--color-primary);
-  color: var(--color-ink-on-primary);
-  background: var(--color-primary);
+  border-color: var(--color-secondary);
+  color: var(--color-secondary);
+  background: color-mix(in srgb, var(--color-primary) 88%, var(--color-ink));
 }
 
 .gallery-collection-modal__close:focus-visible {
