@@ -3,6 +3,10 @@ import { ClientRouter } from 'astro:transitions';
 import SiteEffects from '../components/react/SiteEffects';
 import '../styles/global.css';
 
+// Developer experiment toggles for the 4-layer chrome waves on header/footer.
+const SHOW_HEADER_WAVES = false;
+const SHOW_FOOTER_WAVES = false;
+
 interface Props {
   title?: string;
   description?: string;
@@ -171,12 +175,14 @@ const year = new Date().getFullYear();
           <div id="theme-toggle-host" class="theme-toggle-host"></div>
         </div>
 
-        <div class="site-header__waves" aria-hidden="true">
-          <span class="chrome-wave chrome-wave--a"></span>
-          <span class="chrome-wave chrome-wave--b"></span>
-          <span class="chrome-wave chrome-wave--c"></span>
-          <span class="chrome-wave chrome-wave--solid"></span>
-        </div>
+        {SHOW_HEADER_WAVES && (
+          <div class="site-header__waves" aria-hidden="true">
+            <span class="chrome-wave chrome-wave--a"></span>
+            <span class="chrome-wave chrome-wave--b"></span>
+            <span class="chrome-wave chrome-wave--c"></span>
+            <span class="chrome-wave chrome-wave--solid"></span>
+          </div>
+        )}
       </div>
     </header>
 
@@ -187,12 +193,14 @@ const year = new Date().getFullYear();
     </main>
 
     <footer class="site-footer">
-      <div class="site-footer__waves" aria-hidden="true">
-        <span class="chrome-wave chrome-wave--a"></span>
-        <span class="chrome-wave chrome-wave--b"></span>
-        <span class="chrome-wave chrome-wave--c"></span>
-        <span class="chrome-wave chrome-wave--solid"></span>
-      </div>
+      {SHOW_FOOTER_WAVES && (
+        <div class="site-footer__waves" aria-hidden="true">
+          <span class="chrome-wave chrome-wave--a"></span>
+          <span class="chrome-wave chrome-wave--b"></span>
+          <span class="chrome-wave chrome-wave--c"></span>
+          <span class="chrome-wave chrome-wave--solid"></span>
+        </div>
+      )}
       <p class="site-footer__line">
         &copy; {year} George Zerdalis - Timpanist, Percussionist, and Educator
       </p>
