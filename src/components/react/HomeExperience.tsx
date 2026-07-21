@@ -744,7 +744,7 @@ function QuoteSection({
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
     target: ref,
-    offset: ["start 0.85", "end 0.45"],
+    offset: ["start center", "end center"],
   });
 
   return (

@@ -685,7 +685,7 @@
 }
 
 .he-appointments__item {
-  padding-block: var(--space-xl);
+  padding-block: var(--space-md);
   border-top: 1px solid var(--color-border);
 }
 
@@ -837,7 +837,7 @@
 }
 
 .he-education__item {
-  padding-block: var(--space-xl);
+  padding-block: var(--space-md);
   border-top: 1px solid var(--color-border);
 }
 
@@ -1016,10 +1016,10 @@
 .he-quote__text {
   margin: 0;
   font-family: var(--font-serif);
-  font-size: clamp(1.55rem, 4.2vw, 2.85rem);
+  font-size: clamp(1.2rem, 3.1vw, 2.1rem);
   font-style: italic;
   font-weight: 300;
-  line-height: 1.28;
+  line-height: 1.22;
   letter-spacing: -0.015em;
   color: var(--color-ink);
 }
@@ -1029,7 +1029,7 @@
 }
 
 .he-quote__footer {
-  margin-top: var(--space-xl);
+  margin-top: var(--space-lg);
 }
 
 .he-quote__cite {
@@ -1075,7 +1075,7 @@
   gap: var(--space-md);
   align-items: baseline;
   width: 100%;
-  padding-block: clamp(1.15rem, 2.5vh, 1.65rem);
+  padding-block: var(--space-md);
   color: inherit;
   transition: opacity var(--duration) var(--ease-out);
 }
