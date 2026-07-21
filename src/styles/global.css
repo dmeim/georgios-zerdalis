@@ -77,8 +77,9 @@
      Only neutrals shift for a cheap dark fallback. */
   --color-primary: var(--brand-dark);
   --color-secondary: var(--brand-light-accent);
-  --color-ground: #050607;
-  --color-ground-elevated: #0e1014;
+  /* Keep ground aliased to primary — do not diverge from chrome/page mass */
+  --color-ground: var(--color-primary);
+  --color-ground-elevated: color-mix(in srgb, var(--color-primary) 90%, var(--color-ink));
   --color-ink: #eceae6;
   --color-ink-muted: #9aa0a8;
   --color-ink-on-primary: var(--color-tertiary);
@@ -139,7 +140,9 @@ html {
   outline: none;
 }
 
-/* ——— Body atmosphere ——— */
+/* ——— Body ——— */
+/* Flat primary only — radial atmosphere was tinting the page (via color-mix
+   with transparent) while header/footer stayed pure --color-primary. */
 
 body {
   margin: 0;
@@ -148,29 +151,7 @@ body {
   flex-direction: column;
   position: relative;
   isolation: isolate;
-  background-color: var(--color-ground);
-  background-image:
-    radial-gradient(
-      ellipse 90% 55% at 12% -10%,
-      color-mix(in srgb, var(--color-primary) 12%, transparent),
-      transparent 58%
-    ),
-    radial-gradient(
-      ellipse 70% 50% at 88% 8%,
-      var(--color-spot),
-      transparent 52%
-    ),
-    radial-gradient(
-      ellipse 60% 40% at 50% 100%,
-      color-mix(in srgb, var(--color-primary) 6%, transparent),
-      transparent 55%
-    ),
-    linear-gradient(
-      180deg,
-      var(--color-ground) 0%,
-      var(--color-ground-elevated) 100%
-    );
-  background-attachment: fixed;
+  background-color: var(--color-primary);
   color: var(--color-ink);
   font-family: var(--font-sans);
   font-size: 1.0625rem;
@@ -199,8 +180,10 @@ body::before {
   mix-blend-mode: overlay;
 }
 
-/* Soft dotted wave field — between body atmosphere and page content.
-   Negative z-index stays above body's background thanks to isolation. */
+/* Soft dotted wave field — between body bg and page content.
+   Negative z-index stays above body's background thanks to isolation.
+   Mask keeps dots out of the opaque header/footer chrome so secondary-
+   tinted glyphs can't shift the perceived mass at those edges. */
 .glyph-field {
   position: fixed;
   inset: 0;
@@ -208,6 +191,26 @@ body::before {
   width: 100%;
   height: 100%;
   pointer-events: none;
+  --glyph-chrome-fade: 2rem;
+  --glyph-footer-band: 3.25rem;
+  mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent var(--header-offset),
+    #000 calc(var(--header-offset) + var(--glyph-chrome-fade)),
+    #000 calc(100% - var(--glyph-footer-band) - var(--glyph-chrome-fade)),
+    transparent calc(100% - var(--glyph-footer-band)),
+    transparent 100%
+  );
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent var(--header-offset),
+    #000 calc(var(--header-offset) + var(--glyph-chrome-fade)),
+    #000 calc(100% - var(--glyph-footer-band) - var(--glyph-chrome-fade)),
+    transparent calc(100% - var(--glyph-footer-band)),
+    transparent 100%
+  );
 }
 
 img,
@@ -261,8 +264,8 @@ p {
 }
 
 /* ——— Scroll veil (soft glass under header) ——— */
-/* Frost only through the solid header band — stay out of the teal fade
-   zone below, or the two stack into a muddy dark smear. */
+/* Full frost through the header band; soft fade below so scrolling
+   content blurs as it nears the bar. */
 
 .site-scroll-veil {
   position: fixed;
@@ -273,7 +276,7 @@ p {
   height: calc(var(--header-offset) + var(--scroll-veil-fade));
   z-index: 40;
   pointer-events: none;
-  background: color-mix(in srgb, var(--color-ground) 88%, transparent);
+  background: color-mix(in srgb, var(--color-primary) 88%, transparent);
   backdrop-filter: blur(48px) saturate(1.05);
   -webkit-backdrop-filter: blur(48px) saturate(1.05);
   mask-image: linear-gradient(
@@ -755,25 +758,25 @@ p {
 
 .btn--primary {
   background: var(--color-secondary);
-  border-color: var(--color-secondary);
+  border-color: var(--color-tertiary);
   color: var(--color-ink-on-secondary);
 }
 
 .btn--primary:hover {
   background: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
-  border-color: color-mix(in srgb, var(--color-secondary) 88%, var(--color-ink));
+  border-color: var(--color-tertiary);
   color: var(--color-ink-on-secondary);
 }
 
 .btn--ghost {
   background: transparent;
-  border-color: color-mix(in srgb, var(--color-primary) 45%, transparent);
+  border-color: var(--color-tertiary);
   color: var(--color-primary);
 }
 
 .btn--ghost:hover {
   color: var(--color-ink-on-primary);
-  border-color: var(--color-primary);
+  border-color: var(--color-tertiary);
   background: var(--color-primary);
 }
 

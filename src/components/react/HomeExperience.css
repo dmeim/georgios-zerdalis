@@ -253,14 +253,14 @@
 .he-hero__ctas .btn--primary,
 .he-hero__ctas .btn--ghost {
   background: var(--color-primary);
-  border-color: var(--color-primary);
+  border-color: var(--color-tertiary);
   color: var(--color-tertiary);
 }
 
 .he-hero__ctas .btn--primary:hover,
 .he-hero__ctas .btn--ghost:hover {
   background: var(--color-primary);
-  border-color: var(--color-primary);
+  border-color: var(--color-tertiary);
   color: var(--color-tertiary);
 }
 
